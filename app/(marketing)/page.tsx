@@ -32,13 +32,8 @@ export default async function Home() {
     <>
       <CursorGlow />
 
-      {/* ============================= HERO ============================= */}
-      {/*
-        Hybrid: editorial restraint (index header, type-driven, big
-        breathing room) + one visual moment (subtle mesh + mock
-        dashboard on wide screens). Single accent only.
-      */}
-      <section className="relative isolate pt-24 md:pt-32 pb-24 md:pb-32 overflow-hidden">
+      {/* ============================ 01 HERO ============================ */}
+      <section className="snap-section relative isolate overflow-hidden">
         <MeshGradient className="anim-hero-bg" />
 
         <Container size="wide">
@@ -52,23 +47,22 @@ export default async function Home() {
             </span>
           </div>
 
-          <div className="grid lg:grid-cols-[1.5fr_1fr] gap-16 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-[1.5fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-hero-entry">
-              <h1 className="font-sans font-medium text-ink mb-10 md:mb-12 leading-[0.95] tracking-[-0.04em] text-5xl md:text-7xl lg:text-[7.5rem]">
+              <h1 className="font-sans font-medium text-ink leading-[1.0] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-8">
                 Growth, engineered{" "}
-                <span className="italic-editorial font-normal text-ink-soft">
+                <span className="italic-editorial font-normal silver-shine">
                   for the long compound.
                 </span>
               </h1>
 
-              <p className="text-lg md:text-xl text-ink-soft max-w-2xl leading-relaxed mb-12">
+              <p className="text-base md:text-lg text-ink-soft max-w-xl leading-relaxed mb-10">
                 A two-person studio building paid traffic, custom operational
                 systems, and AI tooling for established UK businesses. One
-                engagement, one engine — no junior hand-offs, no recycled
-                decks.
+                engagement, one engine.
               </p>
 
-              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
                 <Link
                   href="/contact"
                   className={buttonStyles({ variant: "primary", size: "lg" })}
@@ -89,40 +83,55 @@ export default async function Home() {
               <MockDashboard />
             </div>
           </div>
+
+          <div className="hidden lg:flex items-center gap-3 mt-16 md:mt-24 text-ink-mute">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em]">
+              Scroll
+            </span>
+            <span aria-hidden className="text-accent">↓</span>
+          </div>
         </Container>
       </section>
 
-      {/* ============================= LOGOS ============================= */}
-      <LogoGrid />
+      {/* ============================ LOGOS ============================ */}
+      <section className="snap-section snap-section--auto">
+        <LogoGrid />
+      </section>
 
-      {/* ============================= SERVICES ============================= */}
-      <ServiceGrid services={services} />
+      {/* ============================ 02 SERVICES ============================ */}
+      <section className="snap-section relative">
+        <ServiceGrid services={services} />
+      </section>
 
-      {/* ============================= FEATURED WORK ============================= */}
-      {featuredCaseStudy && <CaseStudyFeature caseStudy={featuredCaseStudy} />}
+      {/* ============================ 03 FEATURED WORK ============================ */}
+      {featuredCaseStudy && (
+        <section className="snap-section relative">
+          <CaseStudyFeature caseStudy={featuredCaseStudy} />
+        </section>
+      )}
 
-      {/* ============================= TERMINAL DEMO ============================= */}
-      <section className="py-32 md:py-44 border-t border-rule relative overflow-hidden">
+      {/* ============================ 04 INTELLIGENCE / TERMINAL ============================ */}
+      <section className="snap-section relative overflow-hidden">
         <Container size="wide">
-          <div className="flex items-center gap-3 mb-16 md:mb-20">
+          <div className="flex items-center gap-3 mb-12 md:mb-16">
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
               04 — The intelligence layer
             </span>
             <span className="flex-1 h-px bg-rule" />
           </div>
 
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center">
-            <div className="anim-reveal">
-              <h2 className="font-sans font-medium text-ink mb-10 leading-[0.98] tracking-[-0.035em] text-5xl md:text-6xl lg:text-7xl max-w-3xl">
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+            <div className="anim-reveal-lg">
+              <h2 className="font-sans font-medium text-ink mb-8 leading-[1.05] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl">
                 Audits that find{" "}
-                <span className="italic-editorial font-normal text-ink-soft">
+                <span className="italic-editorial font-normal silver-shine">
                   what consultants miss.
                 </span>
               </h2>
-              <p className="text-lg text-ink-soft leading-relaxed max-w-md mb-8">
-                Every prospect's ad account, website, and ops stack runs
-                through our internal CLI before the first call. You'll never
-                sit through a generic pitch.
+              <p className="text-base md:text-lg text-ink-soft leading-relaxed max-w-md mb-8">
+                Every prospect's account, website, and ops stack runs through
+                our internal CLI before the first call. You'll never sit
+                through a generic pitch.
               </p>
               <Link
                 href="/tools"
@@ -133,7 +142,7 @@ export default async function Home() {
               </Link>
             </div>
 
-            <div className="anim-reveal">
+            <div className="anim-reveal-lg">
               <AnimatedTerminal
                 lines={[
                   {
@@ -157,20 +166,32 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* ============================= TOOLS ============================= */}
-      <ToolCTASection />
+      {/* ============================ 05 TOOLS ============================ */}
+      <section className="snap-section relative">
+        <ToolCTASection />
+      </section>
 
-      {/* ============================= STATS ============================= */}
-      <StatRow />
+      {/* ============================ 06 STATS ============================ */}
+      <section className="snap-section relative">
+        <StatRow />
+      </section>
 
-      {/* ============================= PROCESS ============================= */}
-      <ProcessSteps />
+      {/* ============================ 07 PROCESS ============================ */}
+      <section className="snap-section relative">
+        <ProcessSteps />
+      </section>
 
-      {/* ============================= TESTIMONIAL ============================= */}
-      {featuredTestimonial && <Testimonial testimonial={featuredTestimonial} />}
+      {/* ============================ 08 TESTIMONIAL ============================ */}
+      {featuredTestimonial && (
+        <section className="snap-section relative">
+          <Testimonial testimonial={featuredTestimonial} />
+        </section>
+      )}
 
-      {/* ============================= CTA ============================= */}
-      <CTASection />
+      {/* ============================ 09 CTA ============================ */}
+      <section className="snap-section relative">
+        <CTASection />
+      </section>
     </>
   );
 }

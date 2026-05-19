@@ -3,9 +3,8 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Soft amber glow that tracks the cursor on pointer devices.
- * Disabled on touch and reduced-motion. Uses CSS variables +
- * transform: translate3d for buttery 60fps without re-rendering.
+ * Soft silver glow that tracks the cursor on pointer devices.
+ * Disabled on touch and prefers-reduced-motion.
  */
 export function CursorGlow() {
   const ref = useRef<HTMLDivElement>(null);
@@ -31,7 +30,6 @@ export function CursorGlow() {
     }
 
     function tick() {
-      // Spring-like easing toward the target
       currentX += (targetX - currentX) * 0.12;
       currentY += (targetY - currentY) * 0.12;
       if (el) {
@@ -60,8 +58,8 @@ export function CursorGlow() {
       className="fixed top-0 left-0 w-[500px] h-[500px] rounded-full pointer-events-none -z-[5] mix-blend-screen"
       style={{
         background:
-          "radial-gradient(circle at center, oklch(0.78 0.17 60 / 0.18), oklch(0.78 0.17 60 / 0.04) 40%, transparent 70%)",
-        filter: "blur(40px)",
+          "radial-gradient(circle at center, oklch(0.86 0.012 245 / 0.10), oklch(0.86 0.012 245 / 0.03) 40%, transparent 70%)",
+        filter: "blur(50px)",
         willChange: "transform",
       }}
     />
