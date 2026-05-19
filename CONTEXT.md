@@ -1,6 +1,35 @@
 # Growth Studio — Session Context Document
 
-**Last updated:** 2026-05-19 (Phase 1 components complete — primitives + Header + Footer wired)
+**Last updated:** 2026-05-19 (Phase 2 complete — Payload + Neon wired, admin functional locally)
+
+## Live URLs
+- GitHub repo: https://github.com/rowanbdouglass-creator/growth-studio (private)
+- Vercel preview: https://growth-studio-two.vercel.app/ (auto-deploys on `git push origin main`)
+
+## Phase 2 wrap-up notes
+
+- Payload v3.84.1 installed: payload, @payloadcms/next, @payloadcms/db-postgres, @payloadcms/richtext-lexical
+- Sharp added as direct dep (Payload v3 needs it imported in payload.config.ts; transitive install wasn't enough)
+- 10 collections + 2 globals defined in `payload/`
+- Route groups: `app/(marketing)/` (homepage + Header + Footer) and `app/(payload)/` (admin + REST API + GraphQL)
+- Admin live at `/admin`, REST API at `/api/[...slug]`, GraphQL at `/api/graphql`, GraphQL playground at `/api/graphql-playground`
+- Local `.env.local` has PAYLOAD_SECRET + DATABASE_URI + PAYLOAD_PUBLIC_SERVER_URL + NEXT_PUBLIC_SITE_URL
+- User added same env vars to Vercel dashboard (Production + Preview + Development)
+- Neon migrations ran automatically on first admin load; schema for all 10 collections pushed
+- First admin user created via `/admin/create-first-user`
+- Industry record write verified end-to-end (admin → Neon)
+- `payload-types.ts` and `/media/` added to .gitignore (regenerated/user-uploaded)
+
+## Phase 2 gotchas (for future sessions)
+
+- **tsx + Windows path with space** can't resolve extensionless TS imports in `payload.config.ts`. Fix: add `"allowImportingTsExtensions": true` to tsconfig and use explicit `.ts` extensions on imports in `payload.config.ts` only.
+- **handleServerFunctions** is exported from `@payloadcms/next/layouts`, NOT `/utilities` (despite some older docs).
+- **importMap.js** must be populated via `pnpm generate:importmap` — empty `{}` causes runtime `CollectionCards not found` errors in the admin dashboard.
+- **esbuild needs `allowBuilds: true`** in `pnpm-workspace.yaml` (along with sharp and unrs-resolver) for pnpm 11 to run its postinstall scripts.
+- **pnpm 11 build approval format** is `allowBuilds: { pkg: true }`, NOT `onlyBuiltDependencies: [...]` (legacy).
+- **Stale `.next/dev/types/validator.ts`** breaks builds after moving page.tsx around. Fix: `rm -rf .next` and rebuild.
+- **Email warning** "No email adapter provided" is expected until Phase 4 (Resend). Password resets go to console in dev.
+- **SSL mode deprecation warning** from pg-connection-string is informational. Future-proof by changing `?sslmode=require` to `?sslmode=verify-full` or `?uselibpqcompat=true&sslmode=require` in DATABASE_URI later.
 **Purpose:** Hand-off doc so any session (or future Claude Code session after compaction) can pick up exactly where work stopped. Update this at the end of every work block.
 
 ---

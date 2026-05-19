@@ -42,7 +42,11 @@ export default function Home() {
           </div>
 
           <p className="font-mono text-xs text-text-tertiary mt-24">
-            Foundation — Phase 1 ✱ Primitives, Header, Footer, Skip-link wired.
+            Phase 2 ✱ Payload CMS wired. Admin at{" "}
+            <Link href="/admin" className="text-accent hover:underline">
+              /admin
+            </Link>
+            .
           </p>
         </div>
       </Container>

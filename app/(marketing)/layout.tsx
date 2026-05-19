@@ -3,7 +3,7 @@ import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import "./globals.css";
+import "../globals.css";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -55,7 +55,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default function MarketingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
