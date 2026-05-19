@@ -10,6 +10,8 @@ import { Magnetic } from "@/components/fx/Magnetic";
 import { SplitText } from "@/components/fx/SplitText";
 import { HeroSceneLazy } from "@/components/fx/HeroSceneLazy";
 import { ActivityTicker } from "@/components/fx/ActivityTicker";
+import { EditorialInterstitial } from "@/components/blocks/EditorialInterstitial";
+import { ChromeInterstitial } from "@/components/blocks/ChromeInterstitial";
 import { Logomark } from "@/components/brand/Logomark";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
@@ -132,14 +134,30 @@ export default async function Home() {
         <ServiceGrid services={services} />
       </section>
 
-      {/* ============================ 03 FEATURED WORK ============================ */}
+      {/* === Editorial interstitial · scroll-pinned · three beats === */}
+      <EditorialInterstitial
+        number="03"
+        label="Interlude"
+        beats={["Compound.", "Not campaigns.", "Engines."]}
+      />
+
+      {/* ============================ 04 FEATURED WORK ============================ */}
       {featuredCaseStudy && (
         <section className="snap-section relative">
           <CaseStudyFeature caseStudy={featuredCaseStudy} />
         </section>
       )}
 
-      {/* ============================ 04 INTELLIGENCE / TERMINAL ============================ */}
+      {/* === Chrome interstitial · scroll-pinned · WebGL takeover === */}
+      <ChromeInterstitial
+        number="05"
+        label="Manifesto"
+        headline="We build the engines"
+        emphasis="that earn back hours per week."
+        caption="Custom systems · 8 yrs · WP, WC, Next.js"
+      />
+
+      {/* ============================ 06 INTELLIGENCE / TERMINAL ============================ */}
       <section className="snap-section relative overflow-hidden">
         <Container size="wide">
           <div className="flex items-center gap-3 mb-12 md:mb-16">
