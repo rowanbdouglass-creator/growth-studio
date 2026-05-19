@@ -1,6 +1,6 @@
 # Growth Studio — Session Context Document
 
-**Last updated:** 2026-05-19 (Phase 1 foundation complete)
+**Last updated:** 2026-05-19 (Phase 1 components complete — primitives + Header + Footer wired)
 **Purpose:** Hand-off doc so any session (or future Claude Code session after compaction) can pick up exactly where work stopped. Update this at the end of every work block.
 
 ---
@@ -88,26 +88,32 @@ User account info:
 14. ✅ `pnpm build` — passes: 4.6s compile, TypeScript clean, 4 static pages prerendered.
 15. ✅ Git init on `main` branch, local config `user.name = "You Look Booked Ltd"` / `user.email = rowandouglass1@gmail.com` (per-repo only, not global). First commit `8c161d3` "chore: bootstrap Next.js 16 + Tailwind v4 foundation".
 16. ✅ Dev server running at http://localhost:3000 (ready in 758ms).
+17. ✅ User signed off on foundation ("sure" → continue).
+18. ✅ Built UI primitives in `components/ui/`:
+    - `Button.tsx` — exports both `<Button>` component AND `buttonStyles()` helper for use on `<a>` / `<Link>`. Variants: primary (amber, glow on hover), secondary (ghost), tertiary (text link with hover underline). Sizes: sm (h-9), md (h-11), lg (h-13). Active scale-down, disabled state.
+    - `Container.tsx` — polymorphic `as` prop, 3 size presets: narrow (max-w-3xl), default (max-w-6xl), wide (max-w-7xl). Consistent `px-6 md:px-10` padding.
+    - `Card.tsx` — variants: default (surface + border), elevated (surface-elevated + shadow), outlined (border-strong only).
+    - `Input.tsx`, `Textarea.tsx` — surface bg, border-border, focus ring with accent-subtle. `invalid` prop for error states.
+    - `Badge.tsx` — variants: accent (tinted bg + accent text), neutral, outline. Uppercase mono, tracking-[0.14em].
+19. ✅ Built layout components in `components/layout/`:
+    - `Header.tsx` — sticky top-0, `bg-background/70` + `backdrop-blur-md`, brand mark linking to `/`, main nav (hidden md:flex — needs hamburger for mobile in Phase 3), primary "Book a call" CTA.
+    - `Footer.tsx` — 4-col grid (1.5fr + 3×1fr): brand block with shortTagline + email mailto, then 3 nav columns from `site.footerNav`. Bottom row: copyright + legal nav.
+20. ✅ Updated `app/layout.tsx`:
+    - Wraps `{children}` with `<Header />` and `<Footer />`
+    - Added skip-to-content link (`sr-only focus:not-sr-only`) for a11y — focus reveals it at top-left, jumps to `#main`
+    - `<div id="main">` is the focus target
+21. ✅ Refactored `app/page.tsx`:
+    - Uses `<Container size="wide">` instead of bare div
+    - Eyebrow now uses `<Badge variant="accent">`
+    - CTAs now use `<Link>` + `buttonStyles()` (primary lg + secondary lg)
+22. ✅ Build passes: 2.7s compile, TypeScript clean.
+23. ✅ Commit `4e60766` (approx) "feat: add UI primitives and Header/Footer layout".
 
 ---
 
 ## What's next
 
-**Awaiting user sign-off on the foundation** at http://localhost:3000. Don't proceed to component building until the user has confirmed the visual direction is right.
-
-After user signs off:
-
-**Phase 1 continued (build core components):**
-- `components/ui/Button.tsx` — primary/secondary/tertiary variants, sm/md/lg sizes
-- `components/ui/Card.tsx` — surface card with consistent treatment
-- `components/ui/Container.tsx` — max-width wrapper with consistent padding
-- `components/ui/Input.tsx`, `Textarea.tsx`, `Select.tsx`
-- `components/ui/Badge.tsx`
-- `components/layout/Header.tsx` — sticky, backdrop blur, hide-on-scroll
-- `components/layout/Footer.tsx` — brand, nav, social, legal
-- Refactor `app/page.tsx` to use these primitives
-
-**Phase 2 (Payload + cloud):**
+**Phase 2 (Payload + cloud) — likely the next chunk:**
 - Sign up GitHub, push repo
 - Sign up Vercel, link to GitHub repo for auto-deploy on push
 - Sign up Neon, get Postgres connection string
