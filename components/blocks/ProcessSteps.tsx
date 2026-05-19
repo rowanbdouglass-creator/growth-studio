@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
+import { ProcessFlow } from "@/components/fx/ProcessFlow";
 
 const steps = [
   {
@@ -75,11 +76,12 @@ export function ProcessSteps() {
   return (
     <section aria-labelledby="process-heading" className="py-24 md:py-32">
       <Container size="wide">
-        <div className="flex items-center gap-3 mb-16 md:mb-20">
-          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-            06 — How we work
-          </span>
-          <span className="flex-1 h-px bg-rule" />
+        {/* Flow diagram — gives the section a strong visual moment */}
+        <div className="mb-20 md:mb-28">
+          <ProcessFlow
+            active={active}
+            steps={steps.map((s) => ({ n: s.n, title: s.title }))}
+          />
         </div>
 
         <div className="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20">
