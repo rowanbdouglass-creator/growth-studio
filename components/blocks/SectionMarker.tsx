@@ -4,35 +4,23 @@ import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 
 interface SectionMarkerProps {
-  number: string;
+  /** Short uppercase label e.g. "WHAT WE DO" */
   label: string;
-  /**
-   * Optional alignment: 'right' (default) puts the massive number on the
-   * right, 'left' on the left, 'center' centred. Alternate per section
-   * for visual variety as the visitor scrolls.
-   */
-  align?: "left" | "right" | "center";
-  /** Optional very short subtitle line beneath the label */
+  /** Optional very short subtitle line */
   subtitle?: string;
+  /** Optional small index e.g. "02" rendered subtly to the left of the label */
+  index?: string;
 }
 
 /**
- * Massive numbered divider between major homepage sections.
- * Designed to be unmissable on a quick scroll — every visitor
- * registers "I'm at section 03 now". Cycles through three layout
- * orientations as the page progresses so it doesn't feel like the
- * same divider repeated.
+ * Subtle horizontal divider between major homepage sections.
  *
- * The number itself uses the silver-shine gradient and a scroll-
- * triggered scale-up so it has a tiny moment of theatre rather
- * than just sitting there.
+ * Replaces the previous massive-numbered version which was visually
+ * overpowering. This one is restrained: a hairline rule animates in
+ * from the centre, a small mono label sits at one end. Confident but
+ * not loud.
  */
-export function SectionMarker({
-  number,
-  label,
-  align = "right",
-  subtitle,
-}: SectionMarkerProps) {
+export function SectionMarker({ label, subtitle, index }: SectionMarkerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
@@ -52,90 +40,56 @@ export function SectionMarker({
           if (e.isIntersecting) setShown(true);
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.5 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
-  const numberClass = `font-sans font-medium tracking-[-0.05em] leading-[0.85] silver-shine`;
-  const numberStyle: React.CSSProperties = {
-    fontSize: "clamp(7rem, 22vw, 22rem)",
-    transform: shown ? "translateY(0)" : "translateY(40px)",
-    opacity: shown ? 1 : 0,
-    transition:
-      "transform 900ms cubic-bezier(0.16,1,0.3,1), opacity 900ms cubic-bezier(0.16,1,0.3,1)",
-  };
-  const labelStyle: React.CSSProperties = {
-    transform: shown ? "translateY(0)" : "translateY(20px)",
-    opacity: shown ? 1 : 0,
-    transition:
-      "transform 700ms 200ms cubic-bezier(0.16,1,0.3,1), opacity 700ms 200ms cubic-bezier(0.16,1,0.3,1)",
-  };
-
   return (
-    <div
-      ref={ref}
-      className="relative py-32 md:py-48 lg:py-56 border-t border-rule"
-    >
+    <div ref={ref} className="relative py-14 md:py-20">
       <Container size="wide">
-        {align === "right" && (
-          <div className="flex flex-col gap-10 md:gap-16 items-end">
-            <div className="w-full flex items-baseline justify-between gap-8">
-              <div className="flex flex-col gap-2" style={labelStyle}>
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute">
-                  {label}
-                </span>
-                {subtitle && (
-                  <span className="text-ink-soft text-base max-w-sm leading-snug">
-                    {subtitle}
-                  </span>
-                )}
-              </div>
-              <span className={numberClass} style={numberStyle}>
-                {number}
-              </span>
-            </div>
-          </div>
-        )}
-
-        {align === "left" && (
-          <div className="flex flex-col gap-10 md:gap-16">
-            <div className="w-full flex items-baseline justify-between gap-8">
-              <span className={numberClass} style={numberStyle}>
-                {number}
-              </span>
-              <div className="flex flex-col gap-2 text-right" style={labelStyle}>
-                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute">
-                  {label}
-                </span>
-                {subtitle && (
-                  <span className="text-ink-soft text-base max-w-sm leading-snug">
-                    {subtitle}
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {align === "center" && (
-          <div className="flex flex-col gap-6 items-center text-center">
-            <div className="flex flex-col gap-2 items-center" style={labelStyle}>
-              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute">
-                {label}
-              </span>
-              {subtitle && (
-                <span className="text-ink-soft text-base max-w-md leading-snug">
-                  {subtitle}
-                </span>
-              )}
-            </div>
-            <span className={numberClass} style={numberStyle}>
-              {number}
+        <div className="flex items-baseline gap-4">
+          {/* Animated rule */}
+          <span
+            aria-hidden
+            className="h-px bg-rule"
+            style={{
+              flex: 1,
+              transform: shown ? "scaleX(1)" : "scaleX(0)",
+              transformOrigin: "left",
+              transition:
+                "transform 900ms cubic-bezier(0.16,1,0.3,1) 100ms",
+            }}
+          />
+          <span
+            className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute whitespace-nowrap"
+            style={{
+              opacity: shown ? 1 : 0,
+              transform: shown ? "translateY(0)" : "translateY(6px)",
+              transition:
+                "opacity 600ms 300ms cubic-bezier(0.16,1,0.3,1), transform 600ms 300ms cubic-bezier(0.16,1,0.3,1)",
+            }}
+          >
+            {index && (
+              <span className="text-ink-dim mr-3">{index}</span>
+            )}
+            {label}
+          </span>
+          {subtitle && (
+            <span
+              className="hidden md:inline text-sm text-ink-soft max-w-md whitespace-normal"
+              style={{
+                opacity: shown ? 1 : 0,
+                transform: shown ? "translateY(0)" : "translateY(6px)",
+                transition:
+                  "opacity 600ms 450ms cubic-bezier(0.16,1,0.3,1), transform 600ms 450ms cubic-bezier(0.16,1,0.3,1)",
+              }}
+            >
+              {subtitle}
             </span>
-          </div>
-        )}
+          )}
+        </div>
       </Container>
     </div>
   );

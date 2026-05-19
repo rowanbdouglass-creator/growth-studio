@@ -88,9 +88,10 @@ export default async function Home() {
             </div>
 
             <div className="hidden lg:flex justify-center">
-              <Tilt3D maxTilt={6} scale={1.015}>
-                <AIAuditDemo />
-              </Tilt3D>
+              {/* Tilt3D removed — caused panel mirroring artifacts in some
+                  render contexts. The audit demo doesn't need the extra
+                  depth; the AI streaming itself is the moment. */}
+              <AIAuditDemo />
             </div>
           </div>
 
@@ -120,10 +121,8 @@ export default async function Home() {
       </section>
 
       <SectionMarker
-        number="02"
+        index="02"
         label="What we do"
-        subtitle="Three pillars, one engine."
-        align="right"
       />
 
       {/* ============================ 02 SERVICES ============================ */}
@@ -138,12 +137,7 @@ export default async function Home() {
         beats={["Compound.", "Not campaigns.", "Engines."]}
       />
 
-      <SectionMarker
-        number="04"
-        label="Selected work"
-        subtitle="A handful of recent engagements."
-        align="left"
-      />
+      <SectionMarker index="04" label="Selected work" />
 
       {/* ============================ 04 FEATURED WORK ============================ */}
       {featuredCaseStudy && (
@@ -161,22 +155,11 @@ export default async function Home() {
         caption="Custom systems · 8 yrs · WP, WC, Next.js"
       />
 
-      <SectionMarker
-        number="06"
-        label="The intelligence layer"
-        subtitle="Audits that find what consultants miss."
-        align="right"
-      />
+      <SectionMarker index="06" label="The intelligence layer" />
 
       {/* ============================ 06 INTELLIGENCE / TERMINAL ============================ */}
       <section className="snap-section relative">
         <Container size="wide">
-          <div className="flex items-center gap-3 mb-12 md:mb-16">
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-              ▸ Try the CLI
-            </span>
-            <span className="flex-1 h-px bg-rule" />
-          </div>
 
           <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-reveal-lg">
@@ -226,36 +209,21 @@ export default async function Home() {
         </Container>
       </section>
 
-      <SectionMarker
-        number="07"
-        label="The tools"
-        subtitle="Free audits we built for ourselves first."
-        align="left"
-      />
+      <SectionMarker index="07" label="The tools" />
 
       {/* ============================ 07 TOOLS ============================ */}
       <section className="snap-section relative">
         <ToolCTASection />
       </section>
 
-      <SectionMarker
-        number="08"
-        label="The receipts"
-        subtitle="Real numbers, current engagements."
-        align="center"
-      />
+      <SectionMarker index="08" label="The receipts" />
 
       {/* ============================ 08 STATS ============================ */}
       <section className="snap-section relative">
         <StatRow />
       </section>
 
-      <SectionMarker
-        number="09"
-        label="How we work"
-        subtitle="Four steps, repeated honestly."
-        align="right"
-      />
+      <SectionMarker index="09" label="How we work" />
 
       {/* ============================ 09 PROCESS ============================ */}
       <section className="snap-section relative">
@@ -264,7 +232,7 @@ export default async function Home() {
 
       {featuredTestimonial && (
         <>
-          <SectionMarker number="10" label="In their words" align="center" />
+          <SectionMarker index="10" label="In their words" />
 
           {/* ============================ 10 TESTIMONIAL ============================ */}
           <section className="snap-section relative">
@@ -273,12 +241,7 @@ export default async function Home() {
         </>
       )}
 
-      <SectionMarker
-        number="11"
-        label="Talk"
-        subtitle="30 minutes, your numbers, one real play."
-        align="left"
-      />
+      <SectionMarker index="11" label="Talk" />
 
       {/* ============================ 11 CTA ============================ */}
       <section className="snap-section relative">

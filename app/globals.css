@@ -115,6 +115,14 @@ h1 { letter-spacing: -0.04em; font-weight: 500; }
 h2 { letter-spacing: -0.035em; font-weight: 500; }
 h3 { letter-spacing: -0.025em; font-weight: 500; }
 
+/* Global descender safety — applied to every heading regardless of
+   ancestor overflow rules. Combined with line-height ≥ 1.18 this
+   should guarantee 'g', 'p', 'y', 'j' descenders are never clipped. */
+h1, h2, h3, h4, h5, h6 {
+  padding-bottom: 0.12em;
+  overflow: visible;
+}
+
 p, li {
   font-feature-settings: "kern";
   font-kerning: normal;
@@ -123,6 +131,8 @@ p, li {
 .italic-editorial {
   font-style: italic;
   font-feature-settings: "ss01";
+  padding-bottom: 0.12em;
+  display: inline-block;
 }
 
 /* Selection */

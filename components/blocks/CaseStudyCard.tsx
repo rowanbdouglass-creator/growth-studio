@@ -8,15 +8,8 @@ interface CaseStudyFeatureProps {
 
 export function CaseStudyFeature({ caseStudy }: CaseStudyFeatureProps) {
   return (
-    <section className="py-32 md:py-44 border-t border-rule">
+    <section className="py-20 md:py-28">
       <Container size="wide">
-        <div className="flex items-center gap-3 mb-16 md:mb-20">
-          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-            03 — Featured work
-          </span>
-          <span className="flex-1 h-px bg-rule" />
-        </div>
-
         <div className="grid md:grid-cols-[1.4fr_1fr] gap-12 md:gap-20 items-start">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute mb-6">
