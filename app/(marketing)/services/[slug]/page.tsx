@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/Badge";
 import { buttonStyles } from "@/components/ui/Button";
 import { CTASection } from "@/components/blocks/CTASection";
 import { RichText } from "@/lib/lexical/RichText";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo/jsonLd";
 import { getServiceBySlug, getServices } from "@/lib/payload/queries";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +44,14 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd data={serviceJsonLd(service)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", href: "/" },
+          { name: "Services", href: "/services" },
+          { name: service.title, href: `/services/${service.slug}` },
+        ])}
+      />
       <section className="py-24 md:py-32 border-b border-border">
         <Container size="wide">
           <Link

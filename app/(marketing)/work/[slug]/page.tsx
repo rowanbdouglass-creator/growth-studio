@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
-import { buttonStyles } from "@/components/ui/Button";
 import { CTASection } from "@/components/blocks/CTASection";
 import { RichText } from "@/lib/lexical/RichText";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, caseStudyJsonLd } from "@/lib/seo/jsonLd";
 import {
   getCaseStudyBySlug,
   getCaseStudies,
@@ -39,6 +40,14 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd data={caseStudyJsonLd(cs)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", href: "/" },
+          { name: "Work", href: "/work" },
+          { name: cs.client, href: `/work/${cs.slug}` },
+        ])}
+      />
       <section className="py-24 md:py-32 border-b border-border">
         <Container size="wide">
           <Link
