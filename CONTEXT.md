@@ -1,6 +1,6 @@
 # Growth Studio — Session Context Document
 
-**Last updated:** 2026-05-19
+**Last updated:** 2026-05-19 (Phase 1 foundation complete)
 **Purpose:** Hand-off doc so any session (or future Claude Code session after compaction) can pick up exactly where work stopped. Update this at the end of every work block.
 
 ---
@@ -68,37 +68,68 @@ User account info:
 
 ## What's been done so far
 
-### 2026-05-19 — Session 1 (current)
+### 2026-05-19 — Session 1 — Phase 1 foundation COMPLETE
 
-1. ✅ Verified Node, Git versions
-2. ✅ Installed pnpm globally
-3. ✅ Confirmed `C:\Users\ROWEN\Desktop\Growth Studio` exists and is empty
-4. ✅ Saved auto-memory `project_growth_studio.md` and added to MEMORY.md index
-5. ✅ Created this CONTEXT.md
-6. 🔜 Next: initialise Next.js 15 in this folder
+1. ✅ Verified Node v24.14.1, Git 2.53, installed pnpm 11.1.3
+2. ✅ Confirmed empty `C:\Users\ROWEN\Desktop\Growth Studio` folder
+3. ✅ Saved auto-memory `project_growth_studio.md` and added to MEMORY.md index
+4. ✅ Created CONTEXT.md (this file)
+5. ✅ Saved `feedback_growth_studio_explain.md` memory — Rowan is WP-native, needs JS ecosystem framed in WP terms
+6. ✅ Scaffolded Next.js 16.2.6 + React 19.2.4 + Tailwind v4.3 + TypeScript 5.9 (`pnpm create next-app`)
+   - Note: brief said Next 15+; we got 16. Same features, newer. Fine.
+   - Note: created via `growth-studio` temp folder then renamed → "Growth Studio" because npm name rules reject spaces/caps
+7. ✅ Resolved pnpm 11 build-script approval — uses `allowBuilds: { pkg: true }` format in pnpm-workspace.yaml, NOT `onlyBuiltDependencies` (which was the legacy format). Sharp and unrs-resolver now run their postinstall scripts cleanly.
+8. ✅ `app/globals.css` — Full Tailwind v4 `@theme` block: OKLCH palette (background/surface/text/accent/etc.), fluid type clamp() scale (xs → display), radii, shadows, motion easings (cubic-bezier + linear() spring), durations. Plus base resets, prefers-reduced-motion handler, accent focus outlines, accent selection.
+9. ✅ `app/layout.tsx` — `next/font/google` wired for Fraunces (with opsz/SOFT/WONK axes), Inter, JetBrains Mono. Full Metadata + Viewport API hooked to `brand` config. Dark colour-scheme, en-GB locale.
+10. ✅ `config/brand.ts` — Brand abstraction with name, taglines, description, url (`https://ylb.youlookbooked.com`), email, phone, social, logo paths. Typed with `as const`.
+11. ✅ `config/site.ts` — Main nav (Services/Work/Tools/About/Contact), footer nav structure (3 columns + legal), copyright holder.
+12. ✅ `app/page.tsx` — Minimal hero placeholder using design tokens directly: mono eyebrow tagline, serif headline with italic span, body sub-headline, primary amber + ghost secondary CTAs, mono footer note. Pulls everything from `brand`.
+13. ✅ `BUILD_BRIEF.md` — Full build brief committed to project root.
+14. ✅ `pnpm build` — passes: 4.6s compile, TypeScript clean, 4 static pages prerendered.
+15. ✅ Git init on `main` branch, local config `user.name = "You Look Booked Ltd"` / `user.email = rowandouglass1@gmail.com` (per-repo only, not global). First commit `8c161d3` "chore: bootstrap Next.js 16 + Tailwind v4 foundation".
+16. ✅ Dev server running at http://localhost:3000 (ready in 758ms).
 
 ---
 
-## What's next — Phase 1 foundation checklist
+## What's next
 
-From the build brief, Phase 1 = steps 1–8. Goal: get a foundation visible so user can verify design direction before component build.
+**Awaiting user sign-off on the foundation** at http://localhost:3000. Don't proceed to component building until the user has confirmed the visual direction is right.
 
-- [ ] Initialise Next.js 15 in current dir: `pnpm create next-app@latest . --typescript --tailwind --app --turbopack --use-pnpm`
-  - Note: brief says `growth-studio` subfolder name, but the folder already exists with the right name so we init in-place with `.`
-- [ ] Save full build brief to `BUILD_BRIEF.md` in project root (per user's instruction #5)
-- [ ] Configure Tailwind v4 `@theme` block with all design tokens (OKLCH colours, fluid type clamp() scale, spacing, radii, motion easings, shadows). Token spec lives in BUILD_BRIEF.md section 4.
-- [ ] Wire up `next/font` for Fraunces (variable, weights 300–900, optical size 9–144), Inter (variable, 400/500/600/700), JetBrains Mono
-- [ ] Create `/config/brand.ts` (brand abstraction — name, tagline, url, email, phone, social, logos) and `/config/site.ts`
-- [ ] Build minimal homepage with hero placeholder so dev server runs
-- [ ] Verify `pnpm dev` and `pnpm build` both succeed
-- [ ] `git init`, sensible `.gitignore`, first commit
-- [ ] **Stop and check in with user** before building Header/Footer/UI primitives
+After user signs off:
 
-After user signs off on foundation:
-- Phase 1 continued: Button, Card, Container, Input, Textarea primitives. Header, Footer.
-- Phase 2: GitHub repo, Vercel account, Neon account, Payload v3 install + collections + admin route.
-- Phase 3: Full marketing pages, View Transitions, scroll-driven animations.
-- Phase 4: SEO, forms, a11y pass, perf pass, deploy to Vercel preview URL.
+**Phase 1 continued (build core components):**
+- `components/ui/Button.tsx` — primary/secondary/tertiary variants, sm/md/lg sizes
+- `components/ui/Card.tsx` — surface card with consistent treatment
+- `components/ui/Container.tsx` — max-width wrapper with consistent padding
+- `components/ui/Input.tsx`, `Textarea.tsx`, `Select.tsx`
+- `components/ui/Badge.tsx`
+- `components/layout/Header.tsx` — sticky, backdrop blur, hide-on-scroll
+- `components/layout/Footer.tsx` — brand, nav, social, legal
+- Refactor `app/page.tsx` to use these primitives
+
+**Phase 2 (Payload + cloud):**
+- Sign up GitHub, push repo
+- Sign up Vercel, link to GitHub repo for auto-deploy on push
+- Sign up Neon, get Postgres connection string
+- Install Payload v3 with Postgres adapter and Vercel Blob adapter
+- Define collections (Users, CaseStudies, Services, TeamMembers, BlogPosts, Testimonials, Industries, WaitlistSignups, Pages, Media)
+- Define globals (SiteSettings, Navigation)
+- Wire Payload admin route at `/admin`
+- Seed placeholder case studies (Nayim's, T-SHOT, Forum Studios, Cape Kings, JC Setton)
+
+**Phase 3 (marketing pages):**
+- Full hero variants (Default with gradient mesh, Editorial, Product)
+- Content blocks (StatBlock, CaseStudyCard, ServiceCard, ToolCTA, Testimonial, LogoGrid, ProcessSteps, ComparisonTable, BigQuote, WaitlistForm, FAQ, CodeBlock, MetricStrip)
+- All marketing routes (services, work, tools, about, contact, blog)
+- View Transitions for cross-route navigation
+- Scroll-driven CSS animations
+
+**Phase 4 (polish + deploy):**
+- SEO (sitemap, robots, JSON-LD)
+- Server Actions for contact + waitlist forms (Resend integration)
+- a11y pass (keyboard nav, focus states, reduced motion testing)
+- Performance pass (Lighthouse audits, bundle analysis)
+- Custom domain cutover from WordPress to Vercel (DNS change at Namecheap — LAST STEP, only when user explicitly confirms ready)
 
 ---
 
@@ -229,9 +260,16 @@ Use placeholders until user provides values.
 
 ## Things learned / decisions made
 
-- **Folder init:** The empty `Growth Studio` folder already exists at the right path, so we init Next.js in-place (`pnpm create next-app@latest .`) rather than as `growth-studio` subfolder.
+- **Folder init:** The "Growth Studio" folder name with caps and space violates npm package-name rules. Worked around by scaffolding into `growth-studio` and renaming the folder to "Growth Studio" after. The `package.json` name is "growth-studio" (valid).
+- **Next 16 vs Next 15:** `pnpm create next-app@latest` installed Next 16.2.6. Brief said 15+. Same features (App Router, RSC, Server Actions, PPR, Turbopack), newer. Proceeding with 16.
+- **Tailwind v4 `@theme` syntax:** Use plain `@theme` (not `@theme inline`) for our dark-only site since we don't need a runtime light/dark toggle. Tokens become first-class utilities (`bg-background`, `text-text-primary`, `text-accent`, etc.).
+- **Fonts:** Fraunces opsz/SOFT/WONK axes opted-in via `axes: ["opsz", "SOFT", "WONK"]` parameter. Inter and JetBrains Mono use defaults.
+- **pnpm 11 build approval gotcha:** `pnpm-workspace.yaml` requires `allowBuilds: { pkgname: true }` format in pnpm v11, not `onlyBuiltDependencies` array. Without this, postinstall scripts (sharp's binary fetch, unrs-resolver) are silently skipped AND `pnpm install` exits 1, which blocks `pnpm build`. Solved by writing explicit boolean entries.
 - **Brand URL conflict:** Build brief mentioned `build.youlookbooked.com`; starting context says `ylb.youlookbooked.com`. Starting context wins — that's the live target.
+- **Git author:** Per-repo (not global) config: `user.name = "You Look Booked Ltd"`, `user.email = rowandouglass1@gmail.com`. User confirmed this choice.
 - **No GitHub/Vercel yet:** Per starting context Step 6, user wants to see foundation working first. Defer GitHub/Vercel until after Phase 1 foundation is approved.
+- **Scaffold leftovers in /public:** `next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg` are still in `/public/`. Harmless but unused. Can clean up later or leave for now.
+- **No `dark:` Tailwind variants used:** We're dark-only — colours hard-set on `html, body` in globals.css base reset, no media query toggle. Saves bundle size and keeps things simple.
 
 ---
 

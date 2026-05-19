@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import { brand } from "@/config/brand";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -63,7 +65,24 @@ export default function RootLayout({
       lang="en-GB"
       className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        <a
+          href="#main"
+          className="
+            sr-only focus:not-sr-only
+            focus:fixed focus:top-4 focus:left-4 focus:z-[100]
+            focus:px-4 focus:py-2 focus:rounded-md
+            focus:bg-accent focus:text-background focus:font-medium
+          "
+        >
+          Skip to content
+        </a>
+        <Header />
+        <div id="main" className="flex-1 flex flex-col">
+          {children}
+        </div>
+        <Footer />
+      </body>
     </html>
   );
 }
