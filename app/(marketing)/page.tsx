@@ -10,6 +10,7 @@ import { Magnetic } from "@/components/fx/Magnetic";
 import { HeroSceneLazy } from "@/components/fx/HeroSceneLazy";
 import { EditorialInterstitial } from "@/components/blocks/EditorialInterstitial";
 import { ChromeInterstitial } from "@/components/blocks/ChromeInterstitial";
+import { SectionMarker } from "@/components/blocks/SectionMarker";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
 import { CaseStudyFeature } from "@/components/blocks/CaseStudyCard";
@@ -118,6 +119,13 @@ export default async function Home() {
         <LogoGrid />
       </section>
 
+      <SectionMarker
+        number="02"
+        label="What we do"
+        subtitle="Three pillars, one engine."
+        align="right"
+      />
+
       {/* ============================ 02 SERVICES ============================ */}
       <section className="snap-section relative">
         <ServiceGrid services={services} />
@@ -128,6 +136,13 @@ export default async function Home() {
         number="03"
         label="Interlude"
         beats={["Compound.", "Not campaigns.", "Engines."]}
+      />
+
+      <SectionMarker
+        number="04"
+        label="Selected work"
+        subtitle="A handful of recent engagements."
+        align="left"
       />
 
       {/* ============================ 04 FEATURED WORK ============================ */}
@@ -146,12 +161,19 @@ export default async function Home() {
         caption="Custom systems · 8 yrs · WP, WC, Next.js"
       />
 
+      <SectionMarker
+        number="06"
+        label="The intelligence layer"
+        subtitle="Audits that find what consultants miss."
+        align="right"
+      />
+
       {/* ============================ 06 INTELLIGENCE / TERMINAL ============================ */}
       <section className="snap-section relative">
         <Container size="wide">
           <div className="flex items-center gap-3 mb-12 md:mb-16">
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-              04 — The intelligence layer
+              ▸ Try the CLI
             </span>
             <span className="flex-1 h-px bg-rule" />
           </div>
@@ -204,29 +226,61 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* ============================ 05 TOOLS ============================ */}
+      <SectionMarker
+        number="07"
+        label="The tools"
+        subtitle="Free audits we built for ourselves first."
+        align="left"
+      />
+
+      {/* ============================ 07 TOOLS ============================ */}
       <section className="snap-section relative">
         <ToolCTASection />
       </section>
 
-      {/* ============================ 06 STATS ============================ */}
+      <SectionMarker
+        number="08"
+        label="The receipts"
+        subtitle="Real numbers, current engagements."
+        align="center"
+      />
+
+      {/* ============================ 08 STATS ============================ */}
       <section className="snap-section relative">
         <StatRow />
       </section>
 
-      {/* ============================ 07 PROCESS ============================ */}
+      <SectionMarker
+        number="09"
+        label="How we work"
+        subtitle="Four steps, repeated honestly."
+        align="right"
+      />
+
+      {/* ============================ 09 PROCESS ============================ */}
       <section className="snap-section relative">
         <ProcessSteps />
       </section>
 
-      {/* ============================ 08 TESTIMONIAL ============================ */}
       {featuredTestimonial && (
-        <section className="snap-section relative">
-          <Testimonial testimonial={featuredTestimonial} />
-        </section>
+        <>
+          <SectionMarker number="10" label="In their words" align="center" />
+
+          {/* ============================ 10 TESTIMONIAL ============================ */}
+          <section className="snap-section relative">
+            <Testimonial testimonial={featuredTestimonial} />
+          </section>
+        </>
       )}
 
-      {/* ============================ 09 CTA ============================ */}
+      <SectionMarker
+        number="11"
+        label="Talk"
+        subtitle="30 minutes, your numbers, one real play."
+        align="left"
+      />
+
+      {/* ============================ 11 CTA ============================ */}
       <section className="snap-section relative">
         <CTASection />
       </section>
