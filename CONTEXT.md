@@ -1,10 +1,51 @@
 # Growth Studio — Session Context Document
 
-**Last updated:** 2026-05-19 (Phase 2 fully complete — Payload + Neon + Vercel live on production URL)
+**Last updated:** 2026-05-19 (Phase 3 marketing pages + forms + mobile nav + SEO complete)
 
 ## Live URLs
 - GitHub repo: https://github.com/rowanbdouglass-creator/growth-studio (private)
 - Vercel preview: https://growth-studio-two.vercel.app/ (auto-deploys on `git push origin main`)
+
+## Phase 3 status — marketing pages live (2026-05-19)
+
+**Pages built:**
+- `/` homepage (10 sections: hero with gradient, logo grid, service grid, featured case study, tool CTAs, stats, process steps, testimonial, CTA, footer)
+- `/services` hub + `/services/[slug]` detail (Payload-driven, with related services)
+- `/work` hub + `/work/[slug]` detail (Payload-driven, with rich text problem/approach/outcome)
+- `/tools` hub + 3 tool landing pages with waitlist forms (ad-audit, website-audit, discovery-hub)
+- `/about` (founders, 4 beliefs cards, team from Payload)
+- `/contact` (server-action contact form)
+- `/blog` (placeholder index)
+
+**Data layer:**
+- `lib/payload/queries.ts` — typed accessors for services, case studies, testimonials, team members, site settings. `getPayload()` cached per process.
+- `lib/lexical/RichText.tsx` — themed Lexical→JSX wrapper. Marketing prose styles: serif headings, accent links, prose-marketing class.
+
+**Forms:**
+- `lib/actions/waitlist.ts` — server action persisting to Payload `waitlist-signups` collection (with email regex + tool whitelist validation)
+- `lib/actions/contact.ts` — server action logging to console; Phase 4 wires Resend + Payload persistence
+- `components/forms/WaitlistForm.tsx` + `ContactForm.tsx` — client components using React 19 `useActionState`
+- Success/error states render inline
+
+**Mobile + a11y:**
+- `components/layout/MobileNav.tsx` — full-screen drawer, hamburger toggle, ESC to close, body scroll lock, returns focus correctly
+- Skip-to-content link (in marketing layout)
+- All forms have labels (visible or aria-label)
+- `prefers-reduced-motion` honoured via global CSS
+
+**SEO:**
+- `app/sitemap.ts` — dynamic sitemap including all static pages + Payload-driven services and case studies. Falls back to static-only if Payload unreachable.
+- `app/robots.ts` — disallows `/admin` and `/api`
+- Per-page `generateMetadata` on dynamic routes, static `metadata` exports elsewhere
+- Metadata flows from `brand` config and Payload `seo` group fields
+
+**Seed:**
+- `scripts/seed.ts` — idempotent seed of 5 industries, 3 services, 2 team members, 5 case studies, 3 testimonials, both globals. Run with `pnpm seed`.
+- `scripts/patch-payload-loadenv.mjs` — postinstall script that patches Payload's loadEnv.js for Next 16 compat (`@next/env` no default export). Idempotent, glob-based.
+
+**Verified build:** 19 routes total, 44s compile, TypeScript clean, 12 statically prerendered.
+
+---
 
 ## Phase 2 final status (2026-05-19)
 
