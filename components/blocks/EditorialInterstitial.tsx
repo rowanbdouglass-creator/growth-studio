@@ -37,11 +37,6 @@ export function EditorialInterstitial({
 
         return (
           <div className="relative w-full h-full">
-            {/* Diagnostic: tiny progress readout. Remove once verified. */}
-            <div className="absolute top-2 right-4 z-50 font-mono text-[10px] text-accent">
-              p={progress.toFixed(3)} · e={eased.toFixed(3)}
-            </div>
-
             {/* Ambient backdrop */}
             <div
               aria-hidden

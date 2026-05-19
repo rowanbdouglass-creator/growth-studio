@@ -12,9 +12,12 @@ interface ChromeInterstitialProps {
 }
 
 /**
- * Chrome blob takeover. Always visible content (not invisible at
- * edges) — blob is at minimum 0.55 opacity throughout, headline at
- * minimum 0.7 opacity.
+ * Chrome blob takeover. The WebGL animation runs inside Three.js
+ * (mesh.scale + material.distort interpolated in useFrame) instead
+ * of being CSS-transformed — this is dramatically smoother because
+ * the GPU doesn't have to re-rasterise the canvas every scroll frame.
+ *
+ * The only thing CSS-driven is the headline overlay.
  */
 export function ChromeInterstitial({
   headline = "We build the engines",
@@ -26,42 +29,34 @@ export function ChromeInterstitial({
   return (
     <PinnedZoom scrollHeight={220} className="bg-canvas">
       {({ progress, eased }) => {
-        // Headline scales/translates as you scroll, but stays visible across
-        // the whole section (min 0.7 opacity)
+        // Headline holds visible across the section, scales subtly
         const headDist = Math.abs(progress - 0.5);
-        const headOpacity = Math.max(0.65, 1 - Math.pow(headDist * 2.0, 2));
+        const headOpacity = Math.max(0.7, 1 - Math.pow(headDist * 2.0, 2));
         const headScale = 0.95 + eased * 0.10;
         const headY = (0.5 - eased) * 30;
 
-        // Blob: scales from 0.55 → 1.4 across, blur fades, always
-        // somewhat visible (min 0.5)
-        const blobScale = 0.55 + eased * 0.85;
-        const blobBlur = (1 - eased) * 14;
-        const blobOpacity = Math.max(0.5, 0.55 + eased * 0.35);
-
-        // Eyebrow visible everywhere, dimmer mid-section
-        const eyebrowOpacity = 0.6 + Math.abs(0.5 - progress) * 0.8;
+        const eyebrowOpacity = Math.min(
+          1,
+          0.6 + Math.abs(0.5 - progress) * 0.8
+        );
 
         return (
-          <>
-            {/* Chrome blob */}
-            <div
-              aria-hidden
-              className="absolute inset-0 -z-10 pointer-events-none"
-              style={{
-                transform: `scale(${blobScale.toFixed(3)})`,
-                opacity: blobOpacity.toFixed(3),
-                filter: `blur(${blobBlur.toFixed(1)}px) saturate(1.15)`,
-                willChange: "transform, opacity, filter",
-              }}
-            >
-              <HeroSceneLazy />
-            </div>
+          <div className="relative w-full h-full">
+            {/* Chrome blob — animation runs inside Three.js, canvas stays
+                at constant transform so the GPU isn't re-rasterising it
+                every scroll frame */}
+            <HeroSceneLazy
+              externalProgress={eased}
+              baseScale={1.8}
+              scaleFactor={0.9}
+              cursorReactive={false}
+              className="-z-10"
+            />
 
             {/* Vignette so type stays legible over the blob */}
             <div
               aria-hidden
-              className="absolute inset-0 -z-10 pointer-events-none"
+              className="absolute inset-0 -z-[5] pointer-events-none"
               style={{
                 background:
                   "radial-gradient(60% 60% at 50% 50%, transparent 30%, oklch(0.11 0.004 260 / 0.80) 100%)",
@@ -71,7 +66,7 @@ export function ChromeInterstitial({
             {/* Eyebrow */}
             <div
               className="absolute top-12 left-0 right-0 px-6 md:px-12"
-              style={{ opacity: Math.min(1, eyebrowOpacity) }}
+              style={{ opacity: eyebrowOpacity }}
             >
               <div className="flex items-center gap-3 max-w-7xl mx-auto">
                 <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
@@ -82,9 +77,9 @@ export function ChromeInterstitial({
             </div>
 
             {/* Headline */}
-            <div className="relative text-center px-6 max-w-6xl">
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
               <h2
-                className="font-sans font-medium text-ink leading-[0.98] tracking-[-0.04em] mb-6"
+                className="font-sans font-medium text-ink leading-[0.98] tracking-[-0.04em] mb-6 max-w-5xl"
                 style={{
                   fontSize: "clamp(2.5rem, 6.5vw, 7rem)",
                   opacity: headOpacity,
@@ -105,7 +100,7 @@ export function ChromeInterstitial({
                 {caption}
               </p>
             </div>
-          </>
+          </div>
         );
       }}
     </PinnedZoom>
