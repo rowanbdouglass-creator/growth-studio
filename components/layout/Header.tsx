@@ -3,6 +3,7 @@ import { brand } from "@/config/brand";
 import { site } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { buttonStyles } from "@/components/ui/Button";
+import { MobileNav } from "./MobileNav";
 
 export function Header() {
   return (
@@ -38,12 +39,15 @@ export function Header() {
             ))}
           </nav>
 
-          <Link
-            href="/contact"
-            className={buttonStyles({ variant: "primary", size: "sm" })}
-          >
-            Book a call
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/contact"
+              className={`${buttonStyles({ variant: "primary", size: "sm" })} hidden md:inline-flex`}
+            >
+              Book a call
+            </Link>
+            <MobileNav />
+          </div>
         </div>
       </Container>
     </header>

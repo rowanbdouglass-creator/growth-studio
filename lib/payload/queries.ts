@@ -16,8 +16,12 @@ export type Service = {
   slug: string;
   pillar: "paid-growth" | "custom-systems" | "intelligence-layer";
   summary: string;
+  description?: unknown; // Lexical rich text
   capabilities?: { capability: string; id?: string }[];
+  idealClient?: string;
+  pricing?: string;
   order?: number;
+  seo?: { title?: string; description?: string };
 };
 
 export type CaseStudy = {
@@ -26,10 +30,14 @@ export type CaseStudy = {
   slug: string;
   client: string;
   summary: string;
+  problem?: unknown; // Lexical
+  approach?: unknown;
+  outcome?: unknown;
   technologies?: { tech: string; id?: string }[];
   metrics?: { label: string; value: string; context?: string; id?: string }[];
   featured?: boolean;
   publishedAt?: string;
+  seo?: { title?: string; description?: string };
 };
 
 export type Testimonial = {
@@ -39,6 +47,14 @@ export type Testimonial = {
   role?: string;
   company?: string;
   featured?: boolean;
+};
+
+export type TeamMember = {
+  id: number;
+  name: string;
+  role: string;
+  bio?: unknown;
+  order?: number;
 };
 
 export type SiteSettings = {
@@ -64,7 +80,7 @@ function payload() {
 }
 
 // ------------------------------------------------------------------
-// Queries
+// Services
 // ------------------------------------------------------------------
 
 export async function getServices(): Promise<Service[]> {
@@ -78,6 +94,21 @@ export async function getServices(): Promise<Service[]> {
   return result.docs as unknown as Service[];
 }
 
+export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  const p = await payload();
+  const result = await p.find({
+    collection: "services",
+    where: { slug: { equals: slug } },
+    limit: 1,
+    depth: 0,
+  });
+  return (result.docs[0] as unknown as Service) ?? null;
+}
+
+// ------------------------------------------------------------------
+// Case Studies
+// ------------------------------------------------------------------
+
 export async function getFeaturedCaseStudy(): Promise<CaseStudy | null> {
   const p = await payload();
   const result = await p.find({
@@ -89,7 +120,7 @@ export async function getFeaturedCaseStudy(): Promise<CaseStudy | null> {
   return (result.docs[0] as unknown as CaseStudy) ?? null;
 }
 
-export async function getCaseStudies(limit = 6): Promise<CaseStudy[]> {
+export async function getCaseStudies(limit = 50): Promise<CaseStudy[]> {
   const p = await payload();
   const result = await p.find({
     collection: "case-studies",
@@ -99,6 +130,34 @@ export async function getCaseStudies(limit = 6): Promise<CaseStudy[]> {
   });
   return result.docs as unknown as CaseStudy[];
 }
+
+export async function getCaseStudyBySlug(
+  slug: string
+): Promise<CaseStudy | null> {
+  const p = await payload();
+  const result = await p.find({
+    collection: "case-studies",
+    where: { slug: { equals: slug } },
+    limit: 1,
+    depth: 0,
+  });
+  return (result.docs[0] as unknown as CaseStudy) ?? null;
+}
+
+export async function getCaseStudySlugs(): Promise<string[]> {
+  const p = await payload();
+  const result = await p.find({
+    collection: "case-studies",
+    limit: 100,
+    depth: 0,
+    select: { slug: true } as never, // type lib lags behind runtime
+  });
+  return result.docs.map((d: { slug: string }) => d.slug);
+}
+
+// ------------------------------------------------------------------
+// Testimonials
+// ------------------------------------------------------------------
 
 export async function getFeaturedTestimonial(): Promise<Testimonial | null> {
   const p = await payload();
@@ -110,6 +169,35 @@ export async function getFeaturedTestimonial(): Promise<Testimonial | null> {
   });
   return (result.docs[0] as unknown as Testimonial) ?? null;
 }
+
+export async function getTestimonials(limit = 20): Promise<Testimonial[]> {
+  const p = await payload();
+  const result = await p.find({
+    collection: "testimonials",
+    limit,
+    depth: 0,
+  });
+  return result.docs as unknown as Testimonial[];
+}
+
+// ------------------------------------------------------------------
+// Team Members
+// ------------------------------------------------------------------
+
+export async function getTeamMembers(): Promise<TeamMember[]> {
+  const p = await payload();
+  const result = await p.find({
+    collection: "team-members",
+    sort: "order",
+    limit: 20,
+    depth: 0,
+  });
+  return result.docs as unknown as TeamMember[];
+}
+
+// ------------------------------------------------------------------
+// Globals
+// ------------------------------------------------------------------
 
 export async function getSiteSettings(): Promise<SiteSettings> {
   const p = await payload();
