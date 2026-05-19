@@ -15,9 +15,11 @@ import Anthropic from "@anthropic-ai/sdk";
  * for visitors during local dev / before the key is added.
  */
 
-// Edge runtime supports streaming responses natively and is faster
-// for short stateless requests like this one.
-export const runtime = "edge";
+// Node.js runtime: the Anthropic SDK depends on node:fs / node:path
+// which aren't supported on Edge. Streaming ReadableStream responses
+// still work fine on Node.
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const SYSTEM_PROMPT = `You are the Growth Studio audit assistant. The user pastes a URL. You generate a brief, plausible audit transcript as if you had analysed the business's paid ads, website, and operational systems over 90 days.
 
