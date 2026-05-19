@@ -12,10 +12,9 @@ interface ChromeInterstitialProps {
 }
 
 /**
- * Chrome blob takeover — second interstitial flavour. The WebGL
- * element scales up and unblurs as the visitor scrolls in, an
- * editorial line sustains through the middle, then the blob
- * gracefully shrinks/blurs back out.
+ * Chrome blob takeover. Always visible content (not invisible at
+ * edges) — blob is at minimum 0.55 opacity throughout, headline at
+ * minimum 0.7 opacity.
  */
 export function ChromeInterstitial({
   headline = "We build the engines",
@@ -25,22 +24,23 @@ export function ChromeInterstitial({
   label = "Manifesto",
 }: ChromeInterstitialProps) {
   return (
-    <PinnedZoom scrollHeight={240} className="bg-canvas">
+    <PinnedZoom scrollHeight={220} className="bg-canvas">
       {({ progress, eased }) => {
-        // Headline opacity: peaks at progress 0.5, fades at the edges
-        const dist = Math.abs(progress - 0.5) / 0.35;
-        const headOpacity = Math.max(0, 1 - dist * dist);
-        const headScale = 0.92 + eased * 0.16;
-        const headY = (0.5 - eased) * 40; // px
+        // Headline scales/translates as you scroll, but stays visible across
+        // the whole section (min 0.7 opacity)
+        const headDist = Math.abs(progress - 0.5);
+        const headOpacity = Math.max(0.65, 1 - Math.pow(headDist * 2.0, 2));
+        const headScale = 0.95 + eased * 0.10;
+        const headY = (0.5 - eased) * 30;
 
-        // Edge opacity for the eyebrow + caption
-        const edge = 1 - Math.abs(0.5 - progress) * 2;
+        // Blob: scales from 0.55 → 1.4 across, blur fades, always
+        // somewhat visible (min 0.5)
+        const blobScale = 0.55 + eased * 0.85;
+        const blobBlur = (1 - eased) * 14;
+        const blobOpacity = Math.max(0.5, 0.55 + eased * 0.35);
 
-        // Blob scale + blur + opacity
-        const blobScale = 0.45 + eased * 1.05;
-        const blobY = -10 + eased * 20; // vh
-        const blobBlur = (1 - eased) * 18; // px
-        const blobOpacity = 0.45 + edge * 0.45;
+        // Eyebrow visible everywhere, dimmer mid-section
+        const eyebrowOpacity = 0.6 + Math.abs(0.5 - progress) * 0.8;
 
         return (
           <>
@@ -49,7 +49,7 @@ export function ChromeInterstitial({
               aria-hidden
               className="absolute inset-0 -z-10 pointer-events-none"
               style={{
-                transform: `scale(${blobScale.toFixed(3)}) translateY(${blobY.toFixed(2)}vh)`,
+                transform: `scale(${blobScale.toFixed(3)})`,
                 opacity: blobOpacity.toFixed(3),
                 filter: `blur(${blobBlur.toFixed(1)}px) saturate(1.15)`,
                 willChange: "transform, opacity, filter",
@@ -58,20 +58,20 @@ export function ChromeInterstitial({
               <HeroSceneLazy />
             </div>
 
-            {/* Soft vignette so the type stays legible over the blob */}
+            {/* Vignette so type stays legible over the blob */}
             <div
               aria-hidden
               className="absolute inset-0 -z-10 pointer-events-none"
               style={{
                 background:
-                  "radial-gradient(60% 60% at 50% 50%, transparent 30%, oklch(0.11 0.004 260 / 0.85) 100%)",
+                  "radial-gradient(60% 60% at 50% 50%, transparent 30%, oklch(0.11 0.004 260 / 0.80) 100%)",
               }}
             />
 
             {/* Eyebrow */}
             <div
               className="absolute top-12 left-0 right-0 px-6 md:px-12"
-              style={{ opacity: Math.max(0, edge) }}
+              style={{ opacity: Math.min(1, eyebrowOpacity) }}
             >
               <div className="flex items-center gap-3 max-w-7xl mx-auto">
                 <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
@@ -86,7 +86,7 @@ export function ChromeInterstitial({
               <h2
                 className="font-sans font-medium text-ink leading-[0.98] tracking-[-0.04em] mb-6"
                 style={{
-                  fontSize: "clamp(2.5rem, 7vw, 7.5rem)",
+                  fontSize: "clamp(2.5rem, 6.5vw, 7rem)",
                   opacity: headOpacity,
                   transform: `translateY(${headY.toFixed(2)}px) scale(${headScale.toFixed(3)})`,
                   transformOrigin: "center center",
@@ -100,7 +100,7 @@ export function ChromeInterstitial({
               </h2>
               <p
                 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute"
-                style={{ opacity: Math.max(0, headOpacity - 0.2) }}
+                style={{ opacity: Math.max(0.4, headOpacity - 0.15) }}
               >
                 {caption}
               </p>
