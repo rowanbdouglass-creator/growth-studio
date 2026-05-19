@@ -19,16 +19,10 @@ export function EditorialInterstitial({
   function beatState(idx: number, progress: number) {
     const peak = peaks[idx];
     const dist = Math.abs(progress - peak) / halfWindow;
-
     let opacity: number;
-    if (idx === 0 && progress < peak) {
-      opacity = 1;
-    } else if (idx === 2 && progress > peak) {
-      opacity = 1;
-    } else {
-      opacity = Math.max(0, 1 - Math.pow(dist, 1.6));
-    }
-
+    if (idx === 0 && progress < peak) opacity = 1;
+    else if (idx === 2 && progress > peak) opacity = 1;
+    else opacity = Math.max(0, 1 - Math.pow(dist, 1.6));
     const scale = 1.0 + Math.max(-0.18, 0.12 - dist * 0.28);
     return { opacity, scale };
   }
@@ -40,14 +34,18 @@ export function EditorialInterstitial({
           1,
           0.55 + Math.abs(0.5 - progress) * 0.9
         );
-        const scrollCueOpacity = Math.max(0, 1 - progress * 3);
 
         return (
-          <>
+          <div className="relative w-full h-full">
+            {/* Diagnostic: tiny progress readout. Remove once verified. */}
+            <div className="absolute top-2 right-4 z-50 font-mono text-[10px] text-accent">
+              p={progress.toFixed(3)} · e={eased.toFixed(3)}
+            </div>
+
             {/* Ambient backdrop */}
             <div
               aria-hidden
-              className="absolute inset-0 -z-10 pointer-events-none"
+              className="absolute inset-0 pointer-events-none"
               style={{
                 background: `
                   radial-gradient(60% 50% at 50% 50%,
@@ -57,20 +55,6 @@ export function EditorialInterstitial({
                     oklch(0.13 0.006 260),
                     oklch(0.11 0.004 260) 75%)
                 `,
-              }}
-            />
-
-            {/* Grid mask */}
-            <div
-              aria-hidden
-              className="absolute inset-0 -z-10 pointer-events-none"
-              style={{
-                backgroundImage:
-                  "linear-gradient(oklch(1 0 0 / 0.45) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 0.45) 1px, transparent 1px)",
-                backgroundSize: "120px 120px",
-                opacity: (0.04 + eased * 0.04).toFixed(3),
-                maskImage:
-                  "radial-gradient(ellipse at center, black 20%, transparent 70%)",
               }}
             />
 
@@ -90,7 +74,7 @@ export function EditorialInterstitial({
               </div>
             </div>
 
-            {/* Beats — each wrapped in its own absolute-centered container */}
+            {/* Beats — each is a full-bleed centred flex container */}
             {beats.map((beat, i) => {
               const { opacity, scale } = beatState(i, progress);
               return (
@@ -101,12 +85,14 @@ export function EditorialInterstitial({
                     opacity,
                     transform: `scale(${scale.toFixed(3)})`,
                     transformOrigin: "center center",
-                    willChange: "opacity, transform",
                   }}
                 >
                   <h2
-                    className="font-sans font-medium text-ink leading-[0.95] tracking-[-0.045em] text-center whitespace-nowrap"
-                    style={{ fontSize: "clamp(3rem, 11vw, 11rem)" }}
+                    className="font-sans font-medium text-ink leading-[0.95] tracking-[-0.045em] text-center"
+                    style={{
+                      fontSize: "clamp(3rem, 11vw, 11rem)",
+                      whiteSpace: "nowrap",
+                    }}
                   >
                     {beat.endsWith(".") ? (
                       <>
@@ -120,20 +106,7 @@ export function EditorialInterstitial({
                 </div>
               );
             })}
-
-            {/* Scroll cue */}
-            <div
-              className="absolute bottom-10 left-0 right-0 flex flex-col items-center gap-2 text-ink-mute"
-              style={{ opacity: scrollCueOpacity }}
-            >
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em]">
-                Scroll
-              </span>
-              <span aria-hidden className="text-accent">
-                ↓
-              </span>
-            </div>
-          </>
+          </div>
         );
       }}
     </PinnedZoom>

@@ -3,19 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 interface PinnedZoomProps {
-  /**
-   * Render-prop children receive 0..1 progress (linear) and the
-   * eased version. Use them directly in inline styles — no CSS
-   * variable / calc() / abs() gymnastics needed.
-   */
-  children: (state: {
-    progress: number;
-    eased: number;
-  }) => ReactNode;
-  /**
-   * Total scroll distance the section consumes, in vh.
-   * Higher = the section gets more "screen time".
-   */
+  children: (state: { progress: number; eased: number }) => ReactNode;
   scrollHeight?: number;
   className?: string;
 }
@@ -24,32 +12,16 @@ function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-/**
- * Cinematic scroll-pinned reveal. The wrapper is `scrollHeight` tall.
- * Inner content sticks to the viewport top while you scroll past it.
- * Each scroll event computes a 0..1 progress signal and passes both
- * the linear value and an easeInOutCubic version to the render-prop
- * child.
- */
 export function PinnedZoom({
   children,
-  scrollHeight = 240,
+  scrollHeight = 220,
   className = "",
 }: PinnedZoomProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const isReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    setReduced(isReduced);
-    if (isReduced) {
-      setProgress(0.5); // park at midpoint so content is fully visible
-      return;
-    }
 
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
@@ -89,13 +61,10 @@ export function PinnedZoom({
     <section
       ref={wrapperRef}
       className={`relative ${className}`}
-      style={{ height: reduced ? "auto" : `${scrollHeight}vh` }}
+      style={{ height: `${scrollHeight}vh` }}
+      data-pinned-zoom
     >
-      <div
-        className={`top-0 h-screen flex items-center justify-center overflow-hidden ${
-          reduced ? "relative" : "sticky"
-        }`}
-      >
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
         {children({ progress, eased })}
       </div>
     </section>
