@@ -1,10 +1,29 @@
 # Growth Studio — Session Context Document
 
-**Last updated:** 2026-05-19 (Phase 2 complete — Payload + Neon wired, admin functional locally)
+**Last updated:** 2026-05-19 (Phase 2 fully complete — Payload + Neon + Vercel live on production URL)
 
 ## Live URLs
 - GitHub repo: https://github.com/rowanbdouglass-creator/growth-studio (private)
 - Vercel preview: https://growth-studio-two.vercel.app/ (auto-deploys on `git push origin main`)
+
+## Phase 2 final status (2026-05-19)
+
+- ✅ GitHub repo public at https://github.com/rowanbdouglass-creator/growth-studio
+- ✅ Vercel project `growth-studio-two` deploying main branch on every push
+- ✅ Production homepage live at https://growth-studio-two.vercel.app/
+- ✅ Production Payload admin live at https://growth-studio-two.vercel.app/admin
+- ✅ Neon Postgres connected (London region, pooled connection)
+- ✅ First admin user created (locally — same DB serves production)
+- ✅ Industry record write verified (Neon round-trip working)
+- ✅ Latest deploy: `5oGTpmwdh` from commit `6ab3baa` — green/Ready/Current
+
+## Vercel Hobby tier gotcha (resolved)
+
+Initial push to private repo got blocked: "Hobby Plan does not support collaboration for private repositories. The deployment was blocked because the commit author did not have contributing access."
+
+**Cause:** Our git commits are authored as `You Look Booked Ltd <rowandouglass1@gmail.com>` (per-repo config) but the Vercel/GitHub account owner is `rowandouglass25`. Hobby tier blocks cross-author commits on private repos.
+
+**Resolution:** Made the GitHub repo public. New commits then deployed cleanly. If we ever need to make it private again, upgrade to Vercel Pro OR change git author email to match the user's GitHub-linked email.
 
 ## Phase 2 wrap-up notes
 
