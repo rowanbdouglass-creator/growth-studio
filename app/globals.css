@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Growth Studio — Design tokens
+   All tokens flow through Tailwind v4's @theme directive so they
+   become first-class utilities (e.g. bg-background, text-accent).
+   ------------------------------------------------------------------ */
+
+@theme {
+  /* Colours — OKLCH for perceptual uniformity */
+  --color-background:        oklch(0.13 0.005 280);
+  --color-surface:           oklch(0.16 0.006 280);
+  --color-surface-elevated:  oklch(0.19 0.007 280);
+  --color-border:            oklch(0.24 0.008 280);
+  --color-border-strong:     oklch(0.32 0.010 280);
+  --color-text-primary:      oklch(0.96 0.003 280);
+  --color-text-secondary:    oklch(0.72 0.005 280);
+  --color-text-tertiary:     oklch(0.52 0.006 280);
+  --color-accent:            oklch(0.74 0.18 50);
+  --color-accent-hover:      oklch(0.70 0.20 47);
+  --color-accent-subtle:     oklch(0.74 0.18 50 / 0.12);
+  --color-success:           oklch(0.78 0.16 155);
+  --color-mono-blue:         oklch(0.42 0.04 240);
+
+  /* Typography — variable fonts wired in app/layout.tsx */
+  --font-sans:    var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-serif:   var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-mono:    var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Fluid type scale */
+  --text-xs:      clamp(0.75rem, 0.7rem + 0.25vw, 0.85rem);
+  --text-sm:      clamp(0.875rem, 0.825rem + 0.25vw, 1rem);
+  --text-base:    clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg:      clamp(1.125rem, 1.05rem + 0.375vw, 1.25rem);
+  --text-xl:      clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl:     clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-3xl:     clamp(1.875rem, 1.5rem + 1.875vw, 2.75rem);
+  --text-4xl:     clamp(2.25rem, 1.75rem + 2.5vw, 3.75rem);
+  --text-5xl:     clamp(3rem, 2.25rem + 3.75vw, 5rem);
+  --text-6xl:     clamp(3.75rem, 2.75rem + 5vw, 7rem);
+  --text-display: clamp(4.5rem, 3rem + 7.5vw, 9rem);
+
+  /* Border radii */
+  --radius-sm:    4px;
+  --radius-md:    8px;
+  --radius-lg:    12px;
+  --radius-xl:    16px;
+  --radius-2xl:   24px;
+
+  /* Shadows */
+  --shadow-sm:           0 1px 2px 0 oklch(0 0 0 / 0.3);
+  --shadow-md:           0 4px 12px -2px oklch(0 0 0 / 0.4);
+  --shadow-lg:           0 12px 32px -4px oklch(0 0 0 / 0.5);
+  --shadow-glow-accent:  0 0 32px -4px oklch(0.74 0.18 50 / 0.3);
+
+  /* Motion — easing curves */
+  --ease-out-quint:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart:   cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring:      linear(
+    0, 0.009 0.4%, 0.035 0.8%, 0.139 1.7%, 0.309 2.9%,
+    0.541 4.4%, 0.825 6.1%, 1.063 7.6%, 1.193 8.6%,
+    1.241 9.4%, 1.244 10.3%, 1.187 11.4%, 1.069 12.7%,
+    0.972 13.7%, 0.911 14.5%, 0.881 15.3%, 0.880 16.2%,
+    0.913 17.6%, 1.014 19.6%, 1.069 20.7%, 1.087 21.6%,
+    1.084 22.7%, 1.026 24.6%, 0.978 27.2%, 0.965 28.4%,
+    0.971 29.5%, 1.013 31.9%, 1.022 34.5%, 0.996 39.4%,
+    0.998 43.8%, 1.002 53.2%, 1
+  );
+
+  /* Motion — durations */
+  --duration-fast:    150ms;
+  --duration-base:    200ms;
+  --duration-medium:  400ms;
+  --duration-hero:    700ms;
+}
+
+/* ------------------------------------------------------------------
+   Base resets and globals
+   ------------------------------------------------------------------ */
+
+html, body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings use the serif by default */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-feature-settings: "ss01", "ss02";
+  letter-spacing: -0.02em;
+}
+
+/* Selection */
+::selection {
+  background: var(--color-accent-subtle);
+  color: var(--color-text-primary);
+}
+
+/* Focus — high-contrast amber outline */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Honour reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
