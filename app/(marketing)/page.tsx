@@ -3,8 +3,12 @@ import { Container } from "@/components/ui/Container";
 import { buttonStyles } from "@/components/ui/Button";
 import { MeshGradient } from "@/components/fx/MeshGradient";
 import { CursorGlow } from "@/components/fx/CursorGlow";
-import { MockDashboard } from "@/components/fx/MockDashboard";
+import { AIAuditDemo } from "@/components/fx/AIAuditDemo";
 import { AnimatedTerminal } from "@/components/fx/AnimatedTerminal";
+import { Tilt3D } from "@/components/fx/Tilt3D";
+import { Magnetic } from "@/components/fx/Magnetic";
+import { SplitText } from "@/components/fx/SplitText";
+import { Logomark } from "@/components/brand/Logomark";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
 import { CaseStudyFeature } from "@/components/blocks/CaseStudyCard";
@@ -38,6 +42,7 @@ export default async function Home() {
 
         <Container size="wide">
           <div className="flex items-center gap-3 mb-12 md:mb-16">
+            <Logomark size={14} animate />
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
               01 — Growth Studio
             </span>
@@ -47,7 +52,7 @@ export default async function Home() {
             </span>
           </div>
 
-          <div className="grid lg:grid-cols-[1.5fr_1fr] gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-hero-entry">
               <h1 className="font-sans font-medium text-ink leading-[1.0] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-8">
                 Growth, engineered{" "}
@@ -58,17 +63,19 @@ export default async function Home() {
 
               <p className="text-base md:text-lg text-ink-soft max-w-xl leading-relaxed mb-10">
                 A two-person studio building paid traffic, custom operational
-                systems, and AI tooling for established UK businesses. One
-                engagement, one engine.
+                systems, and AI tooling for established UK businesses. Try
+                the audit tool to your right — paste any URL.
               </p>
 
               <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-                <Link
-                  href="/contact"
-                  className={buttonStyles({ variant: "primary", size: "lg" })}
-                >
-                  Book a discovery call
-                </Link>
+                <Magnetic>
+                  <Link
+                    href="/contact"
+                    className={buttonStyles({ variant: "primary", size: "lg" })}
+                  >
+                    Book a discovery call
+                  </Link>
+                </Magnetic>
                 <Link
                   href="/work"
                   className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors border-b border-rule hover:border-accent pb-1"
@@ -80,7 +87,9 @@ export default async function Home() {
             </div>
 
             <div className="hidden lg:flex justify-center">
-              <MockDashboard />
+              <Tilt3D maxTilt={6} scale={1.015}>
+                <AIAuditDemo />
+              </Tilt3D>
             </div>
           </div>
 
@@ -91,6 +100,17 @@ export default async function Home() {
             <span aria-hidden className="text-accent">↓</span>
           </div>
         </Container>
+      </section>
+
+      {/* On mobile + tablet the AI demo gets its own dedicated section
+          since it doesn't fit alongside the hero. */}
+      <section className="lg:hidden py-16 px-6 border-t border-rule">
+        <div className="max-w-xl mx-auto">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute mb-4 text-center">
+            Try the audit
+          </p>
+          <AIAuditDemo />
+        </div>
       </section>
 
       {/* ============================ LOGOS ============================ */}
@@ -123,9 +143,9 @@ export default async function Home() {
           <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-reveal-lg">
               <h2 className="font-sans font-medium text-ink mb-8 leading-[1.05] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl">
-                Audits that find{" "}
+                <SplitText>Audits that find</SplitText>{" "}
                 <span className="italic-editorial font-normal silver-shine">
-                  what consultants miss.
+                  <SplitText delay={400}>what consultants miss.</SplitText>
                 </span>
               </h2>
               <p className="text-base md:text-lg text-ink-soft leading-relaxed max-w-md mb-8">
@@ -143,24 +163,26 @@ export default async function Home() {
             </div>
 
             <div className="anim-reveal-lg">
-              <AnimatedTerminal
-                lines={[
-                  {
-                    text: "growth audit https://client.co.uk --90d",
-                    output:
-                      "▸ scanning Meta + Google ad accounts...\n▸ pulling 90d of spend, impressions, conversions\n✓ £4,832/mo wastage detected across 11 campaigns",
-                  },
-                  {
-                    text: "growth audit --suggest-wins",
-                    output:
-                      "▸ ranking opportunities by impact / effort\n✓ 3 quick wins · projected ROAS lift 1.6×",
-                  },
-                  {
-                    text: "growth report --send",
-                    output: "✓ report sent to rowan@youlookbooked.com",
-                  },
-                ]}
-              />
+              <Tilt3D maxTilt={5}>
+                <AnimatedTerminal
+                  lines={[
+                    {
+                      text: "growth audit https://client.co.uk --90d",
+                      output:
+                        "▸ scanning Meta + Google ad accounts...\n▸ pulling 90d of spend, impressions, conversions\n✓ £4,832/mo wastage detected across 11 campaigns",
+                    },
+                    {
+                      text: "growth audit --suggest-wins",
+                      output:
+                        "▸ ranking opportunities by impact / effort\n✓ 3 quick wins · projected ROAS lift 1.6×",
+                    },
+                    {
+                      text: "growth report --send",
+                      output: "✓ report sent to rowan@youlookbooked.com",
+                    },
+                  ]}
+                />
+              </Tilt3D>
             </div>
           </div>
         </Container>

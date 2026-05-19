@@ -246,6 +246,34 @@ h1, h2, h3, h4, h5, h6 {
 
 .terminal-caret { animation: blink 1s steps(1) infinite; }
 
+/* SplitText word reveals */
+.split-text {
+  display: inline;
+}
+.split-text__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: baseline;
+}
+.split-text__inner {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+}
+.is-shown .split-text__inner,
+.split-text.is-shown .split-text__inner {
+  animation: fade-up-word 800ms var(--ease-out-quint) both;
+}
+@keyframes fade-up-word {
+  from { transform: translateY(110%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Logomark draw-in */
+@keyframes logo-draw {
+  to { stroke-dashoffset: 0; }
+}
+
 /* Class added by IntersectionObserver triggers */
 .is-active.stagger-in > * {
   animation: fade-up 700ms var(--ease-out-quint) both;

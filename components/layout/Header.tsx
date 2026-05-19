@@ -3,6 +3,7 @@ import { brand } from "@/config/brand";
 import { site } from "@/config/site";
 import { Container } from "@/components/ui/Container";
 import { buttonStyles } from "@/components/ui/Button";
+import { Logomark } from "@/components/brand/Logomark";
 import { MobileNav } from "./MobileNav";
 
 export function Header() {
@@ -10,29 +11,32 @@ export function Header() {
     <header
       className="
         sticky top-0 z-50
-        bg-background/70 backdrop-blur-md
+        bg-canvas/70 backdrop-blur-md
         border-b border-border
       "
     >
       <Container size="wide">
-        <div className="flex h-16 items-center justify-between gap-8">
+        <div className="flex h-14 md:h-16 items-center justify-between gap-8">
           <Link
             href="/"
             aria-label={`${brand.name} home`}
-            className="font-serif text-xl font-medium tracking-tight text-text-primary hover:text-accent transition-colors"
+            className="group/logo flex items-center gap-2.5 text-ink hover:text-accent transition-colors"
           >
-            {brand.name}
+            <Logomark animate />
+            <span className="font-sans text-sm md:text-base font-medium tracking-tight">
+              {brand.name}
+            </span>
           </Link>
 
           <nav
             aria-label="Main"
-            className="hidden md:flex items-center gap-8"
+            className="hidden md:flex items-center gap-7"
           >
             {site.mainNav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm text-text-secondary hover:text-text-primary transition-colors"
+                className="text-sm text-ink-soft hover:text-ink transition-colors"
               >
                 {item.label}
               </Link>
