@@ -4,66 +4,36 @@ import { useEffect, useRef, useState } from "react";
 
 type Phase = "idle" | "validating" | "streaming" | "done" | "error";
 
-interface Line {
-  text: string;
-  kind: "system" | "info" | "warn" | "success" | "result" | "header" | "spacer";
-}
-
 const PROMPT_PLACEHOLDERS = [
   "https://your-store.co.uk",
   "https://yourbrand.com",
   "https://yourservice.io",
 ];
 
-/**
- * Generate a plausible audit transcript based on the URL. Used as a
- * client-side simulation so the demo works without an API key. When
- * an Anthropic key is configured server-side later, swap this for a
- * streaming server action.
- */
-function generateAuditTranscript(url: string): Line[] {
-  const cleanHost = (() => {
-    try {
-      return new URL(url.startsWith("http") ? url : `https://${url}`).host.replace(/^www\./, "");
-    } catch {
-      return url.replace(/^https?:\/\//, "").replace(/\/.*/, "");
-    }
-  })();
+interface RenderedLine {
+  text: string;
+  kind: "system" | "info" | "warn" | "success" | "result" | "header" | "spacer";
+}
 
-  return [
-    { kind: "system", text: `Initialising growth audit for ${cleanHost}` },
-    { kind: "info", text: "▸ Crawling site structure" },
-    { kind: "info", text: "  47 pages indexed · response 312ms p50" },
-    { kind: "info", text: "▸ Connecting to Meta + Google ad accounts" },
-    { kind: "info", text: "  90d of spend, impressions, conversions pulled" },
-    { kind: "info", text: "▸ Running vertical-specific playbook (e-commerce)" },
-    { kind: "spacer", text: "" },
-    { kind: "header", text: "Findings (4)" },
-    { kind: "warn", text: "⚠ £1,840 / mo  Audience overlap across 4 campaigns" },
-    { kind: "warn", text: "⚠ 11 campaigns  Broken UTM tags — attribution unreliable" },
-    { kind: "warn", text: "⚠ £940 / mo  Dead creative — 3 ad sets, 14d no impressions" },
-    { kind: "warn", text: "⚠ 23 %  Branded search bleed — bidding against own brand" },
-    { kind: "spacer", text: "" },
-    { kind: "header", text: "Quick wins (3)" },
-    { kind: "success", text: "✓ Consolidate audiences → recover £1,840 / mo" },
-    { kind: "success", text: "✓ Fix UTM template → full attribution restored" },
-    { kind: "success", text: "✓ Pause dead creative → recover £940 / mo" },
-    { kind: "spacer", text: "" },
-    { kind: "header", text: "90-day projection" },
-    { kind: "result", text: "→ ROAS lift  1.6×" },
-    { kind: "result", text: "→ Recovered  £8,340" },
-    { kind: "result", text: "→ Time to implement  5 working days" },
-  ];
+function classifyLine(text: string): RenderedLine["kind"] {
+  if (text.startsWith("⚠")) return "warn";
+  if (text.startsWith("✓")) return "success";
+  if (text.startsWith("→")) return "result";
+  if (text.startsWith("▸") || text.startsWith("  ")) return "info";
+  if (/^[A-Z]/.test(text) && (text.endsWith(")") || text.includes("projection")))
+    return "header";
+  if (text.length === 0) return "spacer";
+  return "system";
 }
 
 export function AIAuditDemo() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [url, setUrl] = useState("");
-  const [shown, setShown] = useState<{ text: string; kind: Line["kind"] }[]>([]);
+  const [buffer, setBuffer] = useState("");
   const [placeholderIdx, setPlaceholderIdx] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  // Rotate placeholders so the input feels alive
   useEffect(() => {
     if (phase !== "idle") return;
     const id = setInterval(
@@ -73,65 +43,70 @@ export function AIAuditDemo() {
     return () => clearInterval(id);
   }, [phase]);
 
-  function start() {
+  // Auto-scroll the output as new content arrives
+  useEffect(() => {
+    if (containerRef.current && phase === "streaming") {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [buffer, phase]);
+
+  async function start() {
     if (!url.trim()) return;
     setPhase("validating");
-    setShown([]);
-    setTimeout(() => {
-      setPhase("streaming");
-      streamAudit(url);
-    }, 500);
-  }
+    setBuffer("");
 
-  async function streamAudit(targetUrl: string) {
-    const lines = generateAuditTranscript(targetUrl);
-    for (const line of lines) {
-      // Stream each character for system/info lines, full chunks for findings
-      if (line.kind === "system" || line.kind === "info") {
-        let current = "";
-        for (let i = 0; i < line.text.length; i++) {
-          current = line.text.slice(0, i + 1);
-          await wait(8 + Math.random() * 12);
-          setShown((s) => [
-            ...s.slice(0, -1).filter((_, idx) => idx < s.length - 1),
-            { text: current, kind: line.kind },
-          ]);
-          setShown((s) => {
-            const isNew = s.length === 0 || s[s.length - 1].kind !== line.kind || s[s.length - 1].text !== current.slice(0, -1);
-            if (isNew && i === 0) return [...s, { text: current, kind: line.kind }];
-            const copy = [...s];
-            copy[copy.length - 1] = { text: current, kind: line.kind };
-            return copy;
-          });
-        }
-        await wait(line.kind === "system" ? 350 : 120);
-      } else if (line.kind === "spacer") {
-        setShown((s) => [...s, { text: "", kind: "spacer" }]);
-        await wait(120);
-      } else {
-        setShown((s) => [...s, { text: line.text, kind: line.kind }]);
-        await wait(line.kind === "header" ? 220 : 140);
-      }
-      // Auto-scroll the panel
-      requestAnimationFrame(() => {
-        if (containerRef.current) {
-          containerRef.current.scrollTop = containerRef.current.scrollHeight;
-        }
+    // Brief validating beat for UX rhythm
+    await new Promise((r) => setTimeout(r, 350));
+
+    setPhase("streaming");
+
+    abortRef.current = new AbortController();
+
+    try {
+      const res = await fetch("/api/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+        signal: abortRef.current.signal,
       });
+
+      if (!res.ok || !res.body) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        setBuffer((b) => b + chunk);
+      }
+
+      setPhase("done");
+    } catch (err) {
+      console.error("[audit] failed", err);
+      setPhase("error");
     }
-    setPhase("done");
   }
 
   function reset() {
+    abortRef.current?.abort();
     setPhase("idle");
-    setShown([]);
+    setBuffer("");
     setUrl("");
   }
 
+  const renderedLines: RenderedLine[] = buffer.split("\n").map((text) => ({
+    text,
+    kind: classifyLine(text),
+  }));
+
   return (
     <div className="w-full max-w-xl">
-      {/* Glow halo */}
       <div className="relative">
+        {/* Glow halo */}
         <div
           aria-hidden
           className="absolute -inset-10 rounded-3xl pointer-events-none"
@@ -143,26 +118,27 @@ export function AIAuditDemo() {
         />
 
         <div
-          className="relative rounded-xl border border-border-strong overflow-hidden backdrop-blur-md"
+          className="relative rounded-xl border border-border-strong overflow-hidden backdrop-blur-xl"
           style={{
-            backgroundColor: "oklch(0.13 0.006 260 / 0.92)",
+            background:
+              "linear-gradient(155deg, oklch(0.18 0.008 260 / 0.65) 0%, oklch(0.13 0.006 260 / 0.92) 70%)",
             boxShadow:
-              "0 30px 80px -20px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(1 0 0 / 0.04) inset",
+              "0 30px 80px -20px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(1 0 0 / 0.05) inset, 0 1px 0 0 oklch(1 0 0 / 0.06) inset",
           }}
         >
           {/* Window chrome */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-canvas-2/60">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-canvas-2/40">
             <div className="flex items-center gap-2.5">
               <span className="relative flex w-2 h-2">
-                {phase !== "idle" && (
-                  <span className="absolute inset-0 rounded-full bg-accent animate-ping opacity-50" />
+                {(phase === "streaming" || phase === "validating") && (
+                  <span className="absolute inset-0 rounded-full bg-accent animate-ping opacity-60" />
                 )}
                 <span
                   className={`relative w-2 h-2 rounded-full ${
                     phase === "idle"
                       ? "bg-ink-mute"
-                      : phase === "done"
-                      ? "bg-accent"
+                      : phase === "error"
+                      ? "bg-ink-dim"
                       : "bg-accent"
                   }`}
                 />
@@ -180,7 +156,6 @@ export function AIAuditDemo() {
             </span>
           </div>
 
-          {/* Input zone */}
           {phase === "idle" && (
             <div className="p-5">
               <label
@@ -202,7 +177,8 @@ export function AIAuditDemo() {
                     onKeyDown={(e) => e.key === "Enter" && start()}
                     placeholder={PROMPT_PLACEHOLDERS[placeholderIdx]}
                     autoComplete="off"
-                    className="w-full h-11 pl-9 pr-3 bg-canvas border border-border rounded-md text-ink placeholder:text-ink-dim font-mono text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft transition-colors"
+                    spellCheck={false}
+                    className="w-full h-11 pl-9 pr-3 bg-canvas/60 border border-border rounded-md text-ink placeholder:text-ink-dim font-mono text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft transition-colors"
                   />
                 </div>
                 <button
@@ -220,7 +196,6 @@ export function AIAuditDemo() {
             </div>
           )}
 
-          {/* Stream zone */}
           {phase !== "idle" && (
             <div
               ref={containerRef}
@@ -231,7 +206,7 @@ export function AIAuditDemo() {
                   "oklch(0.32 0.008 260) oklch(0.13 0.006 260)",
               }}
             >
-              {shown.map((l, i) => {
+              {renderedLines.map((l, i) => {
                 if (l.kind === "spacer")
                   return <div key={i} className="h-3" aria-hidden />;
                 const color =
@@ -249,13 +224,18 @@ export function AIAuditDemo() {
                 return (
                   <div key={i} className={`whitespace-pre-wrap ${color}`}>
                     {l.text}
-                    {i === shown.length - 1 && phase === "streaming" && (
+                    {i === renderedLines.length - 1 && phase === "streaming" && (
                       <span className="terminal-caret text-accent">▌</span>
                     )}
                   </div>
                 );
               })}
-              {phase === "done" && (
+              {phase === "error" && (
+                <div className="mt-3 text-ink-mute">
+                  Connection lost. Try again in a moment.
+                </div>
+              )}
+              {(phase === "done" || phase === "error") && (
                 <div className="mt-5 pt-4 border-t border-border flex items-center justify-between gap-3">
                   <a
                     href="/tools/website-audit"
@@ -279,8 +259,4 @@ export function AIAuditDemo() {
       </div>
     </div>
   );
-}
-
-function wait(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
