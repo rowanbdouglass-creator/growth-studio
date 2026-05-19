@@ -38,22 +38,23 @@ export default async function Home() {
       <CursorGlow />
 
       {/* ============================ 01 HERO ============================ */}
-      <section className="snap-section relative isolate overflow-hidden">
-        <MeshGradient className="anim-hero-bg" />
-        {/* WebGL chrome blob — sits between mesh and content,
-            heavily blurred so it reads as luminous metal not a tech demo */}
-        <div
-          aria-hidden
-          className="hidden md:block absolute inset-0 -z-[8] opacity-50"
-          style={{ filter: "blur(20px) saturate(1.1)" }}
-        >
-          <HeroSceneLazy />
+      <section className="snap-section relative isolate">
+        {/* Background layer — overflow is on this wrapper, NOT the section,
+            so text descenders on the headline aren't clipped */}
+        <div aria-hidden className="absolute inset-0 overflow-hidden -z-10">
+          <MeshGradient className="anim-hero-bg" />
+          <div
+            className="hidden md:block absolute inset-0 opacity-50"
+            style={{ filter: "blur(20px) saturate(1.1)" }}
+          >
+            <HeroSceneLazy />
+          </div>
         </div>
 
         <Container size="wide">
           <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center pt-12 md:pt-16">
             <div className="anim-hero-entry">
-              <h1 className="font-sans font-medium text-ink leading-[1.08] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-8 pb-1">
+              <h1 className="font-sans font-medium text-ink leading-[1.18] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-8 pb-4">
                 Growth, engineered{" "}
                 <span className="italic-editorial font-normal silver-shine">
                   for the long compound.
@@ -146,7 +147,7 @@ export default async function Home() {
       />
 
       {/* ============================ 06 INTELLIGENCE / TERMINAL ============================ */}
-      <section className="snap-section relative overflow-hidden">
+      <section className="snap-section relative">
         <Container size="wide">
           <div className="flex items-center gap-3 mb-12 md:mb-16">
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
@@ -157,7 +158,7 @@ export default async function Home() {
 
           <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-reveal-lg">
-              <h2 className="font-sans font-medium text-ink mb-8 leading-[1.08] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl pb-1">
+              <h2 className="font-sans font-medium text-ink mb-8 leading-[1.2] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl pb-4">
                 Audits that find{" "}
                 <span className="italic-editorial font-normal silver-shine">
                   what consultants miss.
