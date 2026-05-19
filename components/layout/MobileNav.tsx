@@ -51,7 +51,8 @@ export function MobileNav() {
 
       {open && (
         <div
-          className="fixed inset-0 z-[60] md:hidden bg-background flex flex-col"
+          className="fixed inset-0 z-[60] md:hidden flex flex-col"
+          style={{ backgroundColor: "oklch(0.13 0.005 280)" }}
           role="dialog"
           aria-modal="true"
           aria-label="Main menu"
