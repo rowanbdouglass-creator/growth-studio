@@ -99,15 +99,25 @@ body {
 
 html {
   scroll-behavior: smooth;
-  /* Scroll-snap on document — proximity is more user-friendly than mandatory */
-  scroll-snap-type: y proximity;
   scroll-padding-top: 4rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
   letter-spacing: -0.025em;
-  font-feature-settings: "ss01";
+  font-feature-settings: "ss01", "kern", "calt";
+  font-kerning: normal;
+  text-wrap: balance;
+}
+
+/* Display-size optical refinements */
+h1 { letter-spacing: -0.04em; font-weight: 500; }
+h2 { letter-spacing: -0.035em; font-weight: 500; }
+h3 { letter-spacing: -0.025em; font-weight: 500; }
+
+p, li {
+  font-feature-settings: "kern";
+  font-kerning: normal;
 }
 
 .italic-editorial {
@@ -129,13 +139,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==================================================================
-   Step-by-step section system
-   Each .snap-section is min-100vh and snaps. Content centered.
+   Section rhythm — no scroll-snap (too fiddly across trackpads).
+   Each section gets generous breathing room so it still feels like
+   its own moment without forcing the browser to fight the user.
    ================================================================== */
 
 .snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -144,14 +153,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .snap-section--auto {
-  scroll-snap-align: none;
   min-height: 0;
 }
 
-/* On small screens, sections may have a lot of content — release strict snap-stop */
 @media (max-width: 768px) {
-  html { scroll-snap-type: none; }
   .snap-section { min-height: auto; padding-top: 5rem; padding-bottom: 5rem; }
+}
+
+/* When the page is in JS-disabled or reduced-motion modes, hide
+   the custom cursor and bring the system cursor back */
+.has-custom-cursor body * { cursor: none; }
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor [role="button"],
+.has-custom-cursor input,
+.has-custom-cursor textarea,
+.has-custom-cursor select { cursor: none; }
+@media (pointer: coarse) {
+  .has-custom-cursor body * { cursor: auto; }
 }
 
 /* ==================================================================
@@ -311,10 +330,7 @@ body::before {
    ================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-    scroll-snap-type: none;
-  }
+  html { scroll-behavior: auto; }
   *,
   *::before,
   *::after {
@@ -324,4 +340,26 @@ body::before {
     animation-timeline: none !important;
   }
   .stagger-in > * { opacity: 1; }
+}
+
+/* ==================================================================
+   View Transitions — cross-route morphing
+   Activated when Next.js routes change and the experimental flag
+   is enabled. Default fade for everything; specific elements opt-in
+   to morph via view-transition-name in inline style.
+   ================================================================== */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(root) { animation-name: vt-fade-out; }
+::view-transition-new(root) { animation-name: vt-fade-in; }
+
+@keyframes vt-fade-out {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
 }

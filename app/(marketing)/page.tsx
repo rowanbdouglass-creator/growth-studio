@@ -9,6 +9,7 @@ import { Tilt3D } from "@/components/fx/Tilt3D";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { SplitText } from "@/components/fx/SplitText";
 import { HeroSceneLazy } from "@/components/fx/HeroSceneLazy";
+import { ActivityTicker } from "@/components/fx/ActivityTicker";
 import { Logomark } from "@/components/brand/Logomark";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
@@ -51,15 +52,13 @@ export default async function Home() {
         </div>
 
         <Container size="wide">
-          <div className="flex items-center gap-3 mb-12 md:mb-16">
+          <div className="flex items-center gap-3 mb-12 md:mb-16 flex-wrap">
             <Logomark size={14} animate />
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
               01 — Growth Studio
             </span>
-            <span className="flex-1 h-px bg-rule" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-              Est. 2024 · UK
-            </span>
+            <span className="hidden md:block flex-1 h-px bg-rule" />
+            <ActivityTicker />
           </div>
 
           <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center">

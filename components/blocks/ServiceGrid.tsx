@@ -37,7 +37,7 @@ export function ServiceGrid({ services }: ServiceGridProps) {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-12 md:gap-10">
+        <div className="grid md:grid-cols-3 gap-5 md:gap-6">
           {services.map((service) => (
             <div key={service.id} className="anim-reveal h-full">
               <ServiceCard service={service} />

@@ -3,6 +3,7 @@ import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CustomCursor } from "@/components/fx/CustomCursor";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
 import "../globals.css";
@@ -72,6 +73,7 @@ export default function MarketingLayout({
         >
           Skip to content
         </a>
+        <CustomCursor />
         <Header />
         <div id="main" className="flex-1 flex flex-col">
           {children}
