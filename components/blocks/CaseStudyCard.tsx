@@ -6,85 +6,59 @@ interface CaseStudyFeatureProps {
   caseStudy: CaseStudy;
 }
 
-/**
- * Editorial-feel featured case study block — large, full-width.
- * For grid usage, see CaseStudyCard.
- */
 export function CaseStudyFeature({ caseStudy }: CaseStudyFeatureProps) {
   return (
-    <section className="py-24 md:py-32">
+    <section className="py-32 md:py-44 border-t border-rule">
       <Container size="wide">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-6">
-          Featured work
-        </p>
+        <div className="flex items-center gap-3 mb-16 md:mb-20">
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
+            03 — Featured work
+          </span>
+          <span className="flex-1 h-px bg-rule" />
+        </div>
 
-        <div className="grid md:grid-cols-[1.2fr_1fr] gap-12 md:gap-20 items-start">
+        <div className="grid md:grid-cols-[1.4fr_1fr] gap-12 md:gap-20 items-start">
           <div>
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium leading-[1.1] text-text-primary mb-8">
-              {caseStudy.title}
-            </h2>
-
-            <p className="font-mono text-xs uppercase tracking-wider text-text-tertiary mb-4">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute mb-6">
               Client · {caseStudy.client}
             </p>
 
-            <p className="text-lg text-text-secondary leading-relaxed mb-8">
+            <h2 className="font-sans font-medium text-ink leading-[1.0] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl mb-10 max-w-3xl">
+              {caseStudy.title}
+            </h2>
+
+            <p className="text-lg md:text-xl text-ink-soft leading-relaxed max-w-2xl mb-10">
               {caseStudy.summary}
             </p>
 
             <Link
               href={`/work/${caseStudy.slug}`}
-              className="inline-flex items-center gap-2 text-text-primary group/link"
+              className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors border-b border-rule hover:border-accent pb-1"
             >
-              <span className="border-b border-border-strong group-hover/link:border-accent group-hover/link:text-accent transition-colors">
-                Read the full case study
-              </span>
-              <span
-                aria-hidden
-                className="text-accent transition-transform duration-200 group-hover/link:translate-x-1"
-              >
-                →
-              </span>
+              <span>Read the full case study</span>
+              <span aria-hidden>→</span>
             </Link>
           </div>
 
-          <div>
+          <div className="md:pl-12 md:border-l md:border-rule">
             {caseStudy.metrics && caseStudy.metrics.length > 0 && (
-              <dl className="space-y-8 border-l border-border-strong pl-8">
+              <dl className="space-y-10">
                 {caseStudy.metrics.map((m, idx) => (
-                  <div key={m.id ?? idx}>
-                    <dt className="font-mono text-xs uppercase tracking-[0.16em] text-text-tertiary mb-2">
+                  <div key={m.id ?? idx} className="pt-6 border-t border-rule first:border-t-0 first:pt-0">
+                    <dt className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute mb-3">
                       {m.label}
                     </dt>
-                    <dd className="font-serif text-3xl md:text-4xl text-text-primary mb-1 leading-none">
+                    <dd className="font-sans font-medium text-3xl md:text-4xl text-ink mb-2 leading-none tracking-[-0.025em]">
                       {m.value}
                     </dd>
                     {m.context && (
-                      <p className="text-sm text-text-secondary leading-snug">
+                      <p className="text-sm text-ink-soft leading-snug">
                         {m.context}
                       </p>
                     )}
                   </div>
                 ))}
               </dl>
-            )}
-
-            {caseStudy.technologies && caseStudy.technologies.length > 0 && (
-              <div className="mt-10">
-                <p className="font-mono text-xs uppercase tracking-[0.16em] text-text-tertiary mb-3">
-                  Built with
-                </p>
-                <ul className="flex flex-wrap gap-2">
-                  {caseStudy.technologies.map((t, idx) => (
-                    <li
-                      key={t.id ?? idx}
-                      className="font-mono text-xs px-2 py-1 rounded-sm border border-border text-text-secondary"
-                    >
-                      {t.tech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
             )}
           </div>
         </div>

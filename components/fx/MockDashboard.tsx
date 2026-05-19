@@ -1,43 +1,45 @@
 /**
- * Fake "live audit" dashboard card used as a visual proof
- * element in hero and tool sections. Server component — no JS.
- * Looks like real product. Numbers are static but plausible.
+ * Restrained "live audit" card. Single accent (amber). No
+ * coloured dots beyond accent + ink-mute. Reads as a serious
+ * diagnostic tool, not a candy-coloured demo.
  */
 export function MockDashboard() {
   const findings = [
-    { label: "Audience overlap", value: "£1,840/mo", severity: "high" },
-    { label: "Broken UTM tags", value: "11 campaigns", severity: "high" },
-    { label: "Dead creative", value: "£940/mo", severity: "mid" },
-    { label: "Branded search bleed", value: "23%", severity: "mid" },
+    { label: "Audience overlap", value: "£1,840 / mo" },
+    { label: "Broken UTM tags", value: "11 campaigns" },
+    { label: "Dead creative", value: "£940 / mo" },
+    { label: "Branded search bleed", value: "23%" },
   ];
 
   return (
     <div className="relative w-full max-w-md">
-      {/* Glow halo */}
+      {/* Subtle glow halo behind */}
       <div
         aria-hidden
-        className="absolute -inset-6 rounded-3xl"
+        className="absolute -inset-8 rounded-3xl"
         style={{
           background:
-            "radial-gradient(60% 50% at 50% 50%, oklch(0.78 0.17 60 / 0.25), transparent 70%)",
-          filter: "blur(30px)",
+            "radial-gradient(50% 45% at 50% 50%, oklch(0.62 0.13 60 / 0.18), transparent 70%)",
+          filter: "blur(40px)",
         }}
       />
 
-      {/* Card */}
       <div
-        className="relative rounded-2xl border border-border-strong overflow-hidden backdrop-blur-md"
+        className="relative rounded-xl border border-border-strong overflow-hidden backdrop-blur-md"
         style={{
-          backgroundColor: "oklch(0.14 0.012 290 / 0.85)",
+          backgroundColor: "oklch(0.14 0.006 60 / 0.85)",
           boxShadow:
-            "0 30px 80px -20px oklch(0 0 0 / 0.5), 0 0 0 1px oklch(1 0 0 / 0.03) inset",
+            "0 30px 80px -20px oklch(0 0 0 / 0.55), 0 0 0 1px oklch(1 0 0 / 0.04) inset",
         }}
       >
         {/* Window chrome */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-canvas-2/50">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-canvas-2/60">
+          <div className="flex items-center gap-2.5">
+            <span className="relative flex w-2 h-2">
+              <span className="absolute inset-0 rounded-full bg-accent animate-ping opacity-60" />
+              <span className="relative w-2 h-2 rounded-full bg-accent" />
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-mute">
               Audit · Live
             </span>
           </div>
@@ -47,64 +49,52 @@ export function MockDashboard() {
         </div>
 
         {/* Body */}
-        <div className="p-5 space-y-5">
+        <div className="p-6 space-y-6">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-mute mb-1.5">
-              Total wastage detected
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-mute mb-2">
+              Wastage detected
             </p>
             <p
-              className="font-serif text-5xl text-ink leading-none tracking-tight"
+              className="font-sans font-medium text-ink leading-none tracking-[-0.04em] text-5xl md:text-6xl"
               style={{ fontFeatureSettings: "'tnum'" }}
             >
               £4,832
-              <span className="text-ink-mute text-2xl ml-1">/mo</span>
+              <span className="text-ink-mute text-xl ml-2 font-normal">/mo</span>
             </p>
-            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-emerald mt-2">
-              ⏶ 3 quick wins available
+            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-accent mt-3">
+              + 3 quick wins available
             </p>
           </div>
 
-          <div className="space-y-2">
+          <ul className="space-y-0">
             {findings.map((f, i) => (
-              <div
+              <li
                 key={f.label}
-                className="flex items-center justify-between py-2 border-t border-border/60"
+                className="flex items-center justify-between py-3 border-t border-border/60"
                 style={{
-                  animation: `fade-up 600ms ${800 + i * 120}ms var(--ease-out-quint) both`,
+                  animation: `fade-up 600ms ${900 + i * 110}ms var(--ease-out-quint) both`,
                 }}
               >
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className={
-                      "w-1.5 h-1.5 rounded-full " +
-                      (f.severity === "high" ? "bg-amber" : "bg-indigo")
-                    }
-                  />
-                  <span className="text-sm text-ink-soft">{f.label}</span>
-                </div>
+                <span className="text-sm text-ink-soft">{f.label}</span>
                 <span
                   className="font-mono text-xs text-ink"
                   style={{ fontFeatureSettings: "'tnum'" }}
                 >
                   {f.value}
                 </span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
 
-          <div className="flex items-center gap-3 pt-2">
-            <span className="flex-1 h-1 rounded-full bg-canvas-2 overflow-hidden">
+          <div className="flex items-center gap-3 pt-1">
+            <span className="flex-1 h-px bg-rule overflow-hidden relative">
               <span
-                className="block h-full rounded-full"
-                style={{
-                  width: "74%",
-                  background:
-                    "linear-gradient(90deg, oklch(0.78 0.17 60), oklch(0.72 0.22 340))",
-                }}
+                className="absolute inset-y-0 left-0 bg-accent"
+                style={{ width: "74%" }}
               />
             </span>
             <span className="font-mono text-[10px] text-ink-mute uppercase tracking-[0.14em]">
-              74%
+              74% reviewed
             </span>
           </div>
         </div>

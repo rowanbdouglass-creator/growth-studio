@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { Card } from "@/components/ui/Card";
-import { buttonStyles } from "@/components/ui/Button";
 
 interface ToolCTAItem {
-  eyebrow: string;
+  number: string;
+  status: string;
   title: string;
   description: string;
   ctaLabel: string;
@@ -13,18 +12,20 @@ interface ToolCTAItem {
 
 const tools: ToolCTAItem[] = [
   {
-    eyebrow: "Free · 5 min",
+    number: "01",
+    status: "Free · 5 min",
     title: "Ad Audit",
     description:
-      "Connect Meta and Google. We surface 90 days of wastage, quick wins, and benchmarks against your vertical.",
+      "Connect Meta and Google. We surface 90 days of wastage, three quick wins, and benchmarks against your vertical.",
     ctaLabel: "Run my ad audit",
     href: "/tools/ad-audit",
   },
   {
-    eyebrow: "Free · 10 min",
+    number: "02",
+    status: "Free · 10 min",
     title: "Website & Systems Audit",
     description:
-      "Paste your URL. We crawl, screenshot, and run vertical-specific playbooks against your funnel — visual diagnosis, business-model audit.",
+      "Paste your URL. We crawl, screenshot, and run vertical playbooks against your funnel — visual diagnosis plus business-model audit.",
     ctaLabel: "Audit my site",
     href: "/tools/website-audit",
   },
@@ -34,51 +35,63 @@ export function ToolCTASection() {
   return (
     <section
       aria-labelledby="tools-heading"
-      className="py-24 md:py-32 bg-surface/30 border-y border-border"
+      className="py-32 md:py-44 border-t border-rule"
     >
       <Container size="wide">
-        <div className="max-w-3xl mb-16">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-6">
-            The intelligence layer
-          </p>
+        <div className="flex items-center gap-3 mb-16 md:mb-20">
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
+            04 — Tools
+          </span>
+          <span className="flex-1 h-px bg-rule" />
+        </div>
+
+        <div className="grid md:grid-cols-[1.4fr_1fr] gap-12 md:gap-20 mb-20 items-end">
           <h2
             id="tools-heading"
-            className="font-serif text-4xl md:text-5xl font-medium leading-[1.1] text-text-primary"
+            className="font-sans font-medium text-ink leading-[0.98] tracking-[-0.035em] text-5xl md:text-6xl lg:text-7xl max-w-3xl"
           >
-            Audits that actually find{" "}
-            <span className="italic text-text-secondary">the wastage.</span>
+            Audits that find{" "}
+            <span className="italic-editorial font-normal text-ink-soft">
+              what consultants miss.
+            </span>
           </h2>
-          <p className="text-text-secondary text-lg leading-relaxed max-w-2xl mt-6">
-            Two free tools built from our own playbooks. Run one before you
-            book a call — we'll be able to talk about real numbers, not
-            hypotheticals.
+          <p className="text-lg text-ink-soft leading-relaxed max-w-md">
+            Two free tools built from our own playbooks. Run one before
+            you book — we'll talk about real numbers, not hypotheticals.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-16 md:gap-20">
           {tools.map((tool) => (
-            <Card
+            <article
               key={tool.href}
-              as="article"
-              variant="elevated"
-              className="flex flex-col gap-6 h-full"
+              className="anim-reveal pt-8 border-t border-rule flex flex-col gap-6"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
-                {tool.eyebrow}
-              </p>
-              <h3 className="font-serif text-3xl font-medium text-text-primary">
+              <div className="flex items-baseline gap-4">
+                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
+                  {tool.number}
+                </span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
+                  {tool.status}
+                </span>
+              </div>
+
+              <h3 className="font-sans font-medium text-3xl md:text-4xl text-ink leading-[1.05] tracking-[-0.025em]">
                 {tool.title}
               </h3>
-              <p className="text-text-secondary leading-relaxed">
+
+              <p className="text-ink-soft leading-relaxed max-w-md">
                 {tool.description}
               </p>
+
               <Link
                 href={tool.href}
-                className={`${buttonStyles({ variant: "primary", size: "md" })} mt-auto self-start`}
+                className="mt-auto pt-4 inline-flex items-center gap-2 text-ink hover:text-accent transition-colors w-fit"
               >
-                {tool.ctaLabel}
+                <span>{tool.ctaLabel}</span>
+                <span aria-hidden>→</span>
               </Link>
-            </Card>
+            </article>
           ))}
         </div>
       </Container>

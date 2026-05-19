@@ -9,28 +9,29 @@ export function Testimonial({ testimonial }: TestimonialProps) {
   return (
     <section
       aria-labelledby="testimonial-heading"
-      className="py-24 md:py-32"
+      className="py-32 md:py-44 border-t border-rule"
     >
-      <Container size="default">
-        <p
-          id="testimonial-heading"
-          className="font-mono text-xs uppercase tracking-[0.18em] text-text-tertiary text-center mb-12"
-        >
-          What clients say
-        </p>
+      <Container size="wide">
+        <div className="flex items-center gap-3 mb-16 md:mb-20">
+          <span
+            id="testimonial-heading"
+            className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute"
+          >
+            07 — In their words
+          </span>
+          <span className="flex-1 h-px bg-rule" />
+        </div>
 
-        <blockquote className="text-center max-w-3xl mx-auto">
-          <p className="font-serif text-3xl md:text-4xl lg:text-5xl italic leading-[1.2] text-text-primary mb-10">
-            <span aria-hidden className="text-accent mr-2">“</span>
+        <blockquote className="max-w-4xl">
+          <p className="font-sans font-normal text-3xl md:text-5xl lg:text-6xl text-ink leading-[1.1] tracking-[-0.025em] mb-10">
+            <span aria-hidden className="text-accent">“</span>
             {testimonial.quote}
-            <span aria-hidden className="text-accent ml-2">”</span>
+            <span aria-hidden className="text-accent">”</span>
           </p>
           <footer>
-            <p className="font-serif text-lg text-text-primary">
-              {testimonial.author}
-            </p>
+            <p className="text-base text-ink mb-1">{testimonial.author}</p>
             {(testimonial.role || testimonial.company) && (
-              <p className="font-mono text-xs uppercase tracking-[0.16em] text-text-tertiary mt-2">
+              <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-mute">
                 {[testimonial.role, testimonial.company]
                   .filter(Boolean)
                   .join(" · ")}

@@ -1,38 +1,39 @@
 import { Container } from "@/components/ui/Container";
 
 /**
- * Placeholder client logo treatments. Real client logos go here once
- * Nayim, Forum Studios, etc. supply usable marks.
+ * Selected client list. Treated as type, not logos — confident,
+ * editorial. Real SVG marks can replace these later.
  */
-const placeholderClients = [
-  "NAYIM'S",
+const clients = [
+  "Nayim's Embroideries",
   "T-SHOT",
-  "FORUM",
-  "CAPE KINGS",
-  "JC SETTON",
-  "CONFIDENTIAL",
+  "Forum Studios",
+  "Cape Kings",
+  "JC Setton Opticians",
+  "Confidential",
 ];
 
 export function LogoGrid() {
   return (
     <section
-      aria-labelledby="trusted-by-heading"
-      className="border-y border-border py-16 md:py-20"
+      aria-labelledby="clients-heading"
+      className="py-20 md:py-24"
     >
       <Container size="wide">
-        <p
-          id="trusted-by-heading"
-          className="font-mono text-xs uppercase tracking-[0.18em] text-text-tertiary text-center mb-10"
-        >
-          Trusted by ambitious teams across the UK
-        </p>
-        <ul
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6 items-center justify-items-center"
-        >
-          {placeholderClients.map((name) => (
+        <div className="flex items-center gap-3 mb-10">
+          <span
+            id="clients-heading"
+            className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute"
+          >
+            Selected clients · 2024 — 2026
+          </span>
+          <span className="flex-1 h-px bg-rule" />
+        </div>
+        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6">
+          {clients.map((name) => (
             <li
               key={name}
-              className="font-serif text-xl text-text-tertiary hover:text-text-secondary transition-colors tracking-tight"
+              className="font-sans text-base md:text-lg text-ink-mute hover:text-ink transition-colors duration-200 tracking-tight"
             >
               {name}
             </li>

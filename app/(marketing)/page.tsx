@@ -33,80 +33,55 @@ export default async function Home() {
       <CursorGlow />
 
       {/* ============================= HERO ============================= */}
-      <section className="relative isolate pt-20 md:pt-28 pb-24 md:pb-32 overflow-hidden">
+      {/*
+        Hybrid: editorial restraint (index header, type-driven, big
+        breathing room) + one visual moment (subtle mesh + mock
+        dashboard on wide screens). Single accent only.
+      */}
+      <section className="relative isolate pt-24 md:pt-32 pb-24 md:pb-32 overflow-hidden">
         <MeshGradient className="anim-hero-bg" />
 
         <Container size="wide">
-          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-16 lg:gap-12 items-center">
-            <div className="anim-hero-entry">
-              {/* Live status pill */}
-              <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full border border-border-strong bg-canvas-2/60 backdrop-blur-md mb-10">
-                <span className="relative flex w-1.5 h-1.5">
-                  <span className="absolute inset-0 rounded-full bg-emerald animate-ping opacity-75" />
-                  <span className="relative w-1.5 h-1.5 rounded-full bg-emerald" />
-                </span>
-                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-soft">
-                  Now booking · Q3 2026
-                </span>
-              </div>
+          <div className="flex items-center gap-3 mb-12 md:mb-16">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
+              01 — Growth Studio
+            </span>
+            <span className="flex-1 h-px bg-rule" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
+              Est. 2024 · UK
+            </span>
+          </div>
 
-              {/* Display headline — mixed type lockup */}
-              <h1 className="font-display font-medium text-ink mb-8 leading-[0.92] tracking-[-0.04em] text-6xl md:text-7xl lg:text-[7.5rem]">
-                Compound{" "}
-                <span
-                  className="italic-editorial font-normal text-ink-soft"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  growth.
+          <div className="grid lg:grid-cols-[1.5fr_1fr] gap-16 lg:gap-12 items-center">
+            <div className="anim-hero-entry">
+              <h1 className="font-sans font-medium text-ink mb-10 md:mb-12 leading-[0.95] tracking-[-0.04em] text-5xl md:text-7xl lg:text-[7.5rem]">
+                Growth, engineered{" "}
+                <span className="italic-editorial font-normal text-ink-soft">
+                  for the long compound.
                 </span>
-                <br />
-                <span className="text-ink-mute">Engineered, not</span>
-                <br />
-                <span className="text-ink">guessed.</span>
               </h1>
 
-              <p className="text-lg md:text-xl text-ink-soft max-w-xl leading-relaxed mb-10">
-                A two-person growth studio combining{" "}
-                <span className="text-amber">paid traffic</span>,{" "}
-                <span className="text-indigo">custom operational systems</span>,
-                and an{" "}
-                <span className="text-magenta">AI intelligence layer</span> for
-                established UK businesses ready to scale.
+              <p className="text-lg md:text-xl text-ink-soft max-w-2xl leading-relaxed mb-12">
+                A two-person studio building paid traffic, custom operational
+                systems, and AI tooling for established UK businesses. One
+                engagement, one engine — no junior hand-offs, no recycled
+                decks.
               </p>
 
-              <div className="flex flex-wrap gap-4 mb-12">
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                 <Link
-                  href="/tools/website-audit"
+                  href="/contact"
                   className={buttonStyles({ variant: "primary", size: "lg" })}
                 >
-                  Run a free audit
-                  <span aria-hidden className="ml-1">↗</span>
+                  Book a discovery call
                 </Link>
                 <Link
                   href="/work"
-                  className={buttonStyles({ variant: "secondary", size: "lg" })}
+                  className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors border-b border-rule hover:border-accent pb-1"
                 >
-                  See the work
+                  <span>See selected work</span>
+                  <span aria-hidden>→</span>
                 </Link>
-              </div>
-
-              {/* Three-pillar callout row */}
-              <div className="grid grid-cols-3 gap-4 md:gap-6 max-w-lg pt-8 border-t border-border">
-                {[
-                  { label: "Paid", color: "bg-amber", text: "text-amber" },
-                  { label: "Systems", color: "bg-indigo", text: "text-indigo" },
-                  { label: "Intel", color: "bg-magenta", text: "text-magenta" },
-                ].map((p, i) => (
-                  <div key={p.label}>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className={`w-1.5 h-1.5 rounded-full ${p.color}`} />
-                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-mute">
-                        0{i + 1}
-                      </span>
-                    </div>
-                    <p className={`font-display text-xl ${p.text}`}>{p.label}</p>
-                  </div>
-                ))}
               </div>
             </div>
 
@@ -117,36 +92,41 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* ============================= LOGO GRID ============================= */}
+      {/* ============================= LOGOS ============================= */}
       <LogoGrid />
 
+      {/* ============================= SERVICES ============================= */}
+      <ServiceGrid services={services} />
+
+      {/* ============================= FEATURED WORK ============================= */}
+      {featuredCaseStudy && <CaseStudyFeature caseStudy={featuredCaseStudy} />}
+
       {/* ============================= TERMINAL DEMO ============================= */}
-      <section className="py-24 md:py-32 relative overflow-hidden">
-        <MeshGradient className="opacity-30" />
+      <section className="py-32 md:py-44 border-t border-rule relative overflow-hidden">
         <Container size="wide">
-          <div className="grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-20 items-center">
+          <div className="flex items-center gap-3 mb-16 md:mb-20">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
+              04 — The intelligence layer
+            </span>
+            <span className="flex-1 h-px bg-rule" />
+          </div>
+
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center">
             <div className="anim-reveal">
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-magenta mb-6">
-                The intelligence layer · live
-              </p>
-              <h2 className="font-display font-medium text-ink mb-8 leading-[0.95] tracking-[-0.035em] text-5xl md:text-6xl lg:text-7xl">
-                Audits that{" "}
-                <span
-                  className="italic-editorial font-normal text-magenta"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  find what
-                </span>{" "}
-                consultants miss.
+              <h2 className="font-sans font-medium text-ink mb-10 leading-[0.98] tracking-[-0.035em] text-5xl md:text-6xl lg:text-7xl max-w-3xl">
+                Audits that find{" "}
+                <span className="italic-editorial font-normal text-ink-soft">
+                  what consultants miss.
+                </span>
               </h2>
               <p className="text-lg text-ink-soft leading-relaxed max-w-md mb-8">
-                Every prospect's ad account, website, and ops stack runs through
-                our internal CLI before the first call. You'll never sit through
-                a generic pitch.
+                Every prospect's ad account, website, and ops stack runs
+                through our internal CLI before the first call. You'll never
+                sit through a generic pitch.
               </p>
               <Link
                 href="/tools"
-                className="inline-flex items-center gap-2 text-ink font-medium border-b border-border-strong hover:border-magenta hover:text-magenta transition-colors pb-1"
+                className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors border-b border-rule hover:border-accent pb-1 w-fit"
               >
                 <span>See all tools</span>
                 <span aria-hidden>→</span>
@@ -177,13 +157,7 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* ============================= SERVICES ============================= */}
-      <ServiceGrid services={services} />
-
-      {/* ============================= FEATURED CASE STUDY ============================= */}
-      {featuredCaseStudy && <CaseStudyFeature caseStudy={featuredCaseStudy} />}
-
-      {/* ============================= TOOL CTAS ============================= */}
+      {/* ============================= TOOLS ============================= */}
       <ToolCTASection />
 
       {/* ============================= STATS ============================= */}
@@ -195,7 +169,7 @@ export default async function Home() {
       {/* ============================= TESTIMONIAL ============================= */}
       {featuredTestimonial && <Testimonial testimonial={featuredTestimonial} />}
 
-      {/* ============================= FINAL CTA ============================= */}
+      {/* ============================= CTA ============================= */}
       <CTASection />
     </>
   );
