@@ -1,7 +1,9 @@
-import type { ElementType, ReactNode } from "react";
+import type { ReactNode } from "react";
+
+type ContainerElement = "div" | "section" | "article" | "main" | "header" | "footer" | "nav" | "aside";
 
 interface ContainerProps {
-  as?: ElementType;
+  as?: ContainerElement;
   size?: "default" | "narrow" | "wide";
   className?: string;
   children: ReactNode;

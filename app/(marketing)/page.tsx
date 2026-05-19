@@ -8,6 +8,7 @@ import { AnimatedTerminal } from "@/components/fx/AnimatedTerminal";
 import { Tilt3D } from "@/components/fx/Tilt3D";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { SplitText } from "@/components/fx/SplitText";
+import { HeroSceneLazy } from "@/components/fx/HeroSceneLazy";
 import { Logomark } from "@/components/brand/Logomark";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
@@ -39,6 +40,15 @@ export default async function Home() {
       {/* ============================ 01 HERO ============================ */}
       <section className="snap-section relative isolate overflow-hidden">
         <MeshGradient className="anim-hero-bg" />
+        {/* WebGL chrome blob — sits between mesh and content,
+            heavily blurred so it reads as luminous metal not a tech demo */}
+        <div
+          aria-hidden
+          className="hidden md:block absolute inset-0 -z-[8] opacity-50"
+          style={{ filter: "blur(20px) saturate(1.1)" }}
+        >
+          <HeroSceneLazy />
+        </div>
 
         <Container size="wide">
           <div className="flex items-center gap-3 mb-12 md:mb-16">

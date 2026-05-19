@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef } from "react";
 
 interface SplitTextProps {
   children: string;
-  as?: keyof React.JSX.IntrinsicElements;
   className?: string;
   delay?: number;
 }
@@ -14,16 +13,14 @@ interface SplitTextProps {
  * scroll via IntersectionObserver. Each word fades + slides up with
  * a small stagger. Respects prefers-reduced-motion.
  *
- * Children must be a plain string. For mixed content (italic spans)
- * use the manual stagger className `anim-hero-entry` instead.
+ * Renders as a <span> so it can wrap inline inside larger headlines.
  */
 export function SplitText({
   children,
-  as = "span",
   className = "",
   delay = 0,
 }: SplitTextProps) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -52,11 +49,10 @@ export function SplitText({
     return () => obs.disconnect();
   }, []);
 
-  const Tag = as as React.ElementType;
   const words = children.split(" ");
 
   return (
-    <Tag ref={ref as never} className={`split-text ${className}`}>
+    <span ref={ref} className={`split-text ${className}`}>
       {words.map((w, i) => (
         <span key={i} className="split-text__word">
           <span
@@ -68,6 +64,6 @@ export function SplitText({
           {i < words.length - 1 ? " " : ""}
         </span>
       ))}
-    </Tag>
+    </span>
   );
 }
