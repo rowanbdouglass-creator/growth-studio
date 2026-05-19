@@ -30,10 +30,10 @@ export default async function Home() {
     <>
       {/* Hero */}
       <section className="relative flex items-center py-24 md:py-36 lg:py-44 overflow-hidden">
-        {/* Subtle background gradient */}
+        {/* Subtle background gradient with scroll parallax */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-60"
+          className="anim-hero-bg pointer-events-none absolute inset-0 -z-10 opacity-60"
           style={{
             background:
               "radial-gradient(ellipse at top left, oklch(0.22 0.06 50 / 0.35), transparent 50%), radial-gradient(ellipse at bottom right, oklch(0.22 0.03 280 / 0.4), transparent 55%)",
@@ -41,7 +41,7 @@ export default async function Home() {
         />
 
         <Container size="wide">
-          <div className="max-w-4xl">
+          <div className="max-w-4xl anim-hero-entry">
             <Badge variant="accent" className="mb-8">
               {brand.tagline}
             </Badge>

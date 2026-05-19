@@ -51,7 +51,7 @@ export function ProcessSteps() {
           {steps.map((step) => (
             <li
               key={step.n}
-              className="bg-background p-8 md:p-10 transition-colors duration-200 hover:bg-surface"
+              className="anim-reveal bg-background p-8 md:p-10 transition-colors duration-200 hover:bg-surface"
             >
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-6">
                 {step.n}

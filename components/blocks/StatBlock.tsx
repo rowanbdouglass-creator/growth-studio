@@ -22,7 +22,10 @@ export function StatRow() {
         </p>
         <dl className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-6">
           {stats.map((stat) => (
-            <div key={stat.label} className="text-center md:text-left">
+            <div
+              key={stat.label}
+              className="anim-stat text-center md:text-left"
+            >
               <dd className="font-mono text-5xl md:text-6xl text-text-primary leading-none mb-3 tabular-nums tracking-tight">
                 {stat.value}
               </dd>
