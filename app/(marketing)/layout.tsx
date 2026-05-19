@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Instrument_Serif,
+  JetBrains_Mono,
+} from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -7,22 +11,24 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
 import "../globals.css";
 
-const fraunces = Fraunces({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-fraunces",
+  variable: "--font-display",
   display: "swap",
-  axes: ["opsz", "SOFT", "WONK"],
+  axes: ["opsz", "wdth"],
 });
 
-const inter = Inter({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-editorial",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-jetbrains",
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -51,7 +57,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1a1a1f",
+  themeColor: "#0c0a0f",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -65,7 +71,7 @@ export default function MarketingLayout({
   return (
     <html
       lang="en-GB"
-      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${bricolage.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col">
         <a

@@ -1,31 +1,63 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------
-   Growth Studio — Design tokens
-   All tokens flow through Tailwind v4's @theme directive so they
-   become first-class utilities (e.g. bg-background, text-accent).
-   ------------------------------------------------------------------ */
+/* ==================================================================
+   Growth Studio — Design system
+   ==================================================================
+   Three-pillar identity:
+     · Paid Growth     → amber  (warm, performance)
+     · Custom Systems  → indigo (cool, structured)
+     · Intelligence    → magenta (electric, smart)
+   ==================================================================
+*/
 
 @theme {
-  /* Colours — OKLCH for perceptual uniformity */
-  --color-background:        oklch(0.13 0.005 280);
-  --color-surface:           oklch(0.16 0.006 280);
-  --color-surface-elevated:  oklch(0.19 0.007 280);
-  --color-border:            oklch(0.24 0.008 280);
-  --color-border-strong:     oklch(0.32 0.010 280);
-  --color-text-primary:      oklch(0.96 0.003 280);
-  --color-text-secondary:    oklch(0.72 0.005 280);
-  --color-text-tertiary:     oklch(0.52 0.006 280);
-  --color-accent:            oklch(0.74 0.18 50);
-  --color-accent-hover:      oklch(0.70 0.20 47);
-  --color-accent-subtle:     oklch(0.74 0.18 50 / 0.12);
+  /* ----------------- Surfaces ----------------- */
+  --color-canvas:            oklch(0.12 0.008 290);   /* page bg */
+  --color-canvas-2:          oklch(0.14 0.010 290);   /* one step up */
+  --color-surface:           oklch(0.17 0.012 290);   /* cards */
+  --color-surface-elevated:  oklch(0.20 0.014 290);   /* hover */
+  --color-border:            oklch(0.26 0.012 290);
+  --color-border-strong:     oklch(0.36 0.014 290);
+  --color-border-bright:     oklch(0.50 0.020 290);
+
+  /* ----------------- Text ----------------- */
+  --color-ink:               oklch(0.97 0.005 290);
+  --color-ink-soft:          oklch(0.78 0.008 290);
+  --color-ink-mute:          oklch(0.58 0.010 290);
+  --color-ink-dim:           oklch(0.42 0.012 290);
+
+  /* ----------------- Pillar colours ----------------- */
+  --color-amber:             oklch(0.78 0.17 60);     /* paid growth */
+  --color-amber-soft:        oklch(0.78 0.17 60 / 0.14);
+  --color-amber-glow:        oklch(0.78 0.17 60 / 0.40);
+
+  --color-indigo:            oklch(0.72 0.18 270);    /* custom systems */
+  --color-indigo-soft:       oklch(0.72 0.18 270 / 0.14);
+  --color-indigo-glow:       oklch(0.72 0.18 270 / 0.40);
+
+  --color-magenta:           oklch(0.72 0.22 340);    /* intelligence */
+  --color-magenta-soft:      oklch(0.72 0.22 340 / 0.14);
+  --color-magenta-glow:      oklch(0.72 0.22 340 / 0.40);
+
+  --color-emerald:           oklch(0.78 0.16 155);    /* success / live */
+  --color-emerald-soft:      oklch(0.78 0.16 155 / 0.16);
+
+  /* Legacy aliases — kept for components not yet refactored */
+  --color-background:        oklch(0.12 0.008 290);
+  --color-text-primary:      oklch(0.97 0.005 290);
+  --color-text-secondary:    oklch(0.78 0.008 290);
+  --color-text-tertiary:     oklch(0.58 0.010 290);
+  --color-accent:            oklch(0.78 0.17 60);
+  --color-accent-hover:      oklch(0.74 0.18 55);
+  --color-accent-subtle:     oklch(0.78 0.17 60 / 0.14);
   --color-success:           oklch(0.78 0.16 155);
   --color-mono-blue:         oklch(0.42 0.04 240);
 
-  /* Typography — variable fonts wired in app/layout.tsx */
-  --font-sans:    var(--font-inter), system-ui, -apple-system, sans-serif;
-  --font-serif:   var(--font-fraunces), Georgia, "Times New Roman", serif;
-  --font-mono:    var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
+  /* ----------------- Typography ----------------- */
+  --font-sans:    var(--font-display), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-display), system-ui, -apple-system, sans-serif;
+  --font-serif:   var(--font-editorial), "Times New Roman", serif;
+  --font-mono:    var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
   /* Fluid type scale */
   --text-xs:      clamp(0.75rem, 0.7rem + 0.25vw, 0.85rem);
@@ -38,7 +70,8 @@
   --text-4xl:     clamp(2.25rem, 1.75rem + 2.5vw, 3.75rem);
   --text-5xl:     clamp(3rem, 2.25rem + 3.75vw, 5rem);
   --text-6xl:     clamp(3.75rem, 2.75rem + 5vw, 7rem);
-  --text-display: clamp(4.5rem, 3rem + 7.5vw, 9rem);
+  --text-7xl:     clamp(4.5rem, 3.25rem + 6.5vw, 8rem);
+  --text-display: clamp(5rem, 3rem + 8vw, 10rem);
 
   /* Border radii */
   --radius-sm:    4px;
@@ -48,10 +81,12 @@
   --radius-2xl:   24px;
 
   /* Shadows */
-  --shadow-sm:           0 1px 2px 0 oklch(0 0 0 / 0.3);
-  --shadow-md:           0 4px 12px -2px oklch(0 0 0 / 0.4);
-  --shadow-lg:           0 12px 32px -4px oklch(0 0 0 / 0.5);
-  --shadow-glow-accent:  0 0 32px -4px oklch(0.74 0.18 50 / 0.3);
+  --shadow-sm:           0 1px 2px 0 oklch(0 0 0 / 0.4);
+  --shadow-md:           0 4px 12px -2px oklch(0 0 0 / 0.5);
+  --shadow-lg:           0 16px 40px -6px oklch(0 0 0 / 0.6);
+  --shadow-glow-amber:   0 0 60px -8px oklch(0.78 0.17 60 / 0.35);
+  --shadow-glow-indigo:  0 0 60px -8px oklch(0.72 0.18 270 / 0.35);
+  --shadow-glow-magenta: 0 0 60px -8px oklch(0.72 0.22 340 / 0.35);
 
   /* Motion — easing curves */
   --ease-out-quint:   cubic-bezier(0.16, 1, 0.3, 1);
@@ -71,100 +106,124 @@
   --duration-fast:    150ms;
   --duration-base:    200ms;
   --duration-medium:  400ms;
-  --duration-hero:    700ms;
+  --duration-hero:    800ms;
 }
 
-/* ------------------------------------------------------------------
-   Base resets and globals
-   ------------------------------------------------------------------ */
+/* ==================================================================
+   Base resets & globals
+   ================================================================== */
 
 html, body {
-  background: var(--color-background);
-  color: var(--color-text-primary);
+  background: var(--color-canvas);
+  color: var(--color-ink);
 }
 
 body {
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "cv11";
+  font-feature-settings: "ss01", "ss02", "cv11";
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-/* Headings use the serif by default */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-feature-settings: "ss01", "ss02";
-  letter-spacing: -0.02em;
-}
-
-/* Selection */
-::selection {
-  background: var(--color-accent-subtle);
-  color: var(--color-text-primary);
-}
-
-/* Focus — high-contrast amber outline */
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* Smooth, considered scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* ------------------------------------------------------------------
-   Animations — scroll-driven and entry
-   Uses native CSS animation-timeline (Chrome/Edge 115+, Safari 18+).
-   Falls back to "no animation" in older browsers — content stays
-   visible, no JS.
-   ------------------------------------------------------------------ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  font-feature-settings: "ss01", "ss02";
+}
+
+/* The "editorial" italic moments use the serif */
+.italic-editorial,
+.font-serif em,
+.font-serif i {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-feature-settings: "ss01";
+}
+
+/* Selection */
+::selection {
+  background: var(--color-amber-soft);
+  color: var(--color-ink);
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ==================================================================
+   Decorative — noise overlay
+   Adds subtle film grain to the whole page. Helps the dark
+   background feel material rather than flat.
+   ================================================================== */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ==================================================================
+   Animations
+   ================================================================== */
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes hero-parallax {
-  from {
-    transform: translateY(0) scale(1);
-    opacity: 0.6;
-  }
-  to {
-    transform: translateY(15%) scale(1.05);
-    opacity: 0.25;
-  }
+  from { transform: translateY(0) scale(1); opacity: 0.55; }
+  to   { transform: translateY(18%) scale(1.08); opacity: 0.18; }
 }
 
-/* Hero entry — runs on page load, no scroll dependency */
+/* Mesh-gradient slow drift — runs forever, no scroll dependency */
+@keyframes mesh-drift {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  33%  { transform: translate3d(3%, -2%, 0) rotate(2deg) scale(1.04); }
+  66%  { transform: translate3d(-2%, 3%, 0) rotate(-2deg) scale(0.98); }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes shine {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+
+/* Staggered entry on hero text */
 .anim-hero-entry > * {
   animation: fade-up 800ms var(--ease-out-quint) both;
 }
-.anim-hero-entry > *:nth-child(1) { animation-delay: 80ms; }
-.anim-hero-entry > *:nth-child(2) { animation-delay: 180ms; }
-.anim-hero-entry > *:nth-child(3) { animation-delay: 280ms; }
-.anim-hero-entry > *:nth-child(4) { animation-delay: 380ms; }
-.anim-hero-entry > *:nth-child(5) { animation-delay: 480ms; }
+.anim-hero-entry > *:nth-child(1) { animation-delay: 100ms; }
+.anim-hero-entry > *:nth-child(2) { animation-delay: 220ms; }
+.anim-hero-entry > *:nth-child(3) { animation-delay: 340ms; }
+.anim-hero-entry > *:nth-child(4) { animation-delay: 460ms; }
+.anim-hero-entry > *:nth-child(5) { animation-delay: 580ms; }
 
-/* Hero background — scroll-driven parallax + opacity fade */
+/* Scroll-driven parallax (Chrome/Edge 115+, Safari 18+) */
 @supports (animation-timeline: scroll()) {
   .anim-hero-bg {
     animation: hero-parallax linear both;
@@ -173,17 +232,12 @@ html {
   }
 }
 
-/* Section reveals — fade-up when entering viewport */
 @supports (animation-timeline: view()) {
   .anim-reveal {
     animation: fade-up linear both;
     animation-timeline: view();
     animation-range: entry 5% cover 30%;
   }
-}
-
-/* Stat cards — fade-in when entering viewport */
-@supports (animation-timeline: view()) {
   .anim-stat {
     animation: fade-up linear both;
     animation-timeline: view();
@@ -191,11 +245,34 @@ html {
   }
 }
 
-/* Honour reduced-motion preference */
+/* Blinking terminal cursor */
+.terminal-caret {
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Shimmer-shine on text — used sparingly */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-ink) 0%,
+    var(--color-ink) 40%,
+    var(--color-amber) 50%,
+    var(--color-ink) 60%,
+    var(--color-ink) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 5s linear infinite;
+}
+
+/* ==================================================================
+   Reduced motion
+   ================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
   *,
   *::before,
   *::after {

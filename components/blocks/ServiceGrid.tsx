@@ -10,28 +10,35 @@ export function ServiceGrid({ services }: ServiceGridProps) {
   return (
     <section
       aria-labelledby="services-heading"
-      className="py-24 md:py-32"
+      className="relative py-28 md:py-40 overflow-hidden"
     >
       <Container size="wide">
-        <div className="max-w-3xl mb-16">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-6">
-            Three pillars, one engine
-          </p>
-          <h2
-            id="services-heading"
-            className="font-serif text-4xl md:text-5xl font-medium leading-[1.1] text-text-primary"
-          >
-            We don't sell{" "}
-            <span className="italic text-text-secondary">point solutions.</span>
-          </h2>
-          <p className="text-text-secondary text-lg leading-relaxed max-w-2xl mt-6">
+        <div className="grid md:grid-cols-[1.4fr_1fr] gap-12 md:gap-20 mb-16 md:mb-20 items-end">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-amber mb-6">
+              · Three pillars, one engine
+            </p>
+            <h2
+              id="services-heading"
+              className="font-display font-medium text-ink leading-[0.95] tracking-[-0.035em] text-5xl md:text-6xl lg:text-7xl"
+            >
+              We don't sell{" "}
+              <span
+                className="italic-editorial font-normal text-ink-soft"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                point solutions.
+              </span>
+            </h2>
+          </div>
+          <p className="text-lg text-ink-soft leading-relaxed md:pl-10 md:border-l md:border-border max-w-md">
             Paid traffic without custom systems leaks. Custom systems without
-            paid traffic don't scale. We build both — and an intelligence
-            layer that keeps them sharper every quarter.
+            paid traffic don't scale. We build both — and an intelligence layer
+            that keeps both sharper every quarter.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-5 md:gap-6">
           {services.map((service) => (
             <div key={service.id} className="anim-reveal h-full">
               <ServiceCard service={service} />
