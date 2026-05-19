@@ -1,10 +1,41 @@
 # Growth Studio — Session Context Document
 
-**Last updated:** 2026-05-19 (Phase 3 marketing pages + forms + mobile nav + SEO complete)
+**Last updated:** 2026-05-19 (Phases 1–3 complete + JSON-LD; awaiting user input for Phase 4 — Resend + domain cutover)
 
 ## Live URLs
 - GitHub repo: https://github.com/rowanbdouglass-creator/growth-studio (private)
 - Vercel preview: https://growth-studio-two.vercel.app/ (auto-deploys on `git push origin main`)
+
+## Phase 4 — remaining work (needs user input or can be deferred)
+
+**Needs user:**
+- **Resend signup** — for transactional email on contact form. Free tier: 3,000/month. After signup, add `RESEND_API_KEY` + `RESEND_FROM_EMAIL` to `.env.local` AND Vercel env vars. Then wire `lib/actions/contact.ts` to send notification email.
+- **Vercel Blob** (optional, only when uploading images in admin) — for production media storage. The Media collection currently uses local filesystem which won't work on Vercel serverless. Adds `BLOB_READ_WRITE_TOKEN` env var.
+- **Domain cutover** — DNS change at Namecheap. Final step. Only do this when ready to replace the existing WordPress site at ylb.youlookbooked.com. Update DNS to point at Vercel; keep WordPress files on Namecheap as a safety net.
+
+**Can be done autonomously (Phase 4 polish, when there's time):**
+- Lighthouse audit pass (run on production, iterate where scores below 98)
+- Bundle analysis (`@next/bundle-analyzer`)
+- View Transitions API wiring for cross-route navigation (Next 16 still has `unstable_ViewTransition` — wait for stable)
+- Scroll-driven CSS animations (hero parallax, stats count-up, case study card reveals)
+- Real content swap: replace placeholder client logos with real SVGs, replace founder bios, add real testimonial quotes
+- Add real images (after Vercel Blob is configured)
+- Persist contact submissions to a Payload collection (mirror waitlist pattern)
+
+---
+
+## SEO complete (2026-05-19)
+
+- `app/sitemap.ts` — static + Payload-driven entries
+- `app/robots.ts` — disallow /admin, /api; reference sitemap
+- Per-page `generateMetadata` with Payload-fed title/description for dynamic routes
+- JSON-LD structured data:
+  - `Organization` + `WebSite` on every marketing page (via layout)
+  - `Service` + `BreadcrumbList` on service detail
+  - `Article` + `BreadcrumbList` on case study detail
+- All schema generators live in `lib/seo/jsonLd.ts`; renderer in `components/seo/JsonLd.tsx`
+
+---
 
 ## Phase 3 status — marketing pages live (2026-05-19)
 
