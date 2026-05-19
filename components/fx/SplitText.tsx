@@ -37,6 +37,13 @@ export function SplitText({
       return;
     }
 
+    // If already in view at mount (above the fold), show immediately
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.classList.add("is-shown");
+      return;
+    }
+
     const obs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -46,10 +53,20 @@ export function SplitText({
           }
         }
       },
-      { threshold: 0.4 }
+      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
     );
     obs.observe(el);
-    return () => obs.disconnect();
+
+    // Fail-safe: after 2s, force visible regardless
+    const failsafe = setTimeout(() => {
+      el.classList.add("is-shown");
+      obs.disconnect();
+    }, 2000);
+
+    return () => {
+      obs.disconnect();
+      clearTimeout(failsafe);
+    };
   }, []);
 
   const words = children.split(" ");

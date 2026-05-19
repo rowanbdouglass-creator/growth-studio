@@ -4,6 +4,7 @@ import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/fx/CustomCursor";
+import { SoundFx } from "@/components/fx/SoundFx";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
 import "../globals.css";
@@ -74,6 +75,7 @@ export default function MarketingLayout({
           Skip to content
         </a>
         <CustomCursor />
+        <SoundFx />
         <Header />
         <div id="main" className="flex-1 flex flex-col">
           {children}

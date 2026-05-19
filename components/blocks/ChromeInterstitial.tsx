@@ -11,14 +11,6 @@ interface ChromeInterstitialProps {
   label?: string;
 }
 
-/**
- * Chrome blob takeover. The WebGL animation runs inside Three.js
- * (mesh.scale + material.distort interpolated in useFrame) instead
- * of being CSS-transformed — this is dramatically smoother because
- * the GPU doesn't have to re-rasterise the canvas every scroll frame.
- *
- * The only thing CSS-driven is the headline overlay.
- */
 export function ChromeInterstitial({
   headline = "We build the engines",
   emphasis = "that earn back hours per week.",
@@ -29,12 +21,10 @@ export function ChromeInterstitial({
   return (
     <PinnedZoom scrollHeight={220} className="bg-canvas">
       {({ progress, eased }) => {
-        // Headline holds visible across the section, scales subtly
         const headDist = Math.abs(progress - 0.5);
-        const headOpacity = Math.max(0.7, 1 - Math.pow(headDist * 2.0, 2));
-        const headScale = 0.95 + eased * 0.10;
-        const headY = (0.5 - eased) * 30;
-
+        const headOpacity = Math.max(0.85, 1 - Math.pow(headDist * 2.0, 2));
+        const headScale = 0.95 + eased * 0.08;
+        const headY = (0.5 - eased) * 24;
         const eyebrowOpacity = Math.min(
           1,
           0.6 + Math.abs(0.5 - progress) * 0.8
@@ -42,9 +32,7 @@ export function ChromeInterstitial({
 
         return (
           <div className="relative w-full h-full">
-            {/* Chrome blob — animation runs inside Three.js, canvas stays
-                at constant transform so the GPU isn't re-rasterising it
-                every scroll frame */}
+            {/* Chrome blob — animation runs inside Three.js */}
             <HeroSceneLazy
               externalProgress={eased}
               baseScale={1.8}
@@ -53,13 +41,13 @@ export function ChromeInterstitial({
               className="-z-10"
             />
 
-            {/* Vignette so type stays legible over the blob */}
+            {/* Heavier vignette so type is readable over the city reflection */}
             <div
               aria-hidden
               className="absolute inset-0 -z-[5] pointer-events-none"
               style={{
                 background:
-                  "radial-gradient(60% 60% at 50% 50%, transparent 30%, oklch(0.11 0.004 260 / 0.80) 100%)",
+                  "radial-gradient(70% 70% at 50% 50%, oklch(0.11 0.004 260 / 0.45) 0%, oklch(0.11 0.004 260 / 0.78) 60%, oklch(0.11 0.004 260 / 0.95) 100%)",
               }}
             />
 
@@ -76,15 +64,17 @@ export function ChromeInterstitial({
               </div>
             </div>
 
-            {/* Headline */}
+            {/* Headline — text-shadow halo for contrast over reflective surface */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
               <h2
-                className="font-sans font-medium text-ink leading-[0.98] tracking-[-0.04em] mb-6 max-w-5xl"
+                className="font-sans font-medium text-ink leading-[1.08] tracking-[-0.04em] mb-6 max-w-5xl pb-1"
                 style={{
                   fontSize: "clamp(2.5rem, 6.5vw, 7rem)",
                   opacity: headOpacity,
                   transform: `translateY(${headY.toFixed(2)}px) scale(${headScale.toFixed(3)})`,
                   transformOrigin: "center center",
+                  textShadow:
+                    "0 2px 30px oklch(0.08 0.005 260 / 0.85), 0 0 60px oklch(0.08 0.005 260 / 0.7)",
                   willChange: "transform, opacity",
                 }}
               >
@@ -95,7 +85,10 @@ export function ChromeInterstitial({
               </h2>
               <p
                 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute"
-                style={{ opacity: Math.max(0.4, headOpacity - 0.15) }}
+                style={{
+                  opacity: Math.max(0.6, headOpacity - 0.15),
+                  textShadow: "0 1px 20px oklch(0.08 0.005 260 / 0.9)",
+                }}
               >
                 {caption}
               </p>

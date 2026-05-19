@@ -7,12 +7,9 @@ import { AIAuditDemo } from "@/components/fx/AIAuditDemo";
 import { AnimatedTerminal } from "@/components/fx/AnimatedTerminal";
 import { Tilt3D } from "@/components/fx/Tilt3D";
 import { Magnetic } from "@/components/fx/Magnetic";
-import { SplitText } from "@/components/fx/SplitText";
 import { HeroSceneLazy } from "@/components/fx/HeroSceneLazy";
-import { ActivityTicker } from "@/components/fx/ActivityTicker";
 import { EditorialInterstitial } from "@/components/blocks/EditorialInterstitial";
 import { ChromeInterstitial } from "@/components/blocks/ChromeInterstitial";
-import { Logomark } from "@/components/brand/Logomark";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
 import { CaseStudyFeature } from "@/components/blocks/CaseStudyCard";
@@ -54,18 +51,9 @@ export default async function Home() {
         </div>
 
         <Container size="wide">
-          <div className="flex items-center gap-3 mb-12 md:mb-16 flex-wrap">
-            <Logomark size={14} animate />
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-              01 — Growth Studio
-            </span>
-            <span className="hidden md:block flex-1 h-px bg-rule" />
-            <ActivityTicker />
-          </div>
-
-          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center pt-12 md:pt-16">
             <div className="anim-hero-entry">
-              <h1 className="font-sans font-medium text-ink leading-[1.0] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-8">
+              <h1 className="font-sans font-medium text-ink leading-[1.08] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-8 pb-1">
                 Growth, engineered{" "}
                 <span className="italic-editorial font-normal silver-shine">
                   for the long compound.
@@ -169,10 +157,10 @@ export default async function Home() {
 
           <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-reveal-lg">
-              <h2 className="font-sans font-medium text-ink mb-8 leading-[1.05] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl">
-                <SplitText>Audits that find</SplitText>{" "}
+              <h2 className="font-sans font-medium text-ink mb-8 leading-[1.08] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl pb-1">
+                Audits that find{" "}
                 <span className="italic-editorial font-normal silver-shine">
-                  <SplitText delay={400}>what consultants miss.</SplitText>
+                  what consultants miss.
                 </span>
               </h2>
               <p className="text-base md:text-lg text-ink-soft leading-relaxed max-w-md mb-8">
