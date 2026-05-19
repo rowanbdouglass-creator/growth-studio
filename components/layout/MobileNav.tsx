@@ -51,66 +51,78 @@ export function MobileNav() {
 
       {open && (
         <div
-          className="fixed inset-0 z-[60] md:hidden flex flex-col"
-          style={{ backgroundColor: "oklch(0.13 0.005 280)" }}
+          className="fixed inset-0 z-[60] md:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Main menu"
         >
-          <div className="flex items-center justify-between px-6 h-16 border-b border-border">
-            <Link
-              href="/"
-              onClick={() => setOpen(false)}
-              className="font-serif text-xl font-medium text-text-primary"
-            >
-              {brand.name}
-            </Link>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-              className="flex items-center justify-center w-10 h-10 rounded-md border border-border-strong text-text-primary hover:bg-surface transition-colors"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                aria-hidden
-              >
-                <path
-                  d="M5 5l10 10M15 5L5 15"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
-          </div>
+          {/* Solid opaque backdrop — guaranteed to cover everything */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              backgroundColor: "#1d1a1f",
+              isolation: "isolate",
+            }}
+          />
 
-          <nav
-            aria-label="Main"
-            className="flex-1 flex flex-col px-6 py-12 gap-2"
-          >
-            {site.mainNav.map((item) => (
+          {/* Content sits above the backdrop */}
+          <div className="relative h-full flex flex-col">
+            <div className="flex items-center justify-between px-6 h-16 border-b border-border">
               <Link
-                key={item.href}
-                href={item.href}
+                href="/"
                 onClick={() => setOpen(false)}
-                className="font-serif text-3xl text-text-primary hover:text-accent transition-colors py-3 border-b border-border"
+                className="font-serif text-xl font-medium text-text-primary"
               >
-                {item.label}
+                {brand.name}
               </Link>
-            ))}
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+                className="flex items-center justify-center w-10 h-10 rounded-md border border-border-strong text-text-primary hover:bg-surface transition-colors"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  aria-hidden
+                >
+                  <path
+                    d="M5 5l10 10M15 5L5 15"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
 
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className={`${buttonStyles({ variant: "primary", size: "lg" })} mt-8 w-full`}
+            <nav
+              aria-label="Main"
+              className="flex-1 flex flex-col px-6 py-12 gap-2"
             >
-              Book a call
-            </Link>
-          </nav>
+              {site.mainNav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="font-serif text-3xl text-text-primary hover:text-accent transition-colors py-3 border-b border-border"
+                >
+                  {item.label}
+                </Link>
+              ))}
+
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                className={`${buttonStyles({ variant: "primary", size: "lg" })} mt-8 w-full`}
+              >
+                Book a call
+              </Link>
+            </nav>
+          </div>
         </div>
       )}
     </>
