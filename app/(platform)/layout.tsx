@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { ClerkProvider, UserButton, Show } from "@clerk/nextjs";
 import { brand } from "@/config/brand";
 import "../globals.css";
 
@@ -47,15 +48,29 @@ export default function PlatformLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en-GB"
-      className={`${hanken.variable} ${jetbrainsMono.variable}`}
+    <ClerkProvider
+      appearance={{
+        variables: {
+          colorPrimary: "oklch(0.86 0.012 245)",
+          colorBackground: "oklch(0.18 0.005 90)",
+          colorText: "oklch(0.94 0.005 90)",
+          colorInputBackground: "oklch(0.22 0.005 90)",
+          colorInputText: "oklch(0.94 0.005 90)",
+          fontFamily: "var(--font-sans)",
+          borderRadius: "0.5rem",
+        },
+      }}
     >
-      <body className="min-h-screen flex bg-canvas text-ink">
-        <PlatformSidebar />
-        <main className="flex-1 min-w-0 flex flex-col">{children}</main>
-      </body>
-    </html>
+      <html
+        lang="en-GB"
+        className={`${hanken.variable} ${jetbrainsMono.variable}`}
+      >
+        <body className="min-h-screen flex bg-canvas text-ink">
+          <PlatformSidebar />
+          <main className="flex-1 min-w-0 flex flex-col">{children}</main>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
 
@@ -125,10 +140,29 @@ function PlatformSidebar() {
         ))}
       </nav>
 
-      <div className="px-5 py-3 border-t border-border">
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim">
-          Auth pending · Chunk 2E
-        </p>
+      <div className="px-4 py-3 border-t border-border flex items-center gap-3">
+        <Show when="signed-in">
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "h-8 w-8",
+              },
+            }}
+          />
+          <div className="flex-1 min-w-0">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim">
+              Signed in
+            </p>
+          </div>
+        </Show>
+        <Show when="signed-out">
+          <Link
+            href="/platform/sign-in"
+            className="w-full text-center h-8 inline-flex items-center justify-center rounded-md bg-accent text-canvas text-sm font-medium hover:bg-accent-hover transition-colors"
+          >
+            Sign in
+          </Link>
+        </Show>
       </div>
     </aside>
   );

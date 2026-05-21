@@ -100,12 +100,26 @@ export default async function ContactsListPage({
             {(params.q || params.stage || params.source) && " · filtered"}
           </p>
         </div>
-        <Link
-          href="/admin/collections/contacts/create"
-          className="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-accent text-canvas text-sm font-medium hover:bg-accent-hover transition-colors"
-        >
-          New contact
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/platform/contacts/import"
+            className="inline-flex items-center gap-2 h-9 px-3 rounded-md border border-border-strong text-sm text-ink hover:bg-canvas-2 transition-colors"
+          >
+            Import CSV
+          </Link>
+          <a
+            href="/platform/contacts/export"
+            className="inline-flex items-center gap-2 h-9 px-3 rounded-md border border-border-strong text-sm text-ink hover:bg-canvas-2 transition-colors"
+          >
+            Export CSV
+          </a>
+          <Link
+            href="/admin/collections/contacts/create"
+            className="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-accent text-canvas text-sm font-medium hover:bg-accent-hover transition-colors"
+          >
+            New contact
+          </Link>
+        </div>
       </div>
 
       {/* Filter / search bar */}

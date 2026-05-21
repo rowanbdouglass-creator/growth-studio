@@ -170,6 +170,202 @@ export async function changeStage(
 }
 
 // ------------------------------------------------------------------
+// Move contact to stage (kanban drop). Same effect as changeStage
+// but accepts direct args instead of FormData so client DnD code
+// can call it without a form.
+// ------------------------------------------------------------------
+
+export async function moveContactToStage(
+  contactId: string | number,
+  newStage: PipelineStageId
+): Promise<FormState> {
+  if (!contactId) return { status: "error", message: "Missing contact." };
+  if (!PIPELINE_STAGES.find((s) => s.id === newStage)) {
+    return { status: "error", message: "Invalid stage." };
+  }
+
+  try {
+    const p = await payload();
+    const existing = await p.findByID({
+      collection: "contacts",
+      id: String(contactId),
+    });
+    const previousStage = existing?.stage as PipelineStageId | undefined;
+    if (previousStage === newStage) {
+      return { status: "success", message: "Stage unchanged." };
+    }
+
+    await p.update({
+      collection: "contacts",
+      id: String(contactId),
+      data: { stage: newStage },
+    });
+
+    const prevLabel =
+      PIPELINE_STAGES.find((s) => s.id === previousStage)?.label ?? "—";
+    const nextLabel =
+      PIPELINE_STAGES.find((s) => s.id === newStage)?.label ?? newStage;
+    await recordActivity({
+      contactId,
+      type: "stage-changed",
+      summary: `${prevLabel} → ${nextLabel}`,
+      metadata: { previousStage, newStage, via: "kanban" },
+    });
+
+    pathsToRevalidate(contactId).forEach((p) => revalidatePath(p));
+    revalidatePath("/platform/pipeline");
+    return { status: "success", message: `→ ${nextLabel}` };
+  } catch (err) {
+    console.error("[crm.moveContactToStage] failed", err);
+    return { status: "error", message: "Couldn't move that contact." };
+  }
+}
+
+// ------------------------------------------------------------------
+// CSV import — bulk create contacts. Skips rows missing required
+// fields and dedupes on email.
+// ------------------------------------------------------------------
+
+export interface CsvContactRow {
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  role?: string;
+  companyName?: string;
+  companyDomain?: string;
+  stage?: PipelineStageId;
+  source?: string;
+  notes?: string;
+}
+
+export interface ImportResult {
+  status: "success" | "error";
+  imported: number;
+  skippedDuplicate: number;
+  skippedInvalid: number;
+  errors: string[];
+}
+
+export async function importContactsCsv(
+  rows: CsvContactRow[]
+): Promise<ImportResult> {
+  const result: ImportResult = {
+    status: "success",
+    imported: 0,
+    skippedDuplicate: 0,
+    skippedInvalid: 0,
+    errors: [],
+  };
+
+  if (!rows || rows.length === 0) {
+    return { ...result, status: "error", errors: ["No rows."] };
+  }
+  if (rows.length > 2000) {
+    return {
+      ...result,
+      status: "error",
+      errors: ["Maximum 2,000 rows per import — split the file."],
+    };
+  }
+
+  try {
+    const p = await payload();
+
+    // Cache companies by name to avoid one find per row
+    const companyCache = new Map<string, string | number>();
+
+    for (const [i, row] of rows.entries()) {
+      const fullName = row.fullName?.trim();
+      const email = row.email?.trim().toLowerCase();
+
+      if (!fullName && !email) {
+        result.skippedInvalid++;
+        continue;
+      }
+
+      // Dedupe on email
+      if (email) {
+        const exists = await p.find({
+          collection: "contacts",
+          where: { email: { equals: email } },
+          limit: 1,
+        });
+        if (exists.docs.length > 0) {
+          result.skippedDuplicate++;
+          continue;
+        }
+      }
+
+      // Resolve company by name (auto-create if missing)
+      let companyId: string | number | undefined;
+      const companyName = row.companyName?.trim();
+      if (companyName) {
+        if (companyCache.has(companyName)) {
+          companyId = companyCache.get(companyName);
+        } else {
+          const existing = await p.find({
+            collection: "companies",
+            where: { name: { equals: companyName } },
+            limit: 1,
+          });
+          if (existing.docs.length > 0) {
+            companyId = existing.docs[0].id;
+          } else {
+            const created = await p.create({
+              collection: "companies",
+              data: {
+                name: companyName,
+                domain: row.companyDomain?.trim() || undefined,
+              },
+            });
+            companyId = created.id;
+          }
+          if (companyId !== undefined) {
+            companyCache.set(companyName, companyId);
+          }
+        }
+      }
+
+      try {
+        await p.create({
+          collection: "contacts",
+          data: {
+            fullName: fullName || email || "(unnamed)",
+            email,
+            phone: row.phone?.trim() || undefined,
+            role: row.role?.trim() || undefined,
+            company: companyId,
+            stage:
+              (row.stage as PipelineStageId) ||
+              ("cold" as PipelineStageId),
+            source: row.source || undefined,
+          },
+        });
+        result.imported++;
+      } catch (err) {
+        result.skippedInvalid++;
+        result.errors.push(
+          `Row ${i + 2}: ${err instanceof Error ? err.message : "unknown"}`
+        );
+      }
+    }
+
+    revalidatePath("/platform");
+    revalidatePath("/platform/contacts");
+    revalidatePath("/platform/companies");
+
+    return result;
+  } catch (err) {
+    console.error("[crm.importContactsCsv] failed", err);
+    return {
+      ...result,
+      status: "error",
+      errors: [err instanceof Error ? err.message : "Unknown error"],
+    };
+  }
+}
+
+// ------------------------------------------------------------------
 // Log a quick activity (call, meeting, email, etc.)
 // ------------------------------------------------------------------
 
