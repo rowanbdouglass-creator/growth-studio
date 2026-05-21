@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
-import { WaitlistForm } from "@/components/forms/WaitlistForm";
+import { AdAuditForm } from "@/components/forms/AdAuditForm";
 import { CTASection } from "@/components/blocks/CTASection";
 
 export const metadata: Metadata = {
@@ -42,16 +42,17 @@ export default function AdAuditPage() {
             ← All tools
           </Link>
           <Badge variant="accent" className="mb-6">
-            Tool · Free · 5 minutes
+            Tool · Free · ~30 seconds
           </Badge>
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-text-primary mb-8 tracking-tight">
             Where is the{" "}
             <span className="italic text-text-secondary">wastage?</span>
           </h1>
           <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-12">
-            Connect Meta and Google. We pull 90 days, run our vertical-specific
-            playbook against your account, and hand you back a report you'd
-            otherwise pay £2k for.
+            Drop your URL. Our audit engine reads your site, scans the
+            Meta Ad Library for active ads, and runs a vertical-specific
+            playbook. You&rsquo;ll see findings, quick wins, and a 90-day
+            forecast in under a minute.
           </p>
         </Container>
       </section>
@@ -79,16 +80,16 @@ export default function AdAuditPage() {
 
             <aside className="p-8 rounded-lg border border-border-strong bg-surface md:sticky md:top-24">
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-4">
-                Coming soon
+                Free audit
               </p>
               <h2 className="font-serif text-2xl text-text-primary mb-4">
-                Join the waitlist
+                Run yours now
               </h2>
               <p className="text-text-secondary mb-6 leading-relaxed">
-                We'll email you the day it opens. Early-list spots get priority
-                support and a 30-min walkthrough of your report.
+                Takes about 30 seconds. We&rsquo;ll email you the full report
+                and a calendar link if you want to talk it through.
               </p>
-              <WaitlistForm tool="ad-audit" />
+              <AdAuditForm />
             </aside>
           </div>
         </Container>
