@@ -14,7 +14,10 @@ export const brand = {
   name: "Growth Studio",
 
   /** Full legal entity name for ToS, contracts, footer. */
-  legalName: "Growth Studio Ltd",
+  legalName: "You Look Booked Ltd",
+
+  /** UK Companies House registration number — required on legal/footer copy. */
+  companiesHouseNumber: "17020720",
 
   /** Long tagline used in eyebrow text, hero pre-headlines. */
   tagline: "Paid traffic. Custom systems. Intelligence at the core.",
