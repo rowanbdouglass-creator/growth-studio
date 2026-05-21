@@ -16,8 +16,12 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { glob } from "node:fs/promises";
 
-const FROM = `import nextEnvImport from '@next/env';\nimport { findUpSync } from '../utilities/findUp.js';\nconst { loadEnvConfig } = nextEnvImport;`;
-const TO = `import * as nextEnvImport from '@next/env';\nimport { findUpSync } from '../utilities/findUp.js';\nconst { loadEnvConfig } = nextEnvImport;`;
+// Possible existing forms — handle each
+const VARIANTS = [
+  `import nextEnvImport from '@next/env';\nimport { findUpSync } from '../utilities/findUp.js';\nconst { loadEnvConfig } = nextEnvImport;`,
+  `import * as nextEnvImport from '@next/env';\nimport { findUpSync } from '../utilities/findUp.js';\nconst { loadEnvConfig } = nextEnvImport;`,
+];
+const TO = `import * as nextEnvImport from '@next/env';\nimport { findUpSync } from '../utilities/findUp.js';\nconst nextEnvResolved = nextEnvImport.default ?? nextEnvImport;\nconst { loadEnvConfig } = nextEnvResolved;`;
 
 // Use a glob to find the loadEnv.js — pnpm path includes a hash so exact
 // path is hard to predict.
@@ -43,11 +47,20 @@ for (const file of candidates) {
     alreadyOk++;
     continue;
   }
-  if (!src.includes(FROM)) {
+  let next = src;
+  let matched = false;
+  for (const FROM of VARIANTS) {
+    if (next.includes(FROM)) {
+      next = next.replace(FROM, TO);
+      matched = true;
+      break;
+    }
+  }
+  if (!matched) {
     console.warn(`[patch-payload-loadenv] Unexpected content in ${file}; skipping.`);
     continue;
   }
-  writeFileSync(file, src.replace(FROM, TO), "utf8");
+  writeFileSync(file, next, "utf8");
   patched++;
 }
 

@@ -5,7 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 
-// Collections
+// Marketing collections
 import { Users } from "./payload/collections/Users.ts";
 import { Media } from "./payload/collections/Media.ts";
 import { CaseStudies } from "./payload/collections/CaseStudies.ts";
@@ -16,6 +16,12 @@ import { Testimonials } from "./payload/collections/Testimonials.ts";
 import { Industries } from "./payload/collections/Industries.ts";
 import { WaitlistSignups } from "./payload/collections/WaitlistSignups.ts";
 import { Pages } from "./payload/collections/Pages.ts";
+
+// CRM collections (Phase 2)
+import { Companies } from "./payload/collections/Companies.ts";
+import { Contacts } from "./payload/collections/Contacts.ts";
+import { Notes } from "./payload/collections/Notes.ts";
+import { Activities } from "./payload/collections/Activities.ts";
 
 // Globals
 import { SiteSettings } from "./payload/globals/SiteSettings.ts";
@@ -42,6 +48,11 @@ export default buildConfig({
     Industries,
     WaitlistSignups,
     Pages,
+    // CRM
+    Companies,
+    Contacts,
+    Notes,
+    Activities,
   ],
   globals: [SiteSettings, Navigation],
   editor: lexicalEditor(),
