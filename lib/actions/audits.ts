@@ -158,3 +158,58 @@ export async function requestWebsiteAudit(
 ): Promise<RequestWebsiteAuditResult> {
   return captureAuditLead(input, "website-audit");
 }
+
+export interface AnsweredQuestionInput {
+  prompt: string;
+  category: string;
+  selectedOptions: string[];
+  elaboration: string;
+}
+
+export async function recordAuditAnswers(
+  contactId: string | number,
+  args: { url: string; answers: AnsweredQuestionInput[] }
+): Promise<{ status: "success" | "error"; message?: string }> {
+  if (!contactId)
+    return { status: "error", message: "Missing contact." };
+  if (!args.answers?.length)
+    return { status: "error", message: "No answers to save." };
+
+  try {
+    const payload = await getPayload({ config });
+    const detail = args.answers
+      .map((a, i) => {
+        const picks = a.selectedOptions.length
+          ? `Selected: ${a.selectedOptions.join(" | ")}`
+          : "Selected: (none)";
+        const elab = a.elaboration?.trim()
+          ? `Elaborated: ${a.elaboration.trim()}`
+          : "";
+        return [`Q${i + 1} (${a.category}): ${a.prompt}`, picks, elab]
+          .filter(Boolean)
+          .join("\n");
+      })
+      .join("\n\n");
+
+    await payload.create({
+      collection: "activities",
+      data: {
+        contact: contactId,
+        type: "note",
+        summary: `Answered audit follow-up questions for ${args.url}`,
+        detail,
+        metadata: {
+          via: "tools/website-audit",
+          tool: "website-audit",
+          phase: "qa-followup",
+          answerCount: args.answers.length,
+        },
+      },
+    });
+
+    return { status: "success" };
+  } catch (err) {
+    console.error("[audits.recordAuditAnswers] failed", err);
+    return { status: "error", message: "Couldn't save your answers." };
+  }
+}
