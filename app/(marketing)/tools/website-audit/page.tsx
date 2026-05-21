@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
-import { WaitlistForm } from "@/components/forms/WaitlistForm";
+import { WebsiteAuditForm } from "@/components/forms/WebsiteAuditForm";
 import { CTASection } from "@/components/blocks/CTASection";
 
 export const metadata: Metadata = {
@@ -13,20 +13,20 @@ export const metadata: Metadata = {
 
 const findings = [
   {
-    label: "Conversion engineering",
-    body: "Where users drop off, what's broken on mobile, which CTAs are pulling weight and which aren't.",
+    label: "Real measurements",
+    body: "Actual Lighthouse scores, real-user Core Web Vitals from Chrome telemetry, page weight, response time. No simulated numbers.",
   },
   {
-    label: "Funnel speed",
-    body: "Real LCP/INP/CLS plus what specifically is dragging them down. We test on actual hardware, not server-side averages.",
+    label: "Visual diagnosis",
+    body: "We screenshot your home, services, contact, and shop pages and run Claude vision over each. Hero clarity, trust signals, primary CTA strength, mobile-readiness.",
   },
   {
-    label: "Vertical playbook",
-    body: "We check against the patterns we know work in your industry — embroidery, opticians, fashion, bookings — not generic SEO checklists.",
+    label: "Industry context",
+    body: "We infer your industry from the page and surface capabilities competitors typically have. Opticians? Online prescription glasses. Physio? Online booking with deposit. Each output tailored, not templated.",
   },
   {
-    label: "Systems audit",
-    body: "Where the operational pain hides: checkout, support, fulfilment integration, staff workflows. Engineering-grade observations.",
+    label: "Bespoke questions",
+    body: "After the audit, we ask 4–6 questions specific to gaps we found — what CRM/spreadsheets you use, what could integrate with what, and the one capability missing that would change your conversion rate.",
   },
 ];
 
@@ -42,16 +42,18 @@ export default function WebsiteAuditPage() {
             ← All tools
           </Link>
           <Badge variant="accent" className="mb-6">
-            Tool · Free · 10 minutes
+            Tool · Free · ~90 seconds
           </Badge>
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-text-primary mb-8 tracking-tight">
-            What's actually{" "}
+            What&rsquo;s actually{" "}
             <span className="italic text-text-secondary">leaking?</span>
           </h1>
           <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-12">
-            Paste your URL. We crawl, screenshot, and run our vertical-specific
-            playbook against your site and the operational stack behind it.
-            A real audit, not a Lighthouse report.
+            Paste your URL. We fetch your site, screenshot up to four key
+            pages, run real Lighthouse + Core Web Vitals, fingerprint your
+            stack, and Claude-vision your screenshots against industry
+            playbooks for what businesses like yours typically offer. Real
+            data, no theatre.
           </p>
         </Container>
       </section>
@@ -79,16 +81,17 @@ export default function WebsiteAuditPage() {
 
             <aside className="p-8 rounded-lg border border-border-strong bg-surface md:sticky md:top-24">
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-4">
-                Coming soon
+                Free audit
               </p>
               <h2 className="font-serif text-2xl text-text-primary mb-4">
-                Join the waitlist
+                Run yours now
               </h2>
               <p className="text-text-secondary mb-6 leading-relaxed">
-                We'll email you when it opens. Early access spots include a
-                30-min walkthrough of your audit report.
+                You&rsquo;ll watch the audit run live — every signal we
+                check, every page we screenshot — then read the synthesised
+                report and the bespoke follow-up questions.
               </p>
-              <WaitlistForm tool="website-audit" />
+              <WebsiteAuditForm />
             </aside>
           </div>
         </Container>

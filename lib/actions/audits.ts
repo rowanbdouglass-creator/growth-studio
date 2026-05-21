@@ -11,11 +11,16 @@ export interface RequestAdAuditInput {
   companyName?: string;
 }
 
+export type AuditTool = "ad-audit" | "website-audit";
+
 export interface RequestAdAuditResult {
   status: "success" | "error";
   message?: string;
   contactId?: string | number;
 }
+
+export interface RequestWebsiteAuditInput extends RequestAdAuditInput {}
+export interface RequestWebsiteAuditResult extends RequestAdAuditResult {}
 
 function normaliseUrl(input: string): string {
   const trimmed = input.trim();
@@ -36,8 +41,9 @@ function isEmail(v: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }
 
-export async function requestAdAudit(
-  input: RequestAdAuditInput
+async function captureAuditLead(
+  input: RequestAdAuditInput,
+  tool: AuditTool
 ): Promise<RequestAdAuditResult> {
   const url = normaliseUrl(input.url ?? "");
   const email = (input.email ?? "").trim().toLowerCase();
@@ -97,7 +103,7 @@ export async function requestAdAudit(
         id: String(contactId),
         data: {
           stage: "audit-run" as PipelineStageId,
-          source: existingContact.docs[0].source || "ad-audit",
+          source: existingContact.docs[0].source || tool,
           company: companyId,
           lastContactedAt: new Date().toISOString(),
         },
@@ -110,32 +116,45 @@ export async function requestAdAudit(
           email,
           company: companyId,
           stage: "audit-run" as PipelineStageId,
-          source: "ad-audit",
+          source: tool,
           lastContactedAt: new Date().toISOString(),
         },
       });
       contactId = created.id;
     }
 
+    const toolLabel = tool === "ad-audit" ? "ad audit" : "website audit";
     await payload.create({
       collection: "activities",
       data: {
         contact: contactId,
         company: companyId,
         type: "audit",
-        summary: `Requested ad audit for ${host}`,
-        detail: `Self-serve via /tools/ad-audit\nURL: ${url}\nName: ${fullName}\nEmail: ${email}`,
-        metadata: { url, host, via: "tools/ad-audit", tool: "ad-audit" },
+        summary: `Requested ${toolLabel} for ${host}`,
+        detail: `Self-serve via /tools/${tool}\nURL: ${url}\nName: ${fullName}\nEmail: ${email}`,
+        metadata: { url, host, via: `tools/${tool}`, tool },
       },
     });
 
     return { status: "success", contactId };
   } catch (err) {
-    console.error("[audits.requestAdAudit] failed", err);
+    console.error(`[audits.${tool}] failed`, err);
     return {
       status: "error",
       message:
         "Couldn't kick off the audit — try again in a moment, or email hello@youlookbooked.com.",
     };
   }
+}
+
+export async function requestAdAudit(
+  input: RequestAdAuditInput
+): Promise<RequestAdAuditResult> {
+  return captureAuditLead(input, "ad-audit");
+}
+
+export async function requestWebsiteAudit(
+  input: RequestWebsiteAuditInput
+): Promise<RequestWebsiteAuditResult> {
+  return captureAuditLead(input, "website-audit");
 }
