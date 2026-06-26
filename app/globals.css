@@ -43,9 +43,6 @@
   /* ----------------- Typography ----------------- */
   --font-sans:    var(--font-sans), system-ui, -apple-system, sans-serif;
   --font-mono:    var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
-  --font-serif:   var(--font-sans), system-ui, sans-serif;
-  --font-display: var(--font-sans), system-ui, sans-serif;
-  --font-editorial: var(--font-sans), system-ui, sans-serif;
 
   /* Tighter, fits-in-viewport type scale */
   --text-xs:      clamp(0.75rem, 0.7rem + 0.2vw, 0.85rem);

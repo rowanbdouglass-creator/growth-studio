@@ -36,6 +36,9 @@ export function AIAuditDemo() {
 
   useEffect(() => {
     if (phase !== "idle") return;
+    if (typeof window === "undefined") return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
     const id = setInterval(
       () => setPlaceholderIdx((i) => (i + 1) % PROMPT_PLACEHOLDERS.length),
       3000

@@ -7,9 +7,6 @@ import { AnimatedTerminal } from "@/components/fx/AnimatedTerminal";
 import { Tilt3D } from "@/components/fx/Tilt3D";
 import { Magnetic } from "@/components/fx/Magnetic";
 import { HeroSceneLazy } from "@/components/fx/HeroSceneLazy";
-import { EditorialInterstitial } from "@/components/blocks/EditorialInterstitial";
-import { ChromeInterstitial } from "@/components/blocks/ChromeInterstitial";
-import { SectionMarker } from "@/components/blocks/SectionMarker";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
 import { CaseStudyFeature } from "@/components/blocks/CaseStudyCard";
@@ -89,7 +86,7 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* On mobile + tablet the AI demo gets its own dedicated section */}
+      {/* On mobile + tablet the AI demo gets its own section */}
       <section className="lg:hidden py-16 px-6 border-t border-rule">
         <div className="max-w-xl mx-auto">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute mb-4 text-center">
@@ -100,7 +97,7 @@ export default async function Home() {
       </section>
 
       {/* ============================ LOGOS ============================ */}
-      <section>
+      <section className="border-t border-rule">
         <LogoGrid />
       </section>
 
@@ -109,29 +106,17 @@ export default async function Home() {
         <ServiceGrid services={services} />
       </section>
 
-      <EditorialInterstitial
-        beats={["Real systems.", "Real numbers.", "Real follow-through."]}
-      />
-
       {/* ============================ FEATURED WORK ============================ */}
       {featuredCaseStudy && (
-        <section className="relative py-20 md:py-32">
+        <section className="relative py-20 md:py-32 border-t border-rule">
           <CaseStudyFeature caseStudy={featuredCaseStudy} />
         </section>
       )}
 
-      <ChromeInterstitial
-        headline="We build the systems"
-        emphasis="your team will still use in 3 years."
-        caption="Custom operations · 8 yrs · WP, WC, Next.js"
-      />
-
       {/* ============================ INTELLIGENCE / TERMINAL ============================ */}
-      <section className="relative py-20 md:py-32">
+      <section className="relative py-20 md:py-32 border-t border-rule">
         <Container size="wide">
-          <SectionMarker label="The intelligence layer" />
-
-          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center mt-16">
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-reveal-lg">
               <h2 className="font-sans font-medium text-ink mb-8 leading-[1.2] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl pb-4">
                 We audit your stack{" "}
@@ -169,7 +154,8 @@ export default async function Home() {
                     },
                     {
                       text: "growth report --send",
-                      output: "✓ report ready · book a discovery call to walk through it",
+                      output:
+                        "✓ report ready · book a discovery call to walk through it",
                     },
                   ]}
                 />
@@ -183,28 +169,28 @@ export default async function Home() {
       </section>
 
       {/* ============================ TOOLS ============================ */}
-      <section className="relative py-20 md:py-32">
+      <section className="relative py-20 md:py-32 border-t border-rule">
         <ToolCTASection />
       </section>
 
       {/* ============================ STATS ============================ */}
-      <section className="relative py-20 md:py-32">
+      <section className="relative py-20 md:py-32 border-t border-rule">
         <StatRow />
       </section>
 
       {/* ============================ PROCESS ============================ */}
-      <section className="relative py-20 md:py-32">
+      <section className="relative py-20 md:py-32 border-t border-rule">
         <ProcessSteps />
       </section>
 
       {featuredTestimonial && (
-        <section className="relative py-20 md:py-32">
+        <section className="relative py-20 md:py-32 border-t border-rule">
           <Testimonial testimonial={featuredTestimonial} />
         </section>
       )}
 
       {/* ============================ CTA ============================ */}
-      <section className="relative py-20 md:py-32">
+      <section className="relative py-20 md:py-32 border-t border-rule">
         <CTASection />
       </section>
     </>

@@ -1,17 +1,60 @@
 import { Container } from "@/components/ui/Container";
 
 /**
- * Selected client list. Treated as type, not logos, confident,
- * editorial. Real SVG marks can replace these later.
+ * Selected client wall. Each entry renders as a real visual mark
+ * (monogram in a circle) plus the brand name set in the page voice.
+ * Replaces the previous text-only wordmark wall, which read as
+ * placeholder.
  */
-const clients = [
-  "Nayim's Embroideries",
-  "T-SHOT",
-  "Forum Studios",
-  "Cape Kings",
-  "JC Setton Opticians",
-  "Confidential",
+interface ClientMark {
+  name: string;
+  initials: string;
+  sector: string;
+}
+
+const clients: ClientMark[] = [
+  { name: "Nayim's Embroideries", initials: "N", sector: "Embroidery" },
+  { name: "JC Setton Opticians", initials: "JC", sector: "Optometry" },
+  { name: "T-SHOT", initials: "TS", sector: "Print" },
+  { name: "Forum Studios", initials: "F", sector: "Creative" },
+  { name: "Cape Kings", initials: "CK", sector: "Retail" },
+  { name: "Confidential", initials: "·", sector: "Finance" },
 ];
+
+function Monogram({ initials }: { initials: string }) {
+  return (
+    <svg
+      viewBox="0 0 40 40"
+      width="40"
+      height="40"
+      role="img"
+      aria-hidden
+      className="shrink-0"
+    >
+      <circle
+        cx="20"
+        cy="20"
+        r="19"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="0.75"
+        opacity="0.45"
+      />
+      <text
+        x="20"
+        y="25"
+        textAnchor="middle"
+        fontFamily="var(--font-sans), sans-serif"
+        fontSize={initials.length > 1 ? "11" : "14"}
+        fontWeight="500"
+        fill="currentColor"
+        letterSpacing="0.5"
+      >
+        {initials}
+      </text>
+    </svg>
+  );
+}
 
 export function LogoGrid() {
   return (
@@ -25,17 +68,25 @@ export function LogoGrid() {
             id="clients-heading"
             className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute"
           >
-            Selected clients · 2024, 2026
+            Selected clients
           </span>
           <span className="flex-1 h-px bg-rule" />
         </div>
-        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-6">
-          {clients.map((name) => (
+        <ul className="grid grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-8">
+          {clients.map((c) => (
             <li
-              key={name}
-              className="font-sans text-base md:text-lg text-ink-mute hover:text-ink transition-colors duration-200 tracking-tight"
+              key={c.name}
+              className="group flex items-center gap-4 text-ink-mute hover:text-ink transition-colors duration-200"
             >
-              {name}
+              <Monogram initials={c.initials} />
+              <div className="min-w-0">
+                <p className="font-sans text-base md:text-lg tracking-tight truncate">
+                  {c.name}
+                </p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim mt-0.5">
+                  {c.sector}
+                </p>
+              </div>
             </li>
           ))}
         </ul>

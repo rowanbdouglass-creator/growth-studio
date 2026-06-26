@@ -22,6 +22,9 @@ export function ActivityTicker() {
 
   useEffect(() => {
     setMounted(true);
+    if (typeof window === "undefined") return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
     const id = setInterval(() => setIdx((i) => (i + 1) % SEED.length), 3200);
     return () => clearInterval(id);
   }, []);
