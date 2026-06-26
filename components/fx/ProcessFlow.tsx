@@ -56,7 +56,7 @@ export function ProcessFlow({ active = 0, steps }: ProcessFlowProps) {
       style={{ maxHeight: 180 }}
       aria-hidden
     >
-      {/* Connecting line — draws in */}
+      {/* Connecting line, draws in */}
       <line
         x1={0}
         y1={cy}

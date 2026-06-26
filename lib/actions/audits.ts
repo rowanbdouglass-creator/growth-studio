@@ -142,7 +142,7 @@ async function captureAuditLead(
     return {
       status: "error",
       message:
-        "Couldn't kick off the audit — try again in a moment, or email hello@youlookbooked.com.",
+        "Couldn't kick off the audit, try again in a moment, or email hello@youlookbooked.com.",
     };
   }
 }

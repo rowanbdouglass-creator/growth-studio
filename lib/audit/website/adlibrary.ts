@@ -1,10 +1,10 @@
 import type { AdLibraryResult, ParsedDocument } from "./types";
 
 /**
- * Meta Ad Library lookup. Public surface — no auth required. We hit the
+ * Meta Ad Library lookup. Public surface, no auth required. We hit the
  * unofficial JSON endpoint backing the search page; it's stable enough
  * for a public-signal audit, but the absence of an ad library result is
- * never a hard claim that the brand isn't running ads — Meta only
+ * never a hard claim that the brand isn't running ads, Meta only
  * exposes ads matching their issue-ad / page-name search filters.
  *
  * If this endpoint changes or returns garbage, we degrade gracefully.
@@ -67,7 +67,7 @@ export async function lookupAdLibrary(
       return { ...empty, reason: "Ad Library response empty" };
     }
 
-    // The shape is internal and changes — extract what we can defensively.
+    // The shape is internal and changes, extract what we can defensively.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload = body as any;
     const results: unknown[] =
@@ -112,7 +112,7 @@ export function brandQueryFromParsed(
 ): string {
   if (parsed?.ogTags["og:site_name"]) return parsed.ogTags["og:site_name"];
   if (parsed?.title) {
-    const t = parsed.title.split(/[|·–—-]/)[0]?.trim();
+    const t = parsed.title.split(/[|·\-]/)[0]?.trim();
     if (t && t.length > 2) return t;
   }
   return host.split(".")[0];

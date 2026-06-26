@@ -11,18 +11,24 @@ import { ActivityTicker } from "@/components/fx/ActivityTicker";
 import { MobileNav } from "./MobileNav";
 
 /**
- * Sticky header. Starts fully transparent — no background, no border —
- * so it floats over the hero. Once the visitor has scrolled past a
- * small threshold, fades in a translucent canvas background + bottom
- * border + the live activity ticker.
+ * Sticky header. Starts transparent over the hero, fades in a
+ * translucent canvas background and bottom border once the user has
+ * scrolled past the threshold. Uses a passive scroll listener and
+ * only re-renders when the boolean threshold flips.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    let ticking = false;
     function onScroll() {
-      setScrolled(window.scrollY > 24);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24);
+        ticking = false;
+      });
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -47,9 +53,7 @@ export function Header() {
           <Link
             href="/"
             aria-label={`${brand.name} home`}
-            className={`group/logo flex items-center gap-2.5 transition-colors hover:text-accent ${
-              scrolled ? "text-ink" : "text-ink"
-            }`}
+            className="group/logo flex items-center gap-2.5 transition-colors hover:text-accent text-ink"
           >
             <Logomark animate />
             <span className="font-sans text-sm md:text-base font-medium tracking-tight">
@@ -72,7 +76,6 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Live activity ticker — moved here from the hero eyebrow */}
             <div className="hidden lg:block">
               <ActivityTicker />
             </div>
@@ -80,10 +83,10 @@ export function Header() {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/contact"
+              href="/tools/website-audit"
               className={`${buttonStyles({ variant: "primary", size: "sm" })} hidden md:inline-flex`}
             >
-              Book a call
+              Run my free audit
             </Link>
             <MobileNav />
           </div>

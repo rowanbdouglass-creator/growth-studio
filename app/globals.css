@@ -154,33 +154,16 @@ p, li {
    its own moment without forcing the browser to fight the user.
    ================================================================== */
 
+/* Marketing sections — soft vertical rhythm. No forced 100vh pinning
+   so the page doesn't fight trackpad scrolling. Use 100dvh in
+   components that genuinely need a full viewport (the audit
+   experience overlay), via Tailwind classes directly. */
 .snap-section {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   position: relative;
 }
 
 .snap-section--auto {
   min-height: 0;
-}
-
-@media (max-width: 768px) {
-  .snap-section { min-height: auto; padding-top: 5rem; padding-bottom: 5rem; }
-}
-
-/* When the page is in JS-disabled or reduced-motion modes, hide
-   the custom cursor and bring the system cursor back */
-.has-custom-cursor body * { cursor: none; }
-.has-custom-cursor a,
-.has-custom-cursor button,
-.has-custom-cursor [role="button"],
-.has-custom-cursor input,
-.has-custom-cursor textarea,
-.has-custom-cursor select { cursor: none; }
-@media (pointer: coarse) {
-  .has-custom-cursor body * { cursor: auto; }
 }
 
 /* ==================================================================

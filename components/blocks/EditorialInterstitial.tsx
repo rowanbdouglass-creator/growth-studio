@@ -4,14 +4,10 @@ import { PinnedZoom } from "@/components/fx/PinnedZoom";
 
 interface EditorialInterstitialProps {
   beats?: [string, string, string];
-  number?: string;
-  label?: string;
 }
 
 export function EditorialInterstitial({
-  beats = ["Compound.", "Not campaigns.", "Engines."],
-  number = "—",
-  label = "Interlude",
+  beats = ["Real systems.", "Real numbers.", "Real follow-through."],
 }: EditorialInterstitialProps) {
   const peaks = [0.22, 0.5, 0.78];
   const halfWindow = 0.22;
@@ -53,23 +49,17 @@ export function EditorialInterstitial({
               }}
             />
 
-            {/* Eyebrow */}
+            {/* Hairline rule, no eyebrow */}
             <div
               className="absolute top-12 left-0 right-0 px-6 md:px-12"
               style={{ opacity: eyebrowOpacity }}
             >
               <div className="flex items-center gap-3 max-w-7xl mx-auto">
-                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-                  {number} — {label}
-                </span>
                 <span className="flex-1 h-px bg-rule" />
-                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-                  Scroll to advance
-                </span>
               </div>
             </div>
 
-            {/* Beats — each is a full-bleed centred flex container */}
+            {/* Beats, each is a full-bleed centred flex container */}
             {beats.map((beat, i) => {
               const { opacity, scale } = beatState(i, progress);
               return (

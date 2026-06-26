@@ -13,7 +13,7 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link
               href="/"
-              className="font-serif text-2xl font-medium tracking-tight text-text-primary hover:text-accent transition-colors"
+              className="font-sans text-2xl font-medium tracking-tight text-text-primary hover:text-accent transition-colors"
             >
               {brand.name}
             </Link>

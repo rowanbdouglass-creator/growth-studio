@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { buttonStyles } from "@/components/ui/Button";
 import { MeshGradient } from "@/components/fx/MeshGradient";
-import { CursorGlow } from "@/components/fx/CursorGlow";
 import { AIAuditDemo } from "@/components/fx/AIAuditDemo";
 import { AnimatedTerminal } from "@/components/fx/AnimatedTerminal";
 import { Tilt3D } from "@/components/fx/Tilt3D";
@@ -36,12 +35,8 @@ export default async function Home() {
 
   return (
     <>
-      <CursorGlow />
-
-      {/* ============================ 01 HERO ============================ */}
-      <section className="snap-section relative isolate">
-        {/* Background layer — overflow is on this wrapper, NOT the section,
-            so text descenders on the headline aren't clipped */}
+      {/* ============================ HERO ============================ */}
+      <section className="relative isolate pt-12 md:pt-16 pb-24 md:pb-32 min-h-[100dvh] flex flex-col justify-center">
         <div aria-hidden className="absolute inset-0 overflow-hidden -z-10">
           <MeshGradient className="anim-hero-bg" />
           <div
@@ -53,28 +48,28 @@ export default async function Home() {
         </div>
 
         <Container size="wide">
-          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center pt-12 md:pt-16">
+          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 items-center">
             <div className="anim-hero-entry">
               <h1 className="font-sans font-medium text-ink leading-[1.18] tracking-[-0.035em] text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-8 pb-4">
-                Growth, engineered{" "}
+                Find out what your last agency{" "}
                 <span className="italic-editorial font-normal silver-shine">
-                  for the long compound.
+                  missed.
                 </span>
               </h1>
 
               <p className="text-base md:text-lg text-ink-soft max-w-xl leading-relaxed mb-10">
-                A two-person studio building paid traffic, custom operational
-                systems, and AI tooling for established UK businesses. Try
-                the audit tool to your right — paste any URL.
+                A two-person studio rebuilding paid traffic, custom operations
+                systems, and the intelligence layer between them. Run our free
+                audit on your site and see the gap in 90 seconds.
               </p>
 
               <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
                 <Magnetic>
                   <Link
-                    href="/contact"
+                    href="/tools/website-audit"
                     className={buttonStyles({ variant: "primary", size: "lg" })}
                   >
-                    Book a discovery call
+                    Run my free audit
                   </Link>
                 </Magnetic>
                 <Link
@@ -88,24 +83,13 @@ export default async function Home() {
             </div>
 
             <div className="hidden lg:flex justify-center">
-              {/* Tilt3D removed — caused panel mirroring artifacts in some
-                  render contexts. The audit demo doesn't need the extra
-                  depth; the AI streaming itself is the moment. */}
               <AIAuditDemo />
             </div>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-3 mt-16 md:mt-24 text-ink-mute">
-            <span className="font-mono text-[11px] uppercase tracking-[0.18em]">
-              Scroll
-            </span>
-            <span aria-hidden className="text-accent">↓</span>
           </div>
         </Container>
       </section>
 
-      {/* On mobile + tablet the AI demo gets its own dedicated section
-          since it doesn't fit alongside the hero. */}
+      {/* On mobile + tablet the AI demo gets its own dedicated section */}
       <section className="lg:hidden py-16 px-6 border-t border-rule">
         <div className="max-w-xl mx-auto">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute mb-4 text-center">
@@ -116,63 +100,49 @@ export default async function Home() {
       </section>
 
       {/* ============================ LOGOS ============================ */}
-      <section className="snap-section snap-section--auto">
+      <section>
         <LogoGrid />
       </section>
 
-      <SectionMarker
-        index="02"
-        label="What we do"
-      />
-
-      {/* ============================ 02 SERVICES ============================ */}
-      <section className="snap-section relative">
+      {/* ============================ SERVICES ============================ */}
+      <section className="relative">
         <ServiceGrid services={services} />
       </section>
 
-      {/* === Editorial interstitial · scroll-pinned · three beats === */}
       <EditorialInterstitial
-        number="03"
-        label="Interlude"
-        beats={["Compound.", "Not campaigns.", "Engines."]}
+        beats={["Real systems.", "Real numbers.", "Real follow-through."]}
       />
 
-      <SectionMarker index="04" label="Selected work" />
-
-      {/* ============================ 04 FEATURED WORK ============================ */}
+      {/* ============================ FEATURED WORK ============================ */}
       {featuredCaseStudy && (
-        <section className="snap-section relative">
+        <section className="relative py-20 md:py-32">
           <CaseStudyFeature caseStudy={featuredCaseStudy} />
         </section>
       )}
 
-      {/* === Chrome interstitial · scroll-pinned · WebGL takeover === */}
       <ChromeInterstitial
-        number="05"
-        label="Manifesto"
-        headline="We build the engines"
-        emphasis="that earn back hours per week."
-        caption="Custom systems · 8 yrs · WP, WC, Next.js"
+        headline="We build the systems"
+        emphasis="your team will still use in 3 years."
+        caption="Custom operations · 8 yrs · WP, WC, Next.js"
       />
 
-      <SectionMarker index="06" label="The intelligence layer" />
-
-      {/* ============================ 06 INTELLIGENCE / TERMINAL ============================ */}
-      <section className="snap-section relative">
+      {/* ============================ INTELLIGENCE / TERMINAL ============================ */}
+      <section className="relative py-20 md:py-32">
         <Container size="wide">
+          <SectionMarker label="The intelligence layer" />
 
-          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center mt-16">
             <div className="anim-reveal-lg">
               <h2 className="font-sans font-medium text-ink mb-8 leading-[1.2] tracking-[-0.03em] text-4xl md:text-5xl lg:text-6xl max-w-2xl pb-4">
-                Audits that find{" "}
+                We audit your stack{" "}
                 <span className="italic-editorial font-normal silver-shine">
-                  what consultants miss.
+                  before we open our mouths.
                 </span>
               </h2>
               <p className="text-base md:text-lg text-ink-soft leading-relaxed max-w-md mb-8">
-                Every prospect's account, website, and ops stack runs through
-                our internal CLI before the first call. You'll never sit
-                through a generic pitch.
+                Every prospect&rsquo;s account, website, and ops stack runs
+                through our internal CLI before the first call. You&rsquo;ll
+                never sit through a generic pitch.
               </p>
               <Link
                 href="/tools"
@@ -188,63 +158,53 @@ export default async function Home() {
                 <AnimatedTerminal
                   lines={[
                     {
-                      text: "growth audit https://client.co.uk --90d",
+                      text: "growth audit https://your-store.co.uk",
                       output:
-                        "▸ scanning Meta + Google ad accounts...\n▸ pulling 90d of spend, impressions, conversions\n✓ £4,832/mo wastage detected across 11 campaigns",
+                        "▸ scanning site, headers, security\n▸ pulling Meta Ad Library + CrUX\n▸ screenshotting 4 key pages",
                     },
                     {
-                      text: "growth audit --suggest-wins",
+                      text: "growth audit --score",
                       output:
-                        "▸ ranking opportunities by impact / effort\n✓ 3 quick wins · projected ROAS lift 1.6×",
+                        "▸ Lighthouse mobile · perf 64 · a11y 92 · SEO 81\n▸ 6 capability gaps mapped to industry\n▸ 4 bespoke questions queued",
                     },
                     {
                       text: "growth report --send",
-                      output: "✓ report sent to rowan@youlookbooked.com",
+                      output: "✓ report ready · book a discovery call to walk through it",
                     },
                   ]}
                 />
               </Tilt3D>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim mt-3">
+                Example output. Run yours at /tools/website-audit.
+              </p>
             </div>
           </div>
         </Container>
       </section>
 
-      <SectionMarker index="07" label="The tools" />
-
-      {/* ============================ 07 TOOLS ============================ */}
-      <section className="snap-section relative">
+      {/* ============================ TOOLS ============================ */}
+      <section className="relative py-20 md:py-32">
         <ToolCTASection />
       </section>
 
-      <SectionMarker index="08" label="The receipts" />
-
-      {/* ============================ 08 STATS ============================ */}
-      <section className="snap-section relative">
+      {/* ============================ STATS ============================ */}
+      <section className="relative py-20 md:py-32">
         <StatRow />
       </section>
 
-      <SectionMarker index="09" label="How we work" />
-
-      {/* ============================ 09 PROCESS ============================ */}
-      <section className="snap-section relative">
+      {/* ============================ PROCESS ============================ */}
+      <section className="relative py-20 md:py-32">
         <ProcessSteps />
       </section>
 
       {featuredTestimonial && (
-        <>
-          <SectionMarker index="10" label="In their words" />
-
-          {/* ============================ 10 TESTIMONIAL ============================ */}
-          <section className="snap-section relative">
-            <Testimonial testimonial={featuredTestimonial} />
-          </section>
-        </>
+        <section className="relative py-20 md:py-32">
+          <Testimonial testimonial={featuredTestimonial} />
+        </section>
       )}
 
-      <SectionMarker index="11" label="Talk" />
-
-      {/* ============================ 11 CTA ============================ */}
-      <section className="snap-section relative">
+      {/* ============================ CTA ============================ */}
+      <section className="relative py-20 md:py-32">
         <CTASection />
       </section>
     </>

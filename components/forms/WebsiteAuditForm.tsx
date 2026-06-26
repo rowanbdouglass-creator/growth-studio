@@ -79,7 +79,7 @@ export function WebsiteAuditForm() {
           label="Company name"
           value={companyName}
           onChange={setCompanyName}
-          placeholder="Optional — inferred from domain"
+          placeholder="Optional, inferred from domain"
         />
 
         {error && phase === "error" && (

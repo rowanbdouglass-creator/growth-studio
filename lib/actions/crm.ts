@@ -105,7 +105,7 @@ export async function addNote(
     console.error("[crm.addNote] failed", err);
     return {
       status: "error",
-      message: "Couldn't save that — try again in a moment.",
+      message: "Couldn't save that, try again in a moment.",
     };
   }
 }
@@ -147,7 +147,7 @@ export async function changeStage(
     });
 
     const prevLabel =
-      PIPELINE_STAGES.find((s) => s.id === previousStage)?.label ?? "—";
+      PIPELINE_STAGES.find((s) => s.id === previousStage)?.label ?? "-";
     const nextLabel =
       PIPELINE_STAGES.find((s) => s.id === newStage)?.label ?? newStage;
 
@@ -164,7 +164,7 @@ export async function changeStage(
     console.error("[crm.changeStage] failed", err);
     return {
       status: "error",
-      message: "Couldn't change stage — try again.",
+      message: "Couldn't change stage, try again.",
     };
   }
 }
@@ -202,7 +202,7 @@ export async function moveContactToStage(
     });
 
     const prevLabel =
-      PIPELINE_STAGES.find((s) => s.id === previousStage)?.label ?? "—";
+      PIPELINE_STAGES.find((s) => s.id === previousStage)?.label ?? "-";
     const nextLabel =
       PIPELINE_STAGES.find((s) => s.id === newStage)?.label ?? newStage;
     await recordActivity({
@@ -222,7 +222,7 @@ export async function moveContactToStage(
 }
 
 // ------------------------------------------------------------------
-// CSV import — bulk create contacts. Skips rows missing required
+// CSV import, bulk create contacts. Skips rows missing required
 // fields and dedupes on email.
 // ------------------------------------------------------------------
 
@@ -264,7 +264,7 @@ export async function importContactsCsv(
     return {
       ...result,
       status: "error",
-      errors: ["Maximum 2,000 rows per import — split the file."],
+      errors: ["Maximum 2,000 rows per import, split the file."],
     };
   }
 
@@ -392,7 +392,7 @@ export async function logActivity(
     console.error("[crm.logActivity] failed", err);
     return {
       status: "error",
-      message: "Couldn't log that — try again.",
+      message: "Couldn't log that, try again.",
     };
   }
 }

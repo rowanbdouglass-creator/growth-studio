@@ -102,7 +102,7 @@ function stageMeta(id?: string) {
 }
 
 function leadSourceLabel(value?: string) {
-  return LEAD_SOURCES.find((s) => s.value === value)?.label ?? value ?? "—";
+  return LEAD_SOURCES.find((s) => s.value === value)?.label ?? value ?? "-";
 }
 
 function lexicalToPlainText(node: unknown): string {
@@ -200,7 +200,7 @@ export default async function ContactDetailPage({
       </div>
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-10">
-        {/* LEFT — quick actions + timeline */}
+        {/* LEFT, quick actions + timeline */}
         <div className="space-y-6 min-w-0">
           <div className="grid md:grid-cols-2 gap-4">
             <AddNoteForm contactId={contact.id} />
@@ -241,7 +241,7 @@ export default async function ContactDetailPage({
           </div>
         </div>
 
-        {/* RIGHT — sidebar */}
+        {/* RIGHT, sidebar */}
         <aside className="space-y-6 lg:sticky lg:top-6 lg:h-fit">
           <div className="rounded-lg border border-border bg-canvas-2/40 p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-mute mb-3">
@@ -259,7 +259,7 @@ export default async function ContactDetailPage({
           />
           <SidebarSection
             label="Owner"
-            value={contact.owner?.name ?? contact.owner?.email ?? "—"}
+            value={contact.owner?.name ?? contact.owner?.email ?? "-"}
           />
           <SidebarSection
             label="Last contacted"
@@ -270,7 +270,7 @@ export default async function ContactDetailPage({
                     month: "short",
                     year: "numeric",
                   })
-                : "—"
+                : "-"
             }
           />
           <SidebarSection
@@ -282,7 +282,7 @@ export default async function ContactDetailPage({
                     month: "short",
                     year: "numeric",
                   })
-                : "—"
+                : "-"
             }
           />
           {contact.doNotContact && (

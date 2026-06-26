@@ -26,7 +26,7 @@ const features = [
   },
   {
     label: "Document vault",
-    body: "Briefs, brand guidelines, audit reports, creative — all together, all searchable.",
+    body: "Briefs, brand guidelines, audit reports, creative, all together, all searchable.",
   },
 ];
 
@@ -50,7 +50,7 @@ export default function DiscoveryHubPage() {
           </h1>
           <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed mb-12">
             Your private portal where strategy notes, proposals, and Claude
-            Q&A live in one place — searchable, durable, and built around your
+            Q&A live in one place, searchable, durable, and built around your
             engagement.
           </p>
         </Container>

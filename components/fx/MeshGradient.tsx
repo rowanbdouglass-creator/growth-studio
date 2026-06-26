@@ -1,6 +1,6 @@
 /**
  * Silver-toned mesh background. Cool drifting halo + cool depth.
- * No warm colour — sits behind type without competing.
+ * No warm colour, sits behind type without competing.
  */
 export function MeshGradient({ className = "" }: { className?: string }) {
   return (

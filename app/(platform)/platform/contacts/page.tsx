@@ -236,18 +236,18 @@ export default async function ContactsListPage({
                             {c.company.name}
                           </span>
                         ) : (
-                          <span className="text-ink-dim">—</span>
+                          <span className="text-ink-dim">-</span>
                         )}
                       </Td>
                       <Td>
                         <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-soft">
                           <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                          {sm?.label ?? c.stage ?? "—"}
+                          {sm?.label ?? c.stage ?? "-"}
                         </span>
                       </Td>
-                      <Td className="text-ink-soft">{c.role ?? "—"}</Td>
+                      <Td className="text-ink-soft">{c.role ?? "-"}</Td>
                       <Td className="text-ink-mute font-mono text-[11px] uppercase tracking-wider">
-                        {c.source ?? "—"}
+                        {c.source ?? "-"}
                       </Td>
                       <Td className="text-right text-ink-mute font-mono text-[11px]">
                         {c.updatedAt
@@ -255,7 +255,7 @@ export default async function ContactsListPage({
                               day: "numeric",
                               month: "short",
                             })
-                          : "—"}
+                          : "-"}
                       </Td>
                     </tr>
                   );

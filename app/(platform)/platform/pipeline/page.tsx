@@ -68,7 +68,7 @@ export default async function PipelinePage() {
           </h1>
           <p className="text-sm text-ink-mute">
             {total.toLocaleString("en-GB")} contacts across{" "}
-            {PIPELINE_STAGES.length} stages — drag between columns to move
+            {PIPELINE_STAGES.length} stages, drag between columns to move
           </p>
         </div>
       </div>

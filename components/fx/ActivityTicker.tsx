@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 /**
  * A small "live activity" pill. Cycles through a small set of
  * realistic-feeling stats every few seconds. Pure client-side
- * theatre — no real data — but communicates "active studio"
+ * theatre, no real data, but communicates "active studio"
  * better than a static byline.
  */
 const SEED = [

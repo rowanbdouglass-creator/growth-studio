@@ -84,7 +84,7 @@ export async function captureScreenshot(
 /**
  * Download the screenshot bytes so we can send to Claude vision as a
  * base64 image. We need this because Claude's image API requires
- * either a base64 or a URL it can fetch — and microlink CDN URLs
+ * either a base64 or a URL it can fetch, and microlink CDN URLs
  * sometimes 403 when called from Anthropic's servers.
  */
 export async function downloadScreenshotBase64(

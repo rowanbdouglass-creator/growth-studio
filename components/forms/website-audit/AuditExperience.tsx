@@ -99,7 +99,7 @@ export function AuditExperience({ url, contactId, onClose }: Props) {
       setStage((s) => (s === "running" ? "report" : s));
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") return;
-      setError("Audit failed — try again, or email hello@youlookbooked.com.");
+      setError("Audit failed, try again, or email hello@youlookbooked.com.");
       setStage("error");
     }
   }
@@ -173,7 +173,7 @@ export function AuditExperience({ url, contactId, onClose }: Props) {
     setRefining(true);
     setRefinement("");
 
-    // Persist to CRM in the background — don't await UI on it.
+    // Persist to CRM in the background, don't await UI on it.
     void recordAuditAnswers(contactId, { url, answers });
 
     refineAbortRef.current = new AbortController();
@@ -329,7 +329,7 @@ export function AuditExperience({ url, contactId, onClose }: Props) {
                 onClick={onClose}
                 className="h-11 px-4 text-sm text-text-tertiary hover:text-text-primary transition-colors"
               >
-                Close — I&rsquo;ll come back
+                Close, I&rsquo;ll come back
               </button>
               <button
                 type="button"
@@ -354,7 +354,7 @@ export function AuditExperience({ url, contactId, onClose }: Props) {
               </h1>
               <p className="text-[15px] text-text-secondary leading-relaxed">
                 Your answers feed into a tailored report. Pick options,
-                elaborate, or skip — whichever&rsquo;s fastest.
+                elaborate, or skip, whichever&rsquo;s fastest.
               </p>
             </div>
             <QAExperience

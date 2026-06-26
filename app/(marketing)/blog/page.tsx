@@ -23,9 +23,9 @@ export default function BlogPage() {
               <span className="italic text-text-secondary">in progress.</span>
             </h1>
             <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed">
-              Field notes from real engagements — what worked, what didn't,
-              and the playbooks we're actively iterating on. First posts
-              landing soon.
+              Notes from real client engagements: what worked, what
+              didn&rsquo;t, and the playbooks we&rsquo;re actively iterating
+              on. First posts landing soon.
             </p>
           </div>
         </Container>

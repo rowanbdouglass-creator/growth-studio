@@ -23,7 +23,7 @@ function ChromeBlob({
 }: Required<HeroSceneProps>) {
   const meshRef = useRef<Mesh>(null);
   const pointer = useRef({ x: 0, y: 0 });
-  // We mutate material.distort directly — the type isn't exported by drei.
+  // We mutate material.distort directly, the type isn't exported by drei.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const materialRef = useRef<any>(null);
   // Smoothed external progress so any jumps get eased away rather than
@@ -65,7 +65,7 @@ function ChromeBlob({
       meshRef.current.scale.x + (targetScale - meshRef.current.scale.x) * 0.15
     );
 
-    // Adjust distortion target — bigger when "in view" / progress mid-section
+    // Adjust distortion target, bigger when "in view" / progress mid-section
     if (materialRef.current && typeof materialRef.current.distort === "number") {
       const wantDistort = 0.32 + smoothedProgress.current * 0.22;
       const cur = materialRef.current.distort;

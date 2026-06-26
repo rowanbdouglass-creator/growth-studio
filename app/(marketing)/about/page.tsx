@@ -11,27 +11,23 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `Two-person ${brand.name} — the people behind the paid traffic, the custom systems, and the intelligence layer.`,
+  description: `Two-person ${brand.name}. The people behind the paid traffic, the custom systems, and the intelligence layer.`,
 };
 
 const beliefs = [
   {
-    n: "01",
     title: "Receipts over rhetoric",
     body: "We'll tell you what didn't work last quarter. If we can't measure it, we'll say so.",
   },
   {
-    n: "02",
-    title: "Engineering tier of care",
+    title: "Engineering-grade work",
     body: "Most agencies hand you half-finished prototypes wrapped in a Figma file. We don't.",
   },
   {
-    n: "03",
     title: "Compound, don't sprint",
     body: "We optimise for the next quarter's plan, not just this one. Every system we build is meant to keep paying off.",
   },
   {
-    n: "04",
     title: "Two people, real depth",
     body: "You'll always be talking to a founder. No account managers, no junior hand-offs, no Slack-only relationships.",
   },
@@ -49,8 +45,8 @@ export default async function AboutPage() {
               About
             </Badge>
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-text-primary mb-8 tracking-tight">
-              Two people,{" "}
-              <span className="italic text-text-secondary">one engine.</span>
+              Two people.{" "}
+              <span className="italic text-text-secondary">No middle layer.</span>
             </h1>
             <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed">
               We started {brand.name} because most agencies optimise for the
@@ -66,13 +62,10 @@ export default async function AboutPage() {
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-12">
             What we believe
           </p>
-          <ol className="grid md:grid-cols-2 gap-6">
+          <ul className="grid md:grid-cols-2 gap-6">
             {beliefs.map((b) => (
-              <li key={b.n}>
+              <li key={b.title}>
                 <Card variant="default" className="h-full">
-                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent mb-4">
-                    {b.n}
-                  </p>
                   <h2 className="font-serif text-2xl text-text-primary mb-4">
                     {b.title}
                   </h2>
@@ -82,7 +75,7 @@ export default async function AboutPage() {
                 </Card>
               </li>
             ))}
-          </ol>
+          </ul>
         </Container>
       </section>
 

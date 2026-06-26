@@ -49,20 +49,18 @@ export default function PrivacyPage() {
               <p>We collect personal data in three ways:</p>
               <ul className="list-disc pl-5 space-y-2 mt-3">
                 <li>
-                  <strong className="text-text-primary">You give it to us</strong> —
-                  when you submit a form (audit request, contact, waitlist), book a
+                  <strong className="text-text-primary">You give it to us</strong>. when you submit a form (audit request, contact, waitlist), book a
                   call, or email us. Typical fields: name, work email, company
                   name, company website, role.
                 </li>
                 <li>
-                  <strong className="text-text-primary">You connect an account</strong> —
-                  if you authorise us to read your advertising or analytics
+                  <strong className="text-text-primary">You connect an account</strong>. if you authorise us to read your advertising or analytics
                   accounts (Meta Ads, Google Ads, GA4) for an audit, we receive
                   the data those platforms expose to authenticated apps. We
                   never receive your platform passwords.
                 </li>
                 <li>
-                  <strong className="text-text-primary">Automatic</strong> — basic
+                  <strong className="text-text-primary">Automatic</strong>. basic
                   request data (IP address, user agent, page accessed) and
                   anonymous traffic counts via Vercel Analytics. No advertising
                   cookies or cross-site tracking pixels.
@@ -85,7 +83,7 @@ export default function PrivacyPage() {
                   (accounting, contracts, tax).
                 </li>
                 <li>
-                  To improve our services — analysing which tools get used and
+                  To improve our services, analysing which tools get used and
                   where they fall short.
                 </li>
               </ul>
@@ -106,33 +104,28 @@ export default function PrivacyPage() {
               </p>
               <ul className="list-disc pl-5 space-y-2 mt-3">
                 <li>
-                  <strong className="text-text-primary">Vercel</strong> (US/EU) —
-                  hosting, analytics, file storage.
+                  <strong className="text-text-primary">Vercel</strong> (US/EU), hosting, analytics, file storage.
                 </li>
                 <li>
-                  <strong className="text-text-primary">Neon</strong> (EU) —
-                  PostgreSQL database for our CRM and audit records.
+                  <strong className="text-text-primary">Neon</strong> (EU), PostgreSQL database for our CRM and audit records.
                 </li>
                 <li>
-                  <strong className="text-text-primary">Clerk</strong> (US) —
-                  authentication for our internal team-only platform.
+                  <strong className="text-text-primary">Clerk</strong> (US), authentication for our internal team-only platform.
                 </li>
                 <li>
-                  <strong className="text-text-primary">Anthropic</strong> (US) —
-                  large-language-model API used to synthesise audit findings
+                  <strong className="text-text-primary">Anthropic</strong> (US), large-language-model API used to synthesise audit findings
                   from data we&rsquo;ve already collected. We do not train
                   Anthropic&rsquo;s models on your data.
                 </li>
                 <li>
                   <strong className="text-text-primary">Meta Platforms</strong> and{" "}
-                  <strong className="text-text-primary">Google</strong> — only when
+                  <strong className="text-text-primary">Google</strong>. only when
                   you authorise us to read your advertising accounts. Data is
                   pulled live during an audit and not stored long-term beyond
                   the resulting report.
                 </li>
                 <li>
-                  <strong className="text-text-primary">Resend</strong> (US/EU) —
-                  transactional email (audit reports, booking confirmations).
+                  <strong className="text-text-primary">Resend</strong> (US/EU), transactional email (audit reports, booking confirmations).
                 </li>
               </ul>
             </Section>

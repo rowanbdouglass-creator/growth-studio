@@ -29,7 +29,7 @@ export async function submitContact(
   if (!message || message.length < 10) {
     return {
       status: "error",
-      message: "Tell us a bit more — at least a sentence.",
+      message: "Tell us a bit more, at least a sentence.",
     };
   }
 
@@ -44,6 +44,6 @@ export async function submitContact(
   return {
     status: "success",
     message:
-      "Thanks — we'll be in touch within one working day, usually faster.",
+      "Thanks, we'll be in touch within one working day, usually faster.",
   };
 }

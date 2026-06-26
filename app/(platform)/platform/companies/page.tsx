@@ -129,17 +129,17 @@ export default async function CompaniesListPage() {
                         {c.domain}
                       </a>
                     ) : (
-                      <span className="text-ink-dim">—</span>
+                      <span className="text-ink-dim">-</span>
                     )}
                   </td>
                   <td className="px-4 py-3 align-top text-ink-soft">
-                    {c.industry?.name ?? "—"}
+                    {c.industry?.name ?? "-"}
                   </td>
                   <td className="px-4 py-3 align-top text-ink-soft">
-                    {c.size ?? "—"}
+                    {c.size ?? "-"}
                   </td>
                   <td className="px-4 py-3 align-top text-ink-soft">
-                    {c.location ?? "—"}
+                    {c.location ?? "-"}
                   </td>
                 </tr>
               ))}

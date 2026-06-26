@@ -6,7 +6,7 @@ import { ACTIVITY_TYPES } from "@/config/pipeline";
 
 const initial = { status: "idle" as const };
 
-// Quick-log types people will actually pick — full list still available
+// Quick-log types people will actually pick, full list still available
 // in Payload admin but cluttering the sidebar with all 12 is overkill.
 const QUICK_TYPES = ACTIVITY_TYPES.filter((t) =>
   ["email-sent", "email-received", "call", "meeting", "proposal-sent"].includes(

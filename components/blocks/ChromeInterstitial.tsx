@@ -7,16 +7,12 @@ interface ChromeInterstitialProps {
   headline?: string;
   emphasis?: string;
   caption?: string;
-  number?: string;
-  label?: string;
 }
 
 export function ChromeInterstitial({
-  headline = "We build the engines",
-  emphasis = "that earn back hours per week.",
-  caption = "Custom systems · 8 yrs · WP, WC, Next.js",
-  number = "—",
-  label = "Manifesto",
+  headline = "We build the systems",
+  emphasis = "your team will still use in 3 years.",
+  caption = "Custom operations · 8 yrs · WP, WC, Next.js",
 }: ChromeInterstitialProps) {
   return (
     <PinnedZoom scrollHeight={220} className="bg-canvas">
@@ -32,7 +28,7 @@ export function ChromeInterstitial({
 
         return (
           <div className="relative w-full h-full">
-            {/* Chrome blob — animation runs inside Three.js */}
+            {/* Chrome blob, animation runs inside Three.js */}
             <HeroSceneLazy
               externalProgress={eased}
               baseScale={1.8}
@@ -51,20 +47,17 @@ export function ChromeInterstitial({
               }}
             />
 
-            {/* Eyebrow */}
+            {/* Hairline rule, no eyebrow */}
             <div
               className="absolute top-12 left-0 right-0 px-6 md:px-12"
               style={{ opacity: eyebrowOpacity }}
             >
               <div className="flex items-center gap-3 max-w-7xl mx-auto">
-                <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-                  {number} — {label}
-                </span>
                 <span className="flex-1 h-px bg-rule" />
               </div>
             </div>
 
-            {/* Headline — text-shadow halo for contrast over reflective surface */}
+            {/* Headline, text-shadow halo for contrast over reflective surface */}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
               <h2
                 className="font-sans font-medium text-ink leading-[1.08] tracking-[-0.04em] mb-6 max-w-5xl pb-1"

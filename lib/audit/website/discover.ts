@@ -1,7 +1,7 @@
 import type { ParsedDocument, SitemapResult } from "./types";
 
 /**
- * Page discovery — pick representative pages to screenshot + analyse,
+ * Page discovery, pick representative pages to screenshot + analyse,
  * so the audit covers more than just the home page.
  *
  * Categories we look for: home (always), product/service page, contact/about,

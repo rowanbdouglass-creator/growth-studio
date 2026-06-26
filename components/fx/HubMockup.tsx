@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
  * Decorative mockup of a workflow operations hub. Used as the
  * visual anchor for the featured case study (Nayim's Embroideries).
  * Multiple "stations" highlight in sequence to suggest real workflow
- * movement. Not a real product screenshot — until we have one this
+ * movement. Not a real product screenshot, until we have one this
  * communicates "we build software" credibly.
  */
 export function HubMockup() {

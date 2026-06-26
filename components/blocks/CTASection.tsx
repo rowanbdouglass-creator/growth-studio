@@ -8,7 +8,7 @@ export function CTASection() {
       <Container size="wide">
         <div className="flex items-center gap-3 mb-16 md:mb-20">
           <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute">
-            08 — Talk
+            08, Talk
           </span>
           <span className="flex-1 h-px bg-rule" />
         </div>

@@ -6,7 +6,7 @@ interface TestimonialProps {
 }
 
 /**
- * Visual portrait placeholder — chrome ring with the client's
+ * Visual portrait placeholder, chrome ring with the client's
  * initials, sized so it reads as an avatar without needing a
  * real photo asset. Replace with a real <Image /> when a real
  * portrait or company logo is available.

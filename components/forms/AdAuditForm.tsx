@@ -86,7 +86,7 @@ export function AdAuditForm() {
         setPhase("done");
       } catch (err) {
         if (err instanceof Error && err.name === "AbortError") return;
-        setError("Couldn't run the audit — try again.");
+        setError("Couldn't run the audit, try again.");
         setPhase("error");
       }
     });
@@ -125,7 +125,7 @@ export function AdAuditForm() {
           name="companyName"
           value={companyName}
           onChange={setCompanyName}
-          placeholder="Optional — we'll infer from the domain"
+          placeholder="Optional, we'll infer from the domain"
         />
 
         {error && (
@@ -206,7 +206,7 @@ export function AdAuditForm() {
           </p>
           <p className="text-sm text-text-primary mb-4 leading-relaxed">
             The auto-audit is a sketch. On a 30-min discovery call we walk
-            through the full report — recovered spend, the rebuild plan, and
+            through the full report, recovered spend, the rebuild plan, and
             whether we're a fit.
           </p>
           <a

@@ -9,7 +9,7 @@ const steps = [
     n: "01",
     title: "Discover",
     body:
-      "We pressure-test your funnel, ad accounts, and operational systems against vertical playbooks. You get a no-fluff report whether or not we end up working together — the audit is free either way.",
+      "We pressure-test your funnel, ad accounts, and operational systems against vertical playbooks. You get a no-fluff report whether or not we end up working together, the audit is free either way.",
     detail:
       "Outputs: a 6-page diagnostic report, 3 highest-leverage opportunities ranked by impact and effort, benchmarks against your vertical.",
   },
@@ -17,7 +17,7 @@ const steps = [
     n: "02",
     title: "Build",
     body:
-      "Campaigns, conversion systems, internal tooling — whatever is most leveraged for the next 90 days. Built to keep working when we step back, not to keep us on retainer.",
+      "Campaigns, conversion systems, internal tooling, whatever is most leveraged for the next 90 days. Built to keep working when we step back, not to keep us on retainer.",
     detail:
       "Outputs: working campaigns or working software, hand-off documentation, training for your team if needed.",
   },
@@ -25,7 +25,7 @@ const steps = [
     n: "03",
     title: "Optimise",
     body:
-      "Weekly sprints. Every test feeds the next quarter's plan. We don't recycle generic advice — we iterate on what's real for your numbers and your customers.",
+      "Weekly sprints. Every test feeds the next quarter's plan. We don't recycle generic advice, we iterate on what's real for your numbers and your customers.",
     detail:
       "Outputs: weekly digest, monthly retrospective, a quarterly plan that holds up to scrutiny from your board.",
   },
@@ -44,7 +44,7 @@ const steps = [
  * column scrolls. Each step in the right column triggers the left
  * column to update to that step's content. Apple-product-page style.
  *
- * On mobile this degrades to a stacked layout — pinning a left column
+ * On mobile this degrades to a stacked layout, pinning a left column
  * when the screen is too narrow makes no sense.
  */
 export function ProcessSteps() {
@@ -76,7 +76,7 @@ export function ProcessSteps() {
   return (
     <section aria-labelledby="process-heading" className="py-24 md:py-32">
       <Container size="wide">
-        {/* Flow diagram — gives the section a strong visual moment */}
+        {/* Flow diagram, gives the section a strong visual moment */}
         <div className="mb-20 md:mb-28">
           <ProcessFlow
             active={active}

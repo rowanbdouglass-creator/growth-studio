@@ -2,7 +2,7 @@ import type { ParsedDocument } from "./types";
 
 /**
  * Regex-based HTML parser. Avoids pulling cheerio/jsdom into the audit
- * runtime — we only need a handful of structural signals, all of which
+ * runtime, we only need a handful of structural signals, all of which
  * are cheap to extract from raw HTML.
  *
  * Trade-off: malformed or JS-rendered markup will give us less data than

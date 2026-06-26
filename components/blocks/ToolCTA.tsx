@@ -28,7 +28,7 @@ const tools: ToolCTAItem[] = [
     status: "Free · 10 min",
     title: "Website & Systems Audit",
     description:
-      "Paste your URL. We crawl, screenshot, and run vertical playbooks against your funnel — visual diagnosis plus business-model audit.",
+      "Paste your URL. We crawl, screenshot, and run vertical playbooks against your funnel, visual diagnosis plus business-model audit.",
     ctaLabel: "Audit my site",
     href: "/tools/website-audit",
     variant: "site",
@@ -54,7 +54,7 @@ export function ToolCTASection() {
           </h2>
           <p className="text-lg text-ink-soft leading-relaxed max-w-md">
             Two free tools built from our own playbooks. Run one before
-            you book — we'll talk about real numbers, not hypotheticals.
+            you book, we'll talk about real numbers, not hypotheticals.
           </p>
         </div>
 

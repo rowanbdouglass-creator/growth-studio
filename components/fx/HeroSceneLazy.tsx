@@ -17,7 +17,7 @@ const HeroScene = dynamic(() => import("./HeroScene"), {
 
 /**
  * Lazy-loads the WebGL hero scene only on the client. Three.js +
- * R3F + Drei add ~600kb gzip — keeping it out of the initial chunk
+ * R3F + Drei add ~600kb gzip, keeping it out of the initial chunk
  * means the rest of the site loads at full speed.
  */
 export function HeroSceneLazy({

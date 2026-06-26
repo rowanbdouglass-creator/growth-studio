@@ -146,7 +146,7 @@ export function CsvImporter() {
                           key={h}
                           className="px-2 py-1.5 text-ink-soft truncate max-w-[160px]"
                         >
-                          {row[h] ?? "—"}
+                          {row[h] ?? "-"}
                         </td>
                       ))}
                     </tr>

@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: `Selected case studies from ${brand.name} — operational hubs, conversion systems, and growth engineering for established UK businesses.`,
+  description: `Selected case studies from ${brand.name}. Operational hubs, conversion systems, and growth engineering for established UK businesses.`,
 };
 
 export default async function WorkPage() {
@@ -25,12 +25,12 @@ export default async function WorkPage() {
               Selected work
             </Badge>
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-text-primary mb-8 tracking-tight">
-              The receipts,{" "}
-              <span className="italic text-text-secondary">in detail.</span>
+              Real clients.{" "}
+              <span className="italic text-text-secondary">Real numbers.</span>
             </h1>
             <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed">
-              Each one is a real engagement. Real numbers, real edge cases,
-              real reasons the off-the-shelf option didn't fit.
+              Each one is a real engagement with real edge cases, and real
+              reasons the off-the-shelf option didn&rsquo;t fit.
             </p>
           </div>
         </Container>

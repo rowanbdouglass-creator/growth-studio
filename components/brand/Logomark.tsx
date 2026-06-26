@@ -1,11 +1,11 @@
 /**
- * Growth Studio mark — three ascending bars representing the
+ * Growth Studio mark, three ascending bars representing the
  * compound shape. Geometric, scales clean, animates on demand.
  *
  * Usage:
- *   <Logomark />               — just the mark
- *   <Logomark withWordmark />  — mark + "Growth Studio"
- *   <Logomark animate />       — draws in on mount
+ *   <Logomark />              , just the mark
+ *   <Logomark withWordmark /> , mark + "Growth Studio"
+ *   <Logomark animate />      , draws in on mount
  */
 
 interface LogomarkProps {

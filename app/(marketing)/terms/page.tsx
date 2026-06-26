@@ -83,8 +83,7 @@ export default function TermsPage() {
             <Section heading="3. Accuracy of audit findings">
               <p>
                 Audits combine real data we collect (HTML, public APIs, Core
-                Web Vitals, ad library records, and — with your authorisation —
-                advertising account data) with AI-synthesised commentary. The
+                Web Vitals, ad library records, and, with your authorisation, advertising account data) with AI-synthesised commentary. The
                 findings represent our best automated assessment at the time
                 of generation. They are <strong>not</strong> a substitute for
                 full professional advice, a manual audit by a specialist, or

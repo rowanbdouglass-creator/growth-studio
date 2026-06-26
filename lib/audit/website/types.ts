@@ -1,5 +1,5 @@
 /**
- * Real Website Audit — shared types.
+ * Real Website Audit, shared types.
  *
  * The audit pipeline collects observable signals from the target URL and
  * its public surface (sitemap, robots.txt, response headers), then hands

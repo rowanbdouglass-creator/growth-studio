@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Small mock UI preview rendered at the top of a tool card.
- * Two variants — "ad" shows a dashboard-style metric grid, "site"
+ * Two variants, "ad" shows a dashboard-style metric grid, "site"
  * shows a Lighthouse-style score gauge. Both animate in once on
  * scroll: bars fill, score number counts up.
  */

@@ -12,7 +12,7 @@ export function CaseStudyFeature({ caseStudy }: CaseStudyFeatureProps) {
     <section className="py-20 md:py-28">
       <Container size="wide">
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
-          {/* LEFT — copy */}
+          {/* LEFT, copy */}
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute mb-6">
               Client · {caseStudy.client}
@@ -53,7 +53,7 @@ export function CaseStudyFeature({ caseStudy }: CaseStudyFeatureProps) {
             </Link>
           </div>
 
-          {/* RIGHT — animated hub mockup */}
+          {/* RIGHT, animated hub mockup */}
           <div>
             <HubMockup />
           </div>

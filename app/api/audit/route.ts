@@ -36,7 +36,7 @@ Initialising growth audit for {hostname}
 [FINDINGS]
 Findings (4)
 ⚠ £{xxxx} / mo  {what is wasted, where}
-⚠ {scope}  {issue}  — {impact}
+⚠ {scope}  {issue} , {impact}
 ⚠ £{xxx} / mo  {dead asset description}
 ⚠ {percentage} %  {branded leak or audience gap}
 
@@ -52,7 +52,7 @@ Quick wins (3)
 → Recovered  £{x,xxx}
 → Time to implement  {x} working days
 
-Be specific to the business vertical implied by the URL. Use realistic UK £ figures (typical SME ad spend £4k–£30k/mo). Don't mention you are an AI, language model, Claude, or generated content. Don't apologise. Don't add disclaimers.`;
+Be specific to the business vertical implied by the URL. Use realistic UK £ figures (typical SME ad spend £4k-£30k/mo). Don't mention you are an AI, language model, Claude, or generated content. Don't apologise. Don't add disclaimers.`;
 
 const FALLBACK_TRANSCRIPT = (host: string) =>
   [
@@ -65,9 +65,9 @@ const FALLBACK_TRANSCRIPT = (host: string) =>
     "",
     "Findings (4)",
     "⚠ £1,840 / mo  Audience overlap across 4 campaigns",
-    "⚠ 11 campaigns  Broken UTM tags — attribution unreliable",
-    "⚠ £940 / mo  Dead creative — 3 ad sets, 14d no impressions",
-    "⚠ 23 %  Branded search bleed — bidding against own brand",
+    "⚠ 11 campaigns  Broken UTM tags, attribution unreliable",
+    "⚠ £940 / mo  Dead creative, 3 ad sets, 14d no impressions",
+    "⚠ 23 %  Branded search bleed, bidding against own brand",
     "",
     "Quick wins (3)",
     "✓ Consolidate audiences → recover £1,840 / mo",
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   const encoder = new TextEncoder();
 
-  // Fallback path — paced simulated stream so the demo always works.
+  // Fallback path, paced simulated stream so the demo always works.
   if (!apiKey) {
     const transcript = FALLBACK_TRANSCRIPT(host);
     const stream = new ReadableStream({
@@ -161,7 +161,7 @@ export async function POST(req: NextRequest) {
       } catch (err) {
         console.error("[audit] stream error", err);
         // Emit fallback if stream fails mid-flight
-        controller.enqueue(encoder.encode(`\n[stream error — falling back]\n`));
+        controller.enqueue(encoder.encode(`\n[stream error, falling back]\n`));
         controller.enqueue(encoder.encode(FALLBACK_TRANSCRIPT(host)));
         controller.close();
       }

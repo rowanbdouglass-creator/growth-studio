@@ -3,8 +3,6 @@ import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { CustomCursor } from "@/components/fx/CustomCursor";
-import { SoundFx } from "@/components/fx/SoundFx";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
 import "../globals.css";
@@ -24,7 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
   title: {
-    default: `${brand.name} — ${brand.shortTagline}`,
+    default: `${brand.name} | ${brand.shortTagline}`,
     template: `%s | ${brand.name}`,
   },
   description: brand.description,
@@ -74,8 +72,6 @@ export default function MarketingLayout({
         >
           Skip to content
         </a>
-        <CustomCursor />
-        <SoundFx />
         <Header />
         <div id="main" className="flex-1 flex flex-col">
           {children}

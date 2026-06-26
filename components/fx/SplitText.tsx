@@ -15,7 +15,7 @@ interface SplitTextProps {
  *
  * Spaces live as TEXT NODES between the inline-block word wrappers,
  * not inside them. Inside an inline-block, trailing whitespace gets
- * collapsed by the browser — which is why earlier versions rendered
+ * collapsed by the browser, which is why earlier versions rendered
  * "Auditsthatfind" instead of "Audits that find".
  */
 export function SplitText({

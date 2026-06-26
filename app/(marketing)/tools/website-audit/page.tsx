@@ -26,7 +26,7 @@ const findings = [
   },
   {
     label: "Bespoke questions",
-    body: "After the audit, we ask 4–6 questions specific to gaps we found — what CRM/spreadsheets you use, what could integrate with what, and the one capability missing that would change your conversion rate.",
+    body: "After the audit, we ask 4-6 questions specific to gaps we found, what CRM/spreadsheets you use, what could integrate with what, and the one capability missing that would change your conversion rate.",
   },
 ];
 
@@ -87,8 +87,8 @@ export default function WebsiteAuditPage() {
                 Run yours now
               </h2>
               <p className="text-text-secondary mb-6 leading-relaxed">
-                You&rsquo;ll watch the audit run live — every signal we
-                check, every page we screenshot — then read the synthesised
+                You&rsquo;ll watch the audit run live, every signal we
+                check, every page we screenshot, then read the synthesised
                 report and the bespoke follow-up questions.
               </p>
               <WebsiteAuditForm />

@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/Container";
 
 /**
- * Selected client list. Treated as type, not logos — confident,
+ * Selected client list. Treated as type, not logos, confident,
  * editorial. Real SVG marks can replace these later.
  */
 const clients = [
@@ -25,7 +25,7 @@ export function LogoGrid() {
             id="clients-heading"
             className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute"
           >
-            Selected clients · 2024 — 2026
+            Selected clients · 2024, 2026
           </span>
           <span className="flex-1 h-px bg-rule" />
         </div>

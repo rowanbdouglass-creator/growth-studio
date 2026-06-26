@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 /**
- * Refinement pass — takes the original audit transcript plus the
+ * Refinement pass, takes the original audit transcript plus the
  * prospect's answers to the bespoke questions, and produces a tailored
  * "next steps" report. This is the second Claude call; the first
  * (synthesise.ts) generates the audit, this one personalises it.
@@ -9,16 +9,16 @@ import Anthropic from "@anthropic-ai/sdk";
  * Output format is structured for the TailoredSummary card UI:
  *
  *   [PRIORITIES]
- *   {3 numbered items — top moves ranked by impact and effort}
+ *   {3 numbered items, top moves ranked by impact and effort}
  *
  *   [STACK]
- *   {1–2 lines on what systems they'd benefit from + integration paths}
+ *   {1-2 lines on what systems they'd benefit from + integration paths}
  *
  *   [PITCH]
- *   {2–3 lines suggesting how Growth Studio could help, soft sell}
+ *   {2-3 lines suggesting how Growth Studio could help, soft sell}
  */
 
-const SYSTEM_PROMPT = `You are the Growth Studio audit refiner. The prospect has just completed a website audit and answered bespoke questions about their operations and gaps. Use ALL of that — the audit findings AND their answers — to produce a tailored "next steps" report.
+const SYSTEM_PROMPT = `You are the Growth Studio audit refiner. The prospect has just completed a website audit and answered bespoke questions about their operations and gaps. Use ALL of that, the audit findings AND their answers, to produce a tailored "next steps" report.
 
 Hard rules:
 1. Use their actual answers verbatim where useful (e.g. "Since you mentioned you use Google Sheets for inventory, ...").
@@ -26,18 +26,18 @@ Hard rules:
 3. Speak directly to the business owner, UK English, second person, plain language.
 4. Be specific and concrete. Avoid platitudes like "improve conversion rates".
 
-Output format — use these EXACT section markers verbatim, no preamble:
+Output format, use these EXACT section markers verbatim, no preamble:
 
 [PRIORITIES]
-1. {Top priority — what to do, in plain language. 1–2 sentences. Reference a specific gap and one of their answers if relevant.}
+1. {Top priority, what to do, in plain language. 1-2 sentences. Reference a specific gap and one of their answers if relevant.}
 2. {Second priority. Same format.}
 3. {Third priority. Same format.}
 
 [STACK]
-{1–2 sentences on systems that would close the gaps you identified, given the ops setup they described. Mention specific tools where appropriate (e.g. "swap the spreadsheet for Airtable for inventory, then hook it to your Shopify via Zapier"). Be pragmatic.}
+{1-2 sentences on systems that would close the gaps you identified, given the ops setup they described. Mention specific tools where appropriate (e.g. "swap the spreadsheet for Airtable for inventory, then hook it to your Shopify via Zapier"). Be pragmatic.}
 
 [PITCH]
-{2–3 sentences. Suggest specifically how Growth Studio's Custom Systems offering could close the biggest gap, given what they told you. Soft sell — invitation to a discovery call, not a hard pitch.}
+{2-3 sentences. Suggest specifically how Growth Studio's Custom Systems offering could close the biggest gap, given what they told you. Soft sell, invitation to a discovery call, not a hard pitch.}
 
 End after [PITCH]. No sign-off. No closing summary.`;
 
@@ -125,7 +125,7 @@ function fallback(args: {
   return [
     `[PRIORITIES]`,
     `1. Refinement requires ANTHROPIC_API_KEY in production env.`,
-    `2. The audit findings are still valid — see the report above.`,
+    `2. The audit findings are still valid, see the report above.`,
     `3. Book a discovery call to walk through them in detail.`,
     ``,
     `[STACK]`,

@@ -167,7 +167,7 @@ function parseGaps(text: string | null): GapRow[] {
     .filter((l) => !l.toLowerCase().startsWith("each gap"))
     .map((line) => {
       const cleaned = line.replace(/^[-•*]\s*/, "");
-      const idx = cleaned.indexOf("—");
+      const idx = cleaned.indexOf("-");
       if (idx !== -1) {
         return {
           title: cleaned.slice(0, idx).trim(),

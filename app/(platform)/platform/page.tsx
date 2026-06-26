@@ -85,10 +85,10 @@ export default async function PlatformDashboard() {
             Next chunks
           </h2>
           <ul className="text-sm text-ink-soft leading-relaxed space-y-1">
-            <li>2B — Contact list filters + detail timeline + inline edit</li>
-            <li>2C — Pipeline kanban</li>
-            <li>2D — Full-text search, CSV import/export, @mentions</li>
-            <li>2E — Clerk auth + multi-tenant scoping</li>
+            <li>2B, Contact list filters + detail timeline + inline edit</li>
+            <li>2C, Pipeline kanban</li>
+            <li>2D, Full-text search, CSV import/export, @mentions</li>
+            <li>2E, Clerk auth + multi-tenant scoping</li>
           </ul>
         </div>
       </section>

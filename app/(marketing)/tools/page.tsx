@@ -26,7 +26,7 @@ const tools = [
     title: "Website & Systems Audit",
     eyebrow: "Free · 10 minutes",
     description:
-      "Paste your URL. We crawl, screenshot, and run vertical-specific playbooks against your funnel — visual diagnosis, business-model audit.",
+      "Paste your URL. We crawl, screenshot, and run vertical-specific playbooks against your funnel, visual diagnosis, business-model audit.",
     status: "Coming soon",
   },
   {
@@ -54,7 +54,7 @@ export default function ToolsPage() {
             </h1>
             <p className="text-lg md:text-xl text-text-secondary max-w-2xl leading-relaxed">
               We run every prospect's account through these before discovery
-              calls. Now you can run them yourself — free, no strings.
+              calls. Now you can run them yourself, free, no strings.
             </p>
           </div>
         </Container>

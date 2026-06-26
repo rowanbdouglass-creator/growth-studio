@@ -4,23 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 
 interface SectionMarkerProps {
-  /** Short uppercase label e.g. "WHAT WE DO" */
+  /** Short label e.g. "What we do" */
   label: string;
   /** Optional very short subtitle line */
   subtitle?: string;
-  /** Optional small index e.g. "02" rendered subtly to the left of the label */
-  index?: string;
 }
 
 /**
- * Subtle horizontal divider between major homepage sections.
- *
- * Replaces the previous massive-numbered version which was visually
- * overpowering. This one is restrained: a hairline rule animates in
- * from the centre, a small mono label sits at one end. Confident but
- * not loud.
+ * Hairline section divider with a small label.
+ * No section numbers, no "Manifesto / Interlude" mock-poetic labels.
+ * Used sparingly to break long pages, not on every section.
  */
-export function SectionMarker({ label, subtitle, index }: SectionMarkerProps) {
+export function SectionMarker({ label, subtitle }: SectionMarkerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
@@ -47,10 +42,9 @@ export function SectionMarker({ label, subtitle, index }: SectionMarkerProps) {
   }, []);
 
   return (
-    <div ref={ref} className="relative py-14 md:py-20">
+    <div ref={ref} className="relative py-6 md:py-8">
       <Container size="wide">
         <div className="flex items-baseline gap-4">
-          {/* Animated rule */}
           <span
             aria-hidden
             className="h-px bg-rule"
@@ -71,9 +65,6 @@ export function SectionMarker({ label, subtitle, index }: SectionMarkerProps) {
                 "opacity 600ms 300ms cubic-bezier(0.16,1,0.3,1), transform 600ms 300ms cubic-bezier(0.16,1,0.3,1)",
             }}
           >
-            {index && (
-              <span className="text-ink-dim mr-3">{index}</span>
-            )}
             {label}
           </span>
           {subtitle && (
