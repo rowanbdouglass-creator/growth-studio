@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { PrintHero } from "@/components/fx/PrintHero";
+import { WebGLLedger } from "@/components/fx/WebGLLedger";
 import { Stop } from "@/components/brand/Stop";
 import {
   getServices,
@@ -165,65 +166,8 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* THE LEDGER (placeholder pending Session 2 WebGL rebuild) */}
-      <section className="bg-[color:var(--color-ink)] text-[color:var(--color-paper)] py-24 md:py-32">
-        <Container size="wide">
-          <div className="flex justify-between items-baseline pb-12 mb-12 border-b border-[#3A3833]">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-red)] mb-3 flex items-center gap-2">
-                <Stop size={7} color="#C4472E" />
-                SELECTED WORK
-              </p>
-              <h2
-                className="font-sans font-black inline-flex items-end gap-3"
-                style={{ fontSize: "clamp(40px, 6vw, 84px)", lineHeight: 0.95 }}
-              >
-                The ledger
-                <Stop size="0.36em" color="#C4472E" style={{ marginBottom: "0.08em" }} />
-              </h2>
-            </div>
-            <p className="hidden md:block font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)]">
-              END OF FORTY-ONE · 2024-2026
-            </p>
-          </div>
-
-          {/* column headers */}
-          <div className="hidden md:grid grid-cols-[1.4fr_2.2fr_1.2fr_1fr] gap-9 pb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)]">
-            <span>CLIENT</span>
-            <span>SCOPE</span>
-            <span>OUTCOME</span>
-            <span className="text-right">READ</span>
-          </div>
-
-          <ul className="divide-y divide-[#3A3833] border-t border-[#3A3833]">
-            {LEDGER.map((row) => (
-              <li
-                key={row.ref}
-                className="grid md:grid-cols-[1.4fr_2.2fr_1.2fr_1fr] gap-9 py-6 md:py-8 items-center cursor-pointer hover:bg-[#232220] transition-colors px-1 md:px-0"
-              >
-                <span className="flex items-center gap-3 font-sans font-semibold text-lg md:text-xl">
-                  <Stop size={9} color="#C4472E" />
-                  {row.client}
-                </span>
-                <span className="text-sm md:text-base text-[#D4CFC2] leading-snug">
-                  {row.scope}
-                </span>
-                <span className="font-mono text-lg md:text-xl font-bold text-[color:var(--color-paper)]">
-                  {row.outcome}
-                  {row.outcomeLabel && (
-                    <small className="block text-[10px] tracking-[0.18em] text-[color:var(--color-pencil)] mt-1 uppercase font-normal">
-                      {row.outcomeLabel}
-                    </small>
-                  )}
-                </span>
-                <span className="text-right font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-pencil)]">
-                  {row.ref} →
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Container>
-      </section>
+      {/* SIGNATURE MOMENT 2 — The WebGL Ledger */}
+      <WebGLLedger />
 
       {/* WHAT COUNTS */}
       <section className="py-24 md:py-32 border-t border-[color:var(--color-rule)]">
