@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { brand } from "@/config/brand";
 import { Container } from "@/components/ui/Container";
-import { Stop } from "@/components/brand/Stop";
 import { MobileNav } from "./MobileNav";
 
 /**
- * Receipts header. Sticky, transparent over hero, fades to paper-tint
- * background once scrolled. Wordmark on left, nav center-right,
- * stamp-pill "Book" CTA on right.
+ * Header for You Look Booked. Sticky, transparent over hero, fades to
+ * paper-tint once scrolled. Plain text wordmark until a logo is chosen.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -40,64 +39,42 @@ export function Header() {
     >
       <Container size="wide">
         <div className="flex h-16 md:h-20 items-center justify-between gap-6">
-          {/* Wordmark */}
           <Link
             href="/"
-            aria-label="receipts. home"
-            className="group flex items-end gap-1.5 text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+            aria-label={`${brand.name} home`}
+            className="font-sans font-bold text-[color:var(--color-ink)] hover:opacity-70 transition-opacity"
+            style={{ fontSize: 17, letterSpacing: "-0.01em" }}
           >
-            <span
-              className="font-sans font-black"
-              style={{
-                fontSize: "26px",
-                lineHeight: 0.85,
-                letterSpacing: "-0.045em",
-              }}
-            >
-              receipts
-            </span>
-            <Stop size={7} color="#C4472E" style={{ marginBottom: 2 }} />
+            {brand.name}
           </Link>
 
-          {/* Nav */}
-          <nav
-            aria-label="Main"
-            className="hidden md:flex items-center gap-9"
-          >
+          <nav aria-label="Main" className="hidden md:flex items-center gap-9">
             <Link
               href="/work"
-              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+              className="text-sm font-medium text-[color:var(--color-ink)] hover:opacity-70 transition-opacity"
             >
               Work
             </Link>
             <Link
               href="/services"
-              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+              className="text-sm font-medium text-[color:var(--color-ink)] hover:opacity-70 transition-opacity"
             >
               Services
             </Link>
             <Link
-              href="/tools"
-              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
-            >
-              Tools
-            </Link>
-            <Link
               href="/about"
-              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+              className="text-sm font-medium text-[color:var(--color-ink)] hover:opacity-70 transition-opacity"
             >
               About
             </Link>
           </nav>
 
-          {/* Book CTA */}
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
-              className="hidden md:inline-flex items-center gap-2.5 border-[1.5px] border-[color:var(--color-ink)] bg-[color:var(--color-ink)] text-[color:var(--color-paper)] px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.14em] hover:bg-[color:var(--color-red)] hover:border-[color:var(--color-red)] transition-colors"
+              className="hidden md:inline-flex items-center border border-[color:var(--color-ink)] text-[color:var(--color-ink)] px-5 py-2.5 text-sm font-medium hover:bg-[color:var(--color-ink)] hover:text-[color:var(--color-paper)] transition-colors"
             >
-              Book
-              <Stop size={6} color="#C4472E" />
+              Book a call
             </Link>
             <MobileNav />
           </div>

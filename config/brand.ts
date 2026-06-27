@@ -1,20 +1,20 @@
 /**
- * Brand abstraction layer — Receipts identity.
+ * Brand abstraction layer — You Look Booked identity.
  *
- * Receipts is a two-person UK agency that runs the traffic and builds
- * the systems that hold the revenue. Brand voice is dry, operator-
- * confident, anti-pitch. Receipts deliver proof: real numbers,
- * recovered spend, hours saved, ROAS that moves. Anything we promise
- * lands in writing, signed and dated.
+ * You Look Booked is an AI-native growth & systems studio for UK SMEs.
+ * Positioning: outcome promise (booked = busy with customers). Multi-discipline:
+ * AI calling agents, custom software / systems, website design, AI-optimised
+ * paid traffic. Word-of-mouth-only acquisition in next 12 months — site is a
+ * 90-second credibility check, not a cold-conversion brochure.
  *
  * Every brand-facing string in the codebase MUST reference this object.
  */
 export const brand = {
-  /** Display name. Lowercase, always. */
-  name: "receipts",
+  /** Display name used in headings, og tags, copyright. */
+  name: "You Look Booked",
 
-  /** Display name with the stop period — wordmark form. */
-  nameWithStop: "receipts.",
+  /** Short form for tight spaces. */
+  shortName: "You Look Booked",
 
   /** Full legal entity name. */
   legalName: "You Look Booked Ltd",
@@ -22,35 +22,28 @@ export const brand = {
   /** UK Companies House registration number. */
   companiesHouseNumber: "17020720",
 
+  /** Category descriptor — pairs with the brand name. */
+  descriptor: "A growth & systems studio.",
+
   /** Long tagline. */
   tagline:
-    "Paid traffic and the systems that hold the revenue. Built once, built right, signed.",
+    "We make UK SMEs look booked. AI calling agents, custom software, websites, and AI-optimised paid traffic — built and run by people who ship.",
 
   /** Short tagline. */
-  shortTagline:
-    "Paid traffic and the systems that hold the revenue.",
+  shortTagline: "We make UK SMEs look booked.",
 
   /** Marketing description. */
   description:
-    "A two-person UK agency that runs the traffic and builds the systems that hold the revenue. Real numbers, recovered spend, signed and dated.",
+    "An AI-native growth & systems studio for UK SMEs. We design AI calling agents, build custom operational software, ship conversion-focused websites, and run AI-optimised paid traffic — all under one roof.",
 
   /** Canonical URL. */
   url: "https://growth-studio-two.vercel.app",
 
   /** Primary contact email. */
-  email: "hello@receipts.studio",
+  email: "hello@youlookbooked.com",
 
   /** Primary contact phone. */
   phone: "+44 0000 000 000",
-
-  /** Brand palette tokens. */
-  palette: {
-    paper: "#F3EFE6",
-    ink: "#1B1A17",
-    red: "#C4472E",
-    pencil: "#8C887D",
-    slip: "#FCFBF7",
-  },
 
   social: {
     linkedin: "",
@@ -58,7 +51,7 @@ export const brand = {
     instagram: "",
   },
 
-  /** Logo asset paths. */
+  /** Logo asset paths. Swap once a style is chosen from /logos.html. */
   logo: {
     light: "/assets/logo-light.svg",
     dark: "/assets/logo-dark.svg",
