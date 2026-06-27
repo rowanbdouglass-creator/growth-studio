@@ -11,16 +11,14 @@ import Link from "next/link";
 import { Stop } from "@/components/brand/Stop";
 
 /**
- * Signature Moment 2 — The WebGL Ledger.
+ * Signature Moment 2 - The Ledger (v2 - rebuilt).
  *
- * A scroll-pinned 3D scene. Six case-study receipts orbit through space
- * as the user scrolls. By scroll-end they stack into a pile, ready to
- * read. Hover any receipt -> it lifts toward camera. Click -> navigate
- * to its detail page.
+ * Receipts drop in from above as the user scrolls and land in a clean
+ * fanned stack at bottom-center. One receipt per scroll-slot. By
+ * scroll-end, all six are stacked and readable. Hover the top one
+ * lifts. Click navigates to /work.
  *
- * Performance: GPU layer only (transforms + opacity). Texture canvases
- * are pre-baked once. Reduced-motion + small viewports fall back to a
- * static vertical list.
+ * Reduced-motion + small viewports fall back to a clean static list.
  */
 
 interface LedgerItem {
@@ -53,15 +51,14 @@ const LEDGER: LedgerItem[] = [
     client: "T-SHOT",
     scope: "Cold outreach engine + pipeline",
     outcome: "3.4× ROAS",
-    outcomeLabel: "",
     ref: "RCPT-0024",
     href: "/work",
   },
   {
     client: "Forum Studios",
     scope: "Operations hub + automation",
-    outcome: "96 HRS / MO",
-    outcomeLabel: "BACK",
+    outcome: "96 hrs",
+    outcomeLabel: "BACK / MONTH",
     ref: "RCPT-0029",
     href: "/work",
   },
@@ -83,125 +80,123 @@ const LEDGER: LedgerItem[] = [
   },
 ];
 
-// Canvas-painted receipt texture
-function buildReceiptTexture(item: LedgerItem, index: number): THREE.CanvasTexture {
+function buildReceiptTexture(item: LedgerItem): THREE.CanvasTexture {
+  const W = 1024;
+  const H = 1536;
   const canvas = document.createElement("canvas");
-  const W = 512;
-  const H = 768;
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext("2d");
   if (!ctx) return new THREE.CanvasTexture(canvas);
 
-  // Paper background
   ctx.fillStyle = "#F3EFE6";
   ctx.fillRect(0, 0, W, H);
 
-  // Subtle paper grain
-  for (let i = 0; i < 600; i++) {
-    const a = Math.random() * 0.04;
+  for (let i = 0; i < 1400; i++) {
+    const a = Math.random() * 0.05;
     ctx.fillStyle = `rgba(27, 26, 23, ${a})`;
-    ctx.fillRect(Math.random() * W, Math.random() * H, 1, 1);
+    ctx.fillRect(Math.random() * W, Math.random() * H, 2, 2);
   }
 
-  // Top meta strip
+  const M = 70;
+
   ctx.fillStyle = "#8C887D";
-  ctx.font = "500 16px 'JetBrains Mono', monospace";
-  ctx.fillText("RECEIPTS · UK", 32, 50);
+  ctx.font = "500 28px 'JetBrains Mono', monospace";
+  ctx.textAlign = "left";
+  ctx.fillText("RECEIPTS · UK", M, 100);
   ctx.textAlign = "right";
-  ctx.fillText(item.ref, W - 32, 50);
+  ctx.fillText(item.ref, W - M, 100);
   ctx.textAlign = "left";
 
-  // Hairline rule
-  ctx.fillStyle = "#DACBB1";
-  ctx.fillRect(32, 70, W - 64, 1);
-
-  // CLIENT label
-  ctx.fillStyle = "#8C887D";
-  ctx.font = "600 13px 'JetBrains Mono', monospace";
-  ctx.fillText("CLIENT", 32, 120);
-
-  // Client name
   ctx.fillStyle = "#1B1A17";
-  ctx.font = "900 36px 'Archivo', sans-serif";
-  // Wrap client name if long
+  ctx.fillRect(M, 130, W - M * 2, 2);
+
+  ctx.fillStyle = "#8C887D";
+  ctx.font = "600 22px 'JetBrains Mono', monospace";
+  ctx.fillText("CLIENT", M, 200);
+
+  ctx.fillStyle = "#1B1A17";
+  ctx.font = "900 72px 'Archivo', sans-serif";
+  const lineHeight = 84;
+  const maxWidth = W - M * 2;
   const words = item.client.split(" ");
   let line = "";
-  let y = 165;
+  let y = 290;
   for (const word of words) {
     const test = line + word + " ";
-    if (ctx.measureText(test).width > W - 64 && line) {
-      ctx.fillText(line.trim(), 32, y);
+    if (ctx.measureText(test).width > maxWidth && line) {
+      ctx.fillText(line.trim(), M, y);
       line = word + " ";
-      y += 42;
+      y += lineHeight;
     } else {
       line = test;
     }
   }
-  ctx.fillText(line.trim(), 32, y);
+  ctx.fillText(line.trim(), M, y);
 
-  // SCOPE label + body
+  const scopeStartY = y + 130;
   ctx.fillStyle = "#8C887D";
-  ctx.font = "600 13px 'JetBrains Mono', monospace";
-  ctx.fillText("SCOPE", 32, y + 80);
+  ctx.font = "600 22px 'JetBrains Mono', monospace";
+  ctx.fillText("SCOPE", M, scopeStartY);
+
   ctx.fillStyle = "#3A3833";
-  ctx.font = "500 20px 'Archivo', sans-serif";
+  ctx.font = "500 36px 'Archivo', sans-serif";
+  const scopeLineH = 52;
+  let scopeY = scopeStartY + 60;
   const scopeWords = item.scope.split(" ");
   line = "";
-  let scopeY = y + 115;
   for (const word of scopeWords) {
     const test = line + word + " ";
-    if (ctx.measureText(test).width > W - 64 && line) {
-      ctx.fillText(line.trim(), 32, scopeY);
+    if (ctx.measureText(test).width > maxWidth && line) {
+      ctx.fillText(line.trim(), M, scopeY);
       line = word + " ";
-      scopeY += 28;
+      scopeY += scopeLineH;
     } else {
       line = test;
     }
   }
-  ctx.fillText(line.trim(), 32, scopeY);
+  ctx.fillText(line.trim(), M, scopeY);
 
-  // OUTCOME label
   ctx.fillStyle = "#8C887D";
-  ctx.font = "600 13px 'JetBrains Mono', monospace";
-  ctx.fillText("OUTCOME", 32, H - 200);
+  ctx.font = "600 22px 'JetBrains Mono', monospace";
+  ctx.fillText("OUTCOME", M, H - 320);
 
-  // Big outcome figure
   ctx.fillStyle = "#1B1A17";
-  ctx.font = "700 52px 'JetBrains Mono', monospace";
-  ctx.fillText(item.outcome, 32, H - 140);
+  ctx.font = "700 92px 'JetBrains Mono', monospace";
+  ctx.fillText(item.outcome, M, H - 220);
 
-  // Outcome label small
   if (item.outcomeLabel) {
     ctx.fillStyle = "#8C887D";
-    ctx.font = "500 14px 'JetBrains Mono', monospace";
-    ctx.fillText(item.outcomeLabel, 32, H - 110);
+    ctx.font = "600 22px 'JetBrains Mono', monospace";
+    ctx.fillText(item.outcomeLabel, M, H - 170);
   }
 
-  // Bottom rule + red stop
   ctx.fillStyle = "#1B1A17";
-  ctx.fillRect(32, H - 70, W - 64, 1);
+  ctx.fillRect(M, H - 110, W - M * 2, 2);
 
-  // Red torn-corner stop (manual polygon)
   ctx.fillStyle = "#C4472E";
-  const sx = 32;
-  const sy = H - 50;
-  const ss = 24;
+  const ss = 36;
+  const sy = H - 80;
   ctx.beginPath();
-  ctx.moveTo(sx, sy);
-  ctx.lineTo(sx + ss, sy);
-  ctx.lineTo(sx + ss, sy + ss * 0.58);
-  ctx.lineTo(sx + ss * 0.58, sy + ss);
-  ctx.lineTo(sx, sy + ss);
+  ctx.moveTo(M, sy);
+  ctx.lineTo(M + ss, sy);
+  ctx.lineTo(M + ss, sy + ss * 0.58);
+  ctx.lineTo(M + ss * 0.58, sy + ss);
+  ctx.lineTo(M, sy + ss);
   ctx.closePath();
   ctx.fill();
 
   ctx.fillStyle = "#1B1A17";
-  ctx.font = "500 14px 'JetBrains Mono', monospace";
-  ctx.fillText("SIGNED & DATED", sx + ss + 16, sy + ss - 6);
+  ctx.font = "700 22px 'JetBrains Mono', monospace";
+  ctx.textAlign = "right";
+  ctx.fillText("SIGNED", W - M, sy + ss - 4);
+  ctx.textAlign = "left";
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  tex.minFilter = THREE.LinearMipMapLinearFilter;
+  tex.magFilter = THREE.LinearFilter;
   tex.needsUpdate = true;
   return tex;
 }
@@ -226,79 +221,52 @@ function ReceiptCard({
   onClick,
 }: ReceiptCardProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const texture = useMemo(() => buildReceiptTexture(item, index), [item, index]);
+  const texture = useMemo(() => buildReceiptTexture(item), [item]);
+
+  const finalX = useMemo(() => (index - (total - 1) / 2) * 0.42, [index, total]);
+  const finalY = useMemo(() => -index * 0.08, [index]);
+  const finalRotZ = useMemo(
+    () => (index - (total - 1) / 2) * 0.11,
+    [index, total]
+  );
 
   useFrame(() => {
     if (!meshRef.current) return;
     const t = scrollProgress.current;
 
-    // Each receipt has a personal phase offset
-    const phase = index / total;
+    const slotStart = index * (0.85 / total);
+    const slotEnd = slotStart + 0.22;
+    const slotT = THREE.MathUtils.clamp(
+      (t - slotStart) / (slotEnd - slotStart),
+      0,
+      1
+    );
 
-    // Phase A: entry from off-screen left (t = 0 -> 0.15)
-    // Phase B: orbit around center (t = 0.15 -> 0.7)
-    // Phase C: stack at center-right (t = 0.7 -> 1.0)
+    const startY = 6;
+    const startRotZ = (index - (total - 1) / 2) * 0.4 + 0.6;
+    const ease = 1 - Math.pow(1 - slotT, 3);
 
-    // Entry
-    const entry = THREE.MathUtils.clamp((t - phase * 0.04) / 0.18, 0, 1);
+    const x = THREE.MathUtils.lerp(finalX * 0.3, finalX, ease);
+    const y = THREE.MathUtils.lerp(startY, finalY, ease);
+    const rotZ = THREE.MathUtils.lerp(startRotZ, finalRotZ, ease);
+    const z = index * 0.04;
 
-    // Orbit angle: spread around 270deg of arc
-    const arcStart = -Math.PI * 0.55;
-    const arcSpan = Math.PI * 1.7;
-    const localPhase = (t - phase * 0.06) * 1.4;
-    const angle = arcStart + arcSpan * THREE.MathUtils.clamp(localPhase, 0, 1);
-
-    // Radius: shrinks as we orbit (drawing in to center)
-    const radius =
-      4.2 * (1 - THREE.MathUtils.clamp(localPhase, 0, 1) * 0.55);
-
-    // Position on orbit
-    let x = Math.cos(angle) * radius;
-    let y = Math.sin(angle) * radius * 0.6;
-    let z = -2 - localPhase * 1.5 + index * 0.15;
-
-    // Stack phase: when t > 0.78, glide to a fanned stack on right
-    const stackT = THREE.MathUtils.clamp((t - 0.78) / 0.2, 0, 1);
-    if (stackT > 0) {
-      const stackX = 2 + index * 0.04;
-      const stackY = 0.6 - index * 0.18;
-      const stackZ = -0.5 + index * 0.06;
-      x = THREE.MathUtils.lerp(x, stackX, stackT);
-      y = THREE.MathUtils.lerp(y, stackY, stackT);
-      z = THREE.MathUtils.lerp(z, stackZ, stackT);
-    }
-
-    // Hover lift
+    let liftZ = 0;
+    let liftScale = 1;
     if (hovered === index) {
-      z += 0.6;
+      liftZ = 0.6;
+      liftScale = 1.06;
     }
 
-    // Apply with entry opacity
-    meshRef.current.position.set(
-      x * entry + (1 - entry) * -8,
-      y,
-      z
-    );
+    meshRef.current.position.set(x, y, z + liftZ);
+    meshRef.current.rotation.set(0, 0, rotZ);
 
-    // Rotation: face the camera as it moves, slight tilt
-    const baseTilt = -0.1;
-    const stackTilt = THREE.MathUtils.lerp(angle * 0.4, 0.05, stackT);
-    meshRef.current.rotation.y = stackTilt;
-    meshRef.current.rotation.z = baseTilt + index * 0.02 - localPhase * 0.1;
-    meshRef.current.rotation.x = -0.05;
+    const currentScale = meshRef.current.scale.x || 1;
+    const newScale = THREE.MathUtils.lerp(currentScale, liftScale, 0.15);
+    meshRef.current.scale.set(newScale, newScale, newScale);
 
-    // Scale: small hover boost
-    const scale = hovered === index ? 1.08 : 1.0;
-    const lerpedScale = THREE.MathUtils.lerp(
-      (meshRef.current.scale.x as number) || scale,
-      scale,
-      0.12
-    );
-    meshRef.current.scale.set(lerpedScale, lerpedScale, lerpedScale);
-
-    // Opacity ramps in with entry
     const material = meshRef.current.material as THREE.MeshBasicMaterial;
-    if (material) material.opacity = entry;
+    if (material) material.opacity = slotT;
   });
 
   return (
@@ -318,12 +286,13 @@ function ReceiptCard({
         onClick(item);
       }}
     >
-      <planeGeometry args={[1.6, 2.4]} />
+      <planeGeometry args={[1.5, 2.25]} />
       <meshBasicMaterial
         map={texture}
         transparent
         opacity={0}
         side={THREE.DoubleSide}
+        toneMapped={false}
       />
     </mesh>
   );
@@ -342,13 +311,13 @@ function Scene({
 }) {
   const { size } = useThree();
   const zoom = useMemo(() => {
-    const min = Math.min(size.width, size.height);
-    return min * 0.16;
+    const ref = Math.min(size.width, size.height * 1.4);
+    return ref * 0.14;
   }, [size]);
 
   return (
     <>
-      <OrthographicCamera makeDefault position={[0, 0, 8]} zoom={zoom} />
+      <OrthographicCamera makeDefault position={[0, -0.4, 8]} zoom={zoom} />
       <ambientLight intensity={1} />
       {LEDGER.map((item, i) => (
         <ReceiptCard
@@ -387,9 +356,11 @@ export function WebGLLedger() {
       const trigger = ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
-        end: "+=3000",
+        end: "+=2400",
         pin: true,
-        scrub: 1,
+        pinSpacing: true,
+        scrub: 0.8,
+        anticipatePin: 1,
         onUpdate: (self) => {
           scrollProgress.current = self.progress;
         },
@@ -413,14 +384,17 @@ export function WebGLLedger() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[color:var(--color-ink)] text-[color:var(--color-paper)]"
+      className="relative bg-[color:var(--color-ink)] text-[color:var(--color-paper)] overflow-hidden"
       style={{ height: "100vh" }}
       aria-label="The ledger: selected work"
     >
-      {/* The Canvas fills the pinned viewport */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-0">
         <Canvas
-          gl={{ antialias: true, alpha: true }}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance",
+          }}
           dpr={[1, 2]}
           style={{ background: "transparent" }}
         >
@@ -433,22 +407,20 @@ export function WebGLLedger() {
         </Canvas>
       </div>
 
-      {/* Overlay HUD */}
-      <div className="relative h-full pointer-events-none">
+      <div className="relative h-full pointer-events-none z-10">
         <div className="max-w-[1480px] mx-auto px-6 md:px-9 h-full flex flex-col py-12 md:py-16">
-          {/* Top */}
-          <div className="flex justify-between items-baseline pb-8 border-b border-[#3A3833]">
+          <div className="flex justify-between items-baseline pb-7 border-b border-[#3A3833]">
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-red)] mb-4 flex items-center gap-2">
+              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-red)] mb-3 flex items-center gap-2">
                 <Stop size={7} color="#C4472E" />
                 SELECTED WORK
               </p>
               <h2
                 className="font-sans font-black inline-flex items-end gap-3"
-                style={{ fontSize: "clamp(40px, 6vw, 84px)", lineHeight: 0.95 }}
+                style={{ fontSize: "clamp(40px, 6vw, 80px)", lineHeight: 0.95 }}
               >
                 The ledger
-                <Stop size="0.36em" color="#C4472E" style={{ marginBottom: "0.08em" }} />
+                <Stop size="0.34em" color="#C4472E" style={{ marginBottom: "0.08em" }} />
               </h2>
             </div>
             <p className="hidden md:block font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)]">
@@ -456,9 +428,10 @@ export function WebGLLedger() {
             </p>
           </div>
 
-          {/* Hovered receipt info */}
-          <div className="flex-1 flex items-end pb-6">
-            <div className="max-w-md min-h-[120px] pointer-events-auto">
+          <div className="flex-1" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+            <div className="max-w-md min-h-[140px] pointer-events-auto">
               {hovered !== null ? (
                 <>
                   <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-red)] mb-3 flex items-center gap-2">
@@ -468,13 +441,13 @@ export function WebGLLedger() {
                   <h3 className="font-sans font-bold text-2xl md:text-3xl mb-2">
                     {LEDGER[hovered].client}
                   </h3>
-                  <p className="text-sm md:text-base text-[#D4CFC2] mb-3">
+                  <p className="text-sm text-[#D4CFC2] mb-3">
                     {LEDGER[hovered].scope}
                   </p>
-                  <p className="font-mono text-xl md:text-2xl font-bold">
+                  <p className="font-mono text-xl font-bold flex items-baseline gap-3">
                     {LEDGER[hovered].outcome}
                     {LEDGER[hovered].outcomeLabel && (
-                      <span className="ml-3 text-[11px] tracking-[0.18em] text-[color:var(--color-pencil)] font-normal uppercase">
+                      <span className="text-[10px] tracking-[0.18em] text-[color:var(--color-pencil)] font-normal uppercase">
                         {LEDGER[hovered].outcomeLabel}
                       </span>
                     )}
@@ -484,17 +457,27 @@ export function WebGLLedger() {
                   </p>
                 </>
               ) : (
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)] max-w-sm">
-                  Six receipts · hover any to inspect · scroll to fan and stack
-                </p>
+                <div>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)] mb-3 flex items-center gap-2">
+                    <Stop size={6} color="#C4472E" />
+                    INSTRUCTIONS
+                  </p>
+                  <p className="font-mono text-sm text-[color:var(--color-pencil)] max-w-sm leading-relaxed">
+                    Scroll to deal the receipts. Hover any to inspect. Click to
+                    read.
+                  </p>
+                </div>
               )}
             </div>
-          </div>
 
-          {/* Scroll indicator at bottom */}
-          <div className="flex justify-between items-center text-[color:var(--color-pencil)] font-mono text-[10px] uppercase tracking-[0.18em]">
-            <span>SCROLL TO READ THE LEDGER</span>
-            <span className="hidden md:inline">14 CLIENTS / 42 PROJECTS</span>
+            <div className="text-right hidden md:flex flex-col gap-1 self-end">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)]">
+                14 CLIENTS / 42 PROJECTS
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)]">
+                SCROLL TO DEAL
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -502,7 +485,6 @@ export function WebGLLedger() {
   );
 }
 
-/** Static vertical list fallback for reduced-motion + small viewports. */
 function StaticLedgerFallback() {
   return (
     <section className="bg-[color:var(--color-ink)] text-[color:var(--color-paper)] py-24 md:py-32">
