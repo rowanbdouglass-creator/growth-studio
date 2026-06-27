@@ -109,24 +109,22 @@ export function AIAuditDemo() {
   return (
     <div className="w-full max-w-xl">
       <div className="relative">
-        {/* Glow halo */}
+        {/* Soft glow halo (warm white) */}
         <div
           aria-hidden
           className="absolute -inset-10 rounded-3xl pointer-events-none"
           style={{
             background:
-              "radial-gradient(50% 45% at 50% 50%, oklch(0.86 0.012 245 / 0.18), transparent 70%)",
+              "radial-gradient(50% 45% at 50% 50%, oklch(0.460 0.220 252 / 0.10), transparent 70%)",
             filter: "blur(50px)",
           }}
         />
 
         <div
-          className="relative rounded-xl border border-border-strong overflow-hidden backdrop-blur-xl"
+          className="relative rounded-xl border border-border-strong overflow-hidden bg-surface"
           style={{
-            background:
-              "linear-gradient(155deg, oklch(0.18 0.008 260 / 0.65) 0%, oklch(0.13 0.006 260 / 0.92) 70%)",
             boxShadow:
-              "0 30px 80px -20px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(1 0 0 / 0.05) inset, 0 1px 0 0 oklch(1 0 0 / 0.06) inset",
+              "0 24px 60px -18px oklch(0.20 0.020 60 / 0.18), 0 0 0 1px oklch(0.20 0.020 60 / 0.04) inset",
           }}
         >
           {/* Window chrome */}
@@ -206,7 +204,7 @@ export function AIAuditDemo() {
               style={{
                 scrollbarWidth: "thin",
                 scrollbarColor:
-                  "oklch(0.32 0.008 260) oklch(0.13 0.006 260)",
+                  "oklch(0.76 0.006 75) oklch(0.952 0.006 75)",
               }}
             >
               {renderedLines.map((l, i) => {

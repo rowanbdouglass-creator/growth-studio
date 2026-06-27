@@ -9,36 +9,39 @@
    ================================================================== */
 
 @theme {
-  /* ----------------- Surfaces (warm near-black) ----------------- */
-  --color-canvas:            oklch(0.11 0.004 260);
-  --color-canvas-2:          oklch(0.13 0.005 260);
-  --color-surface:           oklch(0.16 0.006 260);
-  --color-surface-elevated:  oklch(0.19 0.007 260);
+  /* ----------------- Surfaces (warm off-white) -----------------
+     Considered editorial palette. Avoids the banned premium-consumer
+     beige + brass + oxblood family by pairing warm paper with a deep
+     saturated accent (electric ink-blue) and warm near-black type. */
+  --color-canvas:            oklch(0.972 0.005 75);
+  --color-canvas-2:          oklch(0.952 0.006 75);
+  --color-surface:           oklch(0.985 0.003 75);
+  --color-surface-elevated:  oklch(1.000 0 0);
 
   /* ----------------- Borders ----------------- */
-  --color-border:            oklch(0.22 0.006 260);
-  --color-border-strong:     oklch(0.32 0.008 260);
-  --color-rule:              oklch(0.26 0.007 260);
+  --color-border:            oklch(0.880 0.005 75);
+  --color-border-strong:     oklch(0.760 0.006 75);
+  --color-rule:              oklch(0.900 0.004 75);
 
-  /* ----------------- Ink (cool off-white) ----------------- */
-  --color-ink:               oklch(0.97 0.003 260);
-  --color-ink-soft:          oklch(0.76 0.005 260);
-  --color-ink-mute:          oklch(0.54 0.007 260);
-  --color-ink-dim:           oklch(0.38 0.009 260);
+  /* ----------------- Ink (warm near-black on warm off-white) ----------------- */
+  --color-ink:               oklch(0.180 0.012 60);
+  --color-ink-soft:          oklch(0.370 0.010 60);
+  --color-ink-mute:          oklch(0.520 0.008 65);
+  --color-ink-dim:           oklch(0.660 0.006 70);
 
-  /* ----------------- Silver accent ----------------- */
-  --color-accent:            oklch(0.86 0.012 245);
-  --color-accent-soft:       oklch(0.86 0.012 245 / 0.14);
-  --color-accent-hover:      oklch(0.93 0.008 245);
-  --color-accent-glow:       oklch(0.86 0.012 245 / 0.30);
+  /* ----------------- Accent (deep electric ink-blue) ----------------- */
+  --color-accent:            oklch(0.460 0.220 252);
+  --color-accent-soft:       oklch(0.460 0.220 252 / 0.10);
+  --color-accent-hover:      oklch(0.395 0.220 252);
+  --color-accent-glow:       oklch(0.460 0.220 252 / 0.22);
 
-  /* Legacy aliases (don't remove — older components still reference) */
-  --color-background:        oklch(0.11 0.004 260);
-  --color-text-primary:      oklch(0.97 0.003 260);
-  --color-text-secondary:    oklch(0.76 0.005 260);
-  --color-text-tertiary:     oklch(0.54 0.007 260);
-  --color-accent-subtle:     oklch(0.86 0.012 245 / 0.14);
-  --color-success:           oklch(0.86 0.012 245);
+  /* Legacy aliases (don't remove, older components still reference) */
+  --color-background:        oklch(0.972 0.005 75);
+  --color-text-primary:      oklch(0.180 0.012 60);
+  --color-text-secondary:    oklch(0.370 0.010 60);
+  --color-text-tertiary:     oklch(0.520 0.008 65);
+  --color-accent-subtle:     oklch(0.460 0.220 252 / 0.10);
+  --color-success:           oklch(0.460 0.180 152);
 
   /* ----------------- Typography ----------------- */
   --font-sans:    var(--font-sans), system-ui, -apple-system, sans-serif;
@@ -164,15 +167,15 @@ p, li {
 }
 
 /* ==================================================================
-   Chrome / silver shine on hero word
+   Ink shine — deep gradient on the emphasis word
    ================================================================== */
 
 .silver-shine {
   background: linear-gradient(
     180deg,
-    oklch(0.99 0.002 260) 0%,
-    oklch(0.85 0.010 260) 50%,
-    oklch(0.70 0.012 260) 100%
+    oklch(0.20 0.018 60) 0%,
+    oklch(0.32 0.090 252) 60%,
+    oklch(0.46 0.220 252) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -301,7 +304,7 @@ p, li {
 }
 
 /* ==================================================================
-   Decorative grain
+   Decorative grain — warm tint over the off-white canvas
    ================================================================== */
 
 body::before {
@@ -310,9 +313,9 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.02;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ==================================================================

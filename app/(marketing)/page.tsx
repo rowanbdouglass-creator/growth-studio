@@ -3,6 +3,8 @@ import { Container } from "@/components/ui/Container";
 import { buttonStyles } from "@/components/ui/Button";
 import { AIAuditDemo } from "@/components/fx/AIAuditDemo";
 import { Magnetic } from "@/components/fx/Magnetic";
+import { KineticHeadline } from "@/components/fx/KineticHeadline";
+import { ScrollAuditDemo } from "@/components/blocks/ScrollAuditDemo";
 import { LogoGrid } from "@/components/blocks/LogoGrid";
 import { ServiceGrid } from "@/components/blocks/ServiceGrid";
 import { CaseStudyFeature } from "@/components/blocks/CaseStudyCard";
@@ -29,21 +31,20 @@ export default async function Home() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      <section className="relative isolate pt-16 md:pt-20 pb-24 md:pb-32 min-h-[100dvh] flex flex-col justify-center">
-        {/* Subtle ambient background, no WebGL chrome */}
+      <section className="relative isolate pt-16 md:pt-24 pb-20 md:pb-28 flex flex-col justify-center min-h-[calc(100dvh-4rem)]">
         <div aria-hidden className="absolute inset-0 overflow-hidden -z-10">
           <div
-            className="absolute -top-1/3 -left-1/4 w-[60vw] h-[60vw] rounded-full blur-[120px] opacity-50"
+            className="absolute -top-1/4 -left-1/4 w-[55vw] h-[55vw] rounded-full blur-[120px] opacity-60"
             style={{
               background:
-                "radial-gradient(circle at center, oklch(0.72 0.020 240 / 0.18), transparent 65%)",
+                "radial-gradient(circle at center, oklch(0.460 0.220 252 / 0.10), transparent 65%)",
             }}
           />
           <div
-            className="absolute inset-0 opacity-[0.025]"
+            className="absolute inset-0 opacity-[0.04]"
             style={{
               backgroundImage:
-                "linear-gradient(oklch(1 0 0 / 0.6) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 0.6) 1px, transparent 1px)",
+                "linear-gradient(oklch(0.20 0.020 60 / 0.6) 1px, transparent 1px), linear-gradient(90deg, oklch(0.20 0.020 60 / 0.6) 1px, transparent 1px)",
               backgroundSize: "96px 96px",
               maskImage:
                 "radial-gradient(ellipse at center, black 30%, transparent 75%)",
@@ -53,14 +54,15 @@ export default async function Home() {
 
         <Container size="wide">
           <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 lg:gap-20 items-center">
-            <div className="anim-hero-entry">
+            <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute mb-8">
                 A growth studio for UK SMEs
               </p>
 
-              <h1 className="font-sans font-medium text-ink leading-[1.05] tracking-[-0.04em] text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] mb-10 pb-4">
-                Find out what your last agency missed.
-              </h1>
+              <KineticHeadline
+                lead="Find out what your last agency"
+                emphasis="missed."
+              />
 
               <p className="text-base md:text-lg text-ink-soft max-w-xl leading-relaxed mb-12">
                 We rebuild paid traffic, custom operations systems, and the
@@ -103,6 +105,9 @@ export default async function Home() {
           <AIAuditDemo />
         </div>
       </section>
+
+      {/* ============================ SCROLL-PINNED AUDIT WALKTHROUGH ============================ */}
+      <ScrollAuditDemo />
 
       {/* ============================ LOGOS ============================ */}
       <section className="border-t border-rule">
