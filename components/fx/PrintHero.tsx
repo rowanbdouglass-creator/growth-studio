@@ -174,71 +174,21 @@ export function PrintHero() {
   return (
     <section
       ref={containerRef}
-      className="relative pt-20 md:pt-28 pb-16 md:pb-24"
-      style={{
-        backgroundImage: `
-          repeating-linear-gradient(
-            90deg,
-            transparent 0,
-            transparent 8px,
-            rgba(27, 26, 23, 0.012) 8px,
-            rgba(27, 26, 23, 0.012) 9px
-          )`,
-      }}
+      className="relative pt-14 md:pt-20 pb-16 md:pb-24"
     >
-      {/* THE PRINTER */}
-      <div className="absolute top-0 left-0 right-0 z-20 pointer-events-none">
-        <div className="max-w-[1480px] mx-auto px-6 md:px-9 flex justify-center">
-          <div className="relative w-full max-w-[640px] h-10 md:h-12">
-            {/* Printer body */}
-            <div
-              className="absolute inset-x-0 top-0 h-6 md:h-7 rounded-b-sm"
-              style={{
-                background:
-                  "linear-gradient(180deg, #1B1A17 0%, #1B1A17 70%, #3A3833 100%)",
-                boxShadow:
-                  "0 4px 18px -4px rgba(27, 26, 23, 0.20), inset 0 -2px 0 rgba(255, 255, 255, 0.05)",
-              }}
-            />
-            {/* Status LED */}
-            <div
-              className="absolute top-2 right-4 w-1.5 h-1.5 rounded-full"
-              style={{
-                background: "#C4472E",
-                boxShadow: "0 0 6px rgba(196, 71, 46, 0.8)",
-              }}
-            />
-            <div
-              className="absolute top-2 right-8 w-1.5 h-1.5 rounded-full"
-              style={{ background: "#3A3833" }}
-            />
-            {/* Paper slot */}
-            <div
-              className="absolute inset-x-6 md:inset-x-12 bottom-3 md:bottom-4 h-1.5 md:h-2 rounded-sm"
-              style={{
-                background:
-                  "linear-gradient(180deg, #0A0908 0%, #1B1A17 100%)",
-                boxShadow:
-                  "inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.06)",
-              }}
-            />
-            {/* Printer head — moves on character print */}
-            <div
-              ref={printerHeadRef}
-              className="absolute top-3 md:top-3.5 left-1/2 -translate-x-1/2 w-3 h-3 md:w-4 md:h-4 rounded-sm"
-              style={{
-                background: "#5A5650",
-                boxShadow: "inset 0 -1px 0 rgba(0, 0, 0, 0.4)",
-              }}
-            />
-          </div>
-        </div>
-      </div>
+      {/* Hidden printer-head ghost — drives the character print timing
+          without showing a visible printer device. Real WebGL printer
+          is Session 8 (polish) territory. */}
+      <div
+        ref={printerHeadRef}
+        aria-hidden
+        className="absolute top-0 left-1/2 w-px h-px pointer-events-none opacity-0"
+      />
 
       {/* THE PAPER (the actual hero content) */}
       <div
         ref={paperRef}
-        className="relative max-w-[1480px] mx-auto px-6 md:px-9 pt-16 md:pt-20"
+        className="relative max-w-[1480px] mx-auto px-6 md:px-9"
       >
         {/* Top meta strip */}
         <div className="flex justify-between mb-12 md:mb-16 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-pencil)]">
