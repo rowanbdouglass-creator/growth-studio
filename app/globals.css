@@ -9,39 +9,39 @@
    ================================================================== */
 
 @theme {
-  /* ----------------- Surfaces (warm off-white) -----------------
-     Considered editorial palette. Avoids the banned premium-consumer
-     beige + brass + oxblood family by pairing warm paper with a deep
-     saturated accent (electric ink-blue) and warm near-black type. */
-  --color-canvas:            oklch(0.972 0.005 75);
-  --color-canvas-2:          oklch(0.952 0.006 75);
-  --color-surface:           oklch(0.985 0.003 75);
-  --color-surface-elevated:  oklch(1.000 0 0);
+  /* ----------------- Receipts identity palette ----------------- */
+  --color-paper:             #F3EFE6;
+  --color-paper-soft:        #EEE9DD;
+  --color-slip:              #FCFBF7;
+  --color-ink:               #1B1A17;
+  --color-ink-soft:          #3A3833;
+  --color-red:               #C4472E;
+  --color-pencil:            #8C887D;
+  --color-rule:              #DACBB1;
+  --color-rule-soft:         #E8E0CE;
+  --color-rule-ink:          #3A3833;
 
-  /* ----------------- Borders ----------------- */
-  --color-border:            oklch(0.880 0.005 75);
-  --color-border-strong:     oklch(0.760 0.006 75);
-  --color-rule:              oklch(0.900 0.004 75);
+  /* ----------------- Tailwind canonical names (mapped to brand) ----------------- */
+  --color-canvas:            #F3EFE6;
+  --color-canvas-2:          #EEE9DD;
+  --color-surface:           #FCFBF7;
+  --color-surface-elevated:  #FFFFFF;
+  --color-border:            #DACBB1;
+  --color-border-strong:     #8C887D;
+  --color-ink-mute:          #8C887D;
+  --color-ink-dim:           #B2A99D;
+  --color-accent:            #C4472E;
+  --color-accent-soft:       rgba(196, 71, 46, 0.10);
+  --color-accent-hover:      #A93A24;
+  --color-accent-glow:       rgba(196, 71, 46, 0.22);
 
-  /* ----------------- Ink (warm near-black on warm off-white) ----------------- */
-  --color-ink:               oklch(0.180 0.012 60);
-  --color-ink-soft:          oklch(0.370 0.010 60);
-  --color-ink-mute:          oklch(0.520 0.008 65);
-  --color-ink-dim:           oklch(0.660 0.006 70);
-
-  /* ----------------- Accent (deep electric ink-blue) ----------------- */
-  --color-accent:            oklch(0.460 0.220 252);
-  --color-accent-soft:       oklch(0.460 0.220 252 / 0.10);
-  --color-accent-hover:      oklch(0.395 0.220 252);
-  --color-accent-glow:       oklch(0.460 0.220 252 / 0.22);
-
-  /* Legacy aliases (don't remove, older components still reference) */
-  --color-background:        oklch(0.972 0.005 75);
-  --color-text-primary:      oklch(0.180 0.012 60);
-  --color-text-secondary:    oklch(0.370 0.010 60);
-  --color-text-tertiary:     oklch(0.520 0.008 65);
-  --color-accent-subtle:     oklch(0.460 0.220 252 / 0.10);
-  --color-success:           oklch(0.460 0.180 152);
+  /* Legacy aliases */
+  --color-background:        #F3EFE6;
+  --color-text-primary:      #1B1A17;
+  --color-text-secondary:    #3A3833;
+  --color-text-tertiary:     #8C887D;
+  --color-accent-subtle:     rgba(196, 71, 46, 0.10);
+  --color-success:           #2D8A4E;
 
   /* ----------------- Typography ----------------- */
   --font-sans:    var(--font-sans), system-ui, -apple-system, sans-serif;

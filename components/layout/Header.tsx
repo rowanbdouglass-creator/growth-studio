@@ -2,19 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { brand } from "@/config/brand";
-import { site } from "@/config/site";
 import { Container } from "@/components/ui/Container";
-import { buttonStyles } from "@/components/ui/Button";
-import { Logomark } from "@/components/brand/Logomark";
-import { ActivityTicker } from "@/components/fx/ActivityTicker";
+import { Stop } from "@/components/brand/Stop";
 import { MobileNav } from "./MobileNav";
 
 /**
- * Sticky header. Starts transparent over the hero, fades in a
- * translucent canvas background and bottom border once the user has
- * scrolled past the threshold. Uses a passive scroll listener and
- * only re-renders when the boolean threshold flips.
+ * Receipts header. Sticky, transparent over hero, fades to paper-tint
+ * background once scrolled. Wordmark on left, nav center-right,
+ * stamp-pill "Book" CTA on right.
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -37,56 +32,72 @@ export function Header() {
 
   return (
     <header
-      className={`
-        sticky top-0 z-50
-        transition-[background-color,border-color,backdrop-filter,box-shadow]
-        duration-300 ease-[var(--ease-out-quint)]
-        ${
-          scrolled
-            ? "bg-canvas/75 backdrop-blur-md border-b border-border"
-            : "bg-transparent border-b border-transparent"
-        }
-      `}
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[color:var(--color-paper)]/85 backdrop-blur-md border-b border-[color:var(--color-rule-soft)]"
+          : "bg-transparent border-b border-transparent"
+      }`}
     >
       <Container size="wide">
-        <div className="flex h-14 md:h-16 items-center justify-between gap-6">
+        <div className="flex h-16 md:h-20 items-center justify-between gap-6">
+          {/* Wordmark */}
           <Link
             href="/"
-            aria-label={`${brand.name} home`}
-            className="group/logo flex items-center gap-2.5 transition-colors hover:text-accent text-ink"
+            aria-label="receipts. home"
+            className="group flex items-end gap-1.5 text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
           >
-            <Logomark animate />
-            <span className="font-sans text-sm md:text-base font-medium tracking-tight">
-              {brand.name}
+            <span
+              className="font-sans font-black"
+              style={{
+                fontSize: "26px",
+                lineHeight: 0.85,
+                letterSpacing: "-0.045em",
+              }}
+            >
+              receipts
             </span>
+            <Stop size={7} color="#C4472E" style={{ marginBottom: 2 }} />
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
-            <nav aria-label="Main" className="flex items-center gap-7">
-              {site.mainNav.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`text-sm transition-colors hover:text-ink ${
-                    scrolled ? "text-ink-soft" : "text-ink/85"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+          {/* Nav */}
+          <nav
+            aria-label="Main"
+            className="hidden md:flex items-center gap-9"
+          >
+            <Link
+              href="/work"
+              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+            >
+              Work
+            </Link>
+            <Link
+              href="/services"
+              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+            >
+              Services
+            </Link>
+            <Link
+              href="/tools"
+              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+            >
+              Tools
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm font-medium text-[color:var(--color-ink)] hover:text-[color:var(--color-red)] transition-colors"
+            >
+              About
+            </Link>
+          </nav>
 
-            <div className="hidden lg:block">
-              <ActivityTicker />
-            </div>
-          </div>
-
+          {/* Book CTA */}
           <div className="flex items-center gap-3">
             <Link
-              href="/tools/website-audit"
-              className={`${buttonStyles({ variant: "primary", size: "sm" })} hidden md:inline-flex`}
+              href="/contact"
+              className="hidden md:inline-flex items-center gap-2.5 border-[1.5px] border-[color:var(--color-ink)] bg-[color:var(--color-ink)] text-[color:var(--color-paper)] px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-[0.14em] hover:bg-[color:var(--color-red)] hover:border-[color:var(--color-red)] transition-colors"
             >
-              Run my free audit
+              Book
+              <Stop size={6} color="#C4472E" />
             </Link>
             <MobileNav />
           </div>

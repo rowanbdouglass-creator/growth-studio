@@ -1,51 +1,64 @@
 /**
- * Brand abstraction layer.
+ * Brand abstraction layer — Receipts identity.
+ *
+ * Receipts is a two-person UK agency that runs the traffic and builds
+ * the systems that hold the revenue. Brand voice is dry, operator-
+ * confident, anti-pitch. Receipts deliver proof: real numbers,
+ * recovered spend, hours saved, ROAS that moves. Anything we promise
+ * lands in writing, signed and dated.
  *
  * Every brand-facing string in the codebase MUST reference this object.
- * A rebrand should be a 30-minute job: edit this file, swap the SVG logos
- * in /public/assets/, and the entire site updates.
- *
- * Hard rule: never hardcode brand.name, brand.tagline, brand.email, etc.
- * anywhere else. If you find yourself typing "Growth Studio" in a component,
- * import from here instead.
  */
 export const brand = {
-  /** Display name used in headings, og tags, copyright. */
-  name: "Growth Studio",
+  /** Display name. Lowercase, always. */
+  name: "receipts",
 
-  /** Full legal entity name for ToS, contracts, footer. */
+  /** Display name with the stop period — wordmark form. */
+  nameWithStop: "receipts.",
+
+  /** Full legal entity name. */
   legalName: "You Look Booked Ltd",
 
-  /** UK Companies House registration number — required on legal/footer copy. */
+  /** UK Companies House registration number. */
   companiesHouseNumber: "17020720",
 
-  /** Long tagline used in eyebrow text, hero pre-headlines. */
-  tagline: "Paid traffic. Custom systems. Intelligence at the core.",
+  /** Long tagline. */
+  tagline:
+    "Paid traffic and the systems that hold the revenue. Built once, built right, signed.",
 
-  /** Short tagline used in og descriptions, meta titles, abbreviated contexts. */
-  shortTagline: "A growth studio for businesses ready to scale.",
+  /** Short tagline. */
+  shortTagline:
+    "Paid traffic and the systems that hold the revenue.",
 
-  /** Marketing description — used in meta descriptions and og:description. */
+  /** Marketing description. */
   description:
-    "A two-person growth studio combining paid traffic, custom operational software, and AI-powered intelligence into one revenue engine for established businesses ready to scale.",
+    "A two-person UK agency that runs the traffic and builds the systems that hold the revenue. Real numbers, recovered spend, signed and dated.",
 
-  /** Canonical URL of the live site. Used in metadataBase, og:url, sitemap. */
-  url: "https://ylb.youlookbooked.com",
+  /** Canonical URL. */
+  url: "https://growth-studio-two.vercel.app",
 
   /** Primary contact email. */
-  email: "hello@youlookbooked.com",
+  email: "hello@receipts.studio",
 
-  /** Primary contact phone (UK format). */
+  /** Primary contact phone. */
   phone: "+44 0000 000 000",
 
-  /** Social media handles / URLs. Leave empty until accounts exist. */
+  /** Brand palette tokens. */
+  palette: {
+    paper: "#F3EFE6",
+    ink: "#1B1A17",
+    red: "#C4472E",
+    pencil: "#8C887D",
+    slip: "#FCFBF7",
+  },
+
   social: {
     linkedin: "",
     twitter: "",
     instagram: "",
   },
 
-  /** Logo asset paths. Replace SVG files in /public/assets/ during rebrand. */
+  /** Logo asset paths. */
   logo: {
     light: "/assets/logo-light.svg",
     dark: "/assets/logo-dark.svg",

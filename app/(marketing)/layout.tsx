@@ -1,14 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
+import { LenisProvider } from "@/components/fx/LenisProvider";
 import "../globals.css";
 
-const hanken = Hanken_Grotesk({
+const archivo = Archivo({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -44,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6f3ed",
+  themeColor: "#F3EFE6",
   colorScheme: "light",
   width: "device-width",
   initialScale: 1,
@@ -58,25 +60,27 @@ export default function MarketingLayout({
   return (
     <html
       lang="en-GB"
-      className={`${hanken.variable} ${jetbrainsMono.variable}`}
+      className={`${archivo.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col">
-        <a
-          href="#main"
-          className="
-            sr-only focus:not-sr-only
-            focus:fixed focus:top-4 focus:left-4 focus:z-[100]
-            focus:px-4 focus:py-2 focus:rounded-md
-            focus:bg-accent focus:text-canvas focus:font-medium
-          "
-        >
-          Skip to content
-        </a>
-        <Header />
-        <div id="main" className="flex-1 flex flex-col">
-          {children}
-        </div>
-        <Footer />
+        <LenisProvider>
+          <a
+            href="#main"
+            className="
+              sr-only focus:not-sr-only
+              focus:fixed focus:top-4 focus:left-4 focus:z-[100]
+              focus:px-4 focus:py-2 focus:rounded-md
+              focus:bg-ink focus:text-paper focus:font-medium
+            "
+          >
+            Skip to content
+          </a>
+          <Header />
+          <div id="main" className="flex-1 flex flex-col">
+            {children}
+          </div>
+          <Footer />
+        </LenisProvider>
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />
       </body>

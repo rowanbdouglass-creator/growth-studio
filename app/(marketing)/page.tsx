@@ -1,18 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { buttonStyles } from "@/components/ui/Button";
-import { AIAuditDemo } from "@/components/fx/AIAuditDemo";
-import { Magnetic } from "@/components/fx/Magnetic";
-import { KineticHeadline } from "@/components/fx/KineticHeadline";
-import { ScrollAuditDemo } from "@/components/blocks/ScrollAuditDemo";
-import { LogoGrid } from "@/components/blocks/LogoGrid";
-import { ServiceGrid } from "@/components/blocks/ServiceGrid";
-import { CaseStudyFeature } from "@/components/blocks/CaseStudyCard";
-import { ToolCTASection } from "@/components/blocks/ToolCTA";
-import { StatRow } from "@/components/blocks/StatBlock";
-import { ProcessSteps } from "@/components/blocks/ProcessSteps";
-import { Testimonial } from "@/components/blocks/Testimonial";
-import { CTASection } from "@/components/blocks/CTASection";
+import { PrintHero } from "@/components/fx/PrintHero";
+import { Stop } from "@/components/brand/Stop";
 import {
   getServices,
   getFeaturedCaseStudy,
@@ -22,7 +11,7 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [services, featuredCaseStudy, featuredTestimonial] = await Promise.all([
+  const [, , ] = await Promise.all([
     getServices(),
     getFeaturedCaseStudy(),
     getFeaturedTestimonial(),
@@ -30,124 +19,87 @@ export default async function Home() {
 
   return (
     <>
-      {/* ============================ HERO ============================ */}
-      <section className="relative isolate pt-20 md:pt-28 pb-16 md:pb-20">
-        <div aria-hidden className="absolute inset-0 overflow-hidden -z-10">
-          <div
-            className="absolute -top-1/4 -left-1/4 w-[55vw] h-[55vw] rounded-full blur-[140px] opacity-60"
-            style={{
-              background:
-                "radial-gradient(circle at center, oklch(0.460 0.220 252 / 0.10), transparent 65%)",
-            }}
-          />
-          <div
-            className="absolute inset-0 opacity-[0.05]"
-            style={{
-              backgroundImage:
-                "linear-gradient(oklch(0.20 0.020 60 / 0.6) 1px, transparent 1px), linear-gradient(90deg, oklch(0.20 0.020 60 / 0.6) 1px, transparent 1px)",
-              backgroundSize: "96px 96px",
-              maskImage:
-                "radial-gradient(ellipse at center, black 30%, transparent 75%)",
-            }}
-          />
-        </div>
+      {/* SIGNATURE MOMENT 1 — The Print Hero */}
+      <PrintHero />
 
+      {/* Manifesto — placeholder for now, lives between hero and rest of page */}
+      <section className="py-24 md:py-36 border-t border-[color:var(--color-rule)]">
         <Container size="wide">
-          <div className="grid lg:grid-cols-[1fr_auto] gap-x-12 gap-y-6 items-end mb-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute">
-              A growth studio for UK SMEs
-            </p>
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim hidden lg:block">
-              Est. 2024 · Two operators · No middle layer
-            </p>
-          </div>
-
-          {/* MASSIVE HEADLINE — full width */}
-          <div className="max-w-[1400px]">
-            <KineticHeadline
-              lead="Find out what your last agency"
-              emphasis="missed."
-            />
-          </div>
-
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-start mt-12">
-            <div>
-              <p className="text-lg md:text-xl text-ink-soft max-w-2xl leading-relaxed mb-12">
-                We rebuild paid traffic, custom operations systems, and the
-                intelligence layer between them. Run our audit. We&rsquo;ll
-                show you the gap in 90 seconds.
+          <div className="grid md:grid-cols-[11fr_9fr] gap-12 md:gap-20 items-end">
+            <h2
+              className="font-sans font-extrabold leading-[0.96] tracking-[-0.025em]"
+              style={{ fontSize: "clamp(40px, 6vw, 90px)" }}
+            >
+              <span
+                style={{
+                  textDecoration: "line-through",
+                  textDecorationColor: "#C4472E",
+                  textDecorationThickness: "4px",
+                  color: "#8C887D",
+                }}
+              >
+                Most agencies ship decks.
+              </span>
+              <br />
+              <span className="text-[color:var(--color-ink)] inline-flex items-end gap-3">
+                We ship receipts
+                <Stop size="0.5em" color="#C4472E" style={{ marginBottom: "0.08em" }} />
+              </span>
+            </h2>
+            <div className="text-base md:text-lg leading-[1.65] text-[color:var(--color-ink-soft)] space-y-4">
+              <p>
+                We sit at both ends. Paid traffic, Meta, Google, cold outreach,
+                brings the demand in.
               </p>
-
-              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-                <Magnetic>
-                  <Link
-                    href="/tools/website-audit"
-                    className={buttonStyles({ variant: "primary", size: "lg" })}
-                  >
-                    Run my free audit
-                  </Link>
-                </Magnetic>
-                <Link
-                  href="/work"
-                  className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors border-b-2 border-rule hover:border-accent pb-1 text-base"
-                >
-                  <span>See selected work</span>
-                  <span aria-hidden>→</span>
-                </Link>
-              </div>
-            </div>
-
-            <div className="flex justify-center lg:justify-end">
-              <AIAuditDemo />
+              <p>
+                Then we build the systems that hold it: CRMs, hub platforms, audit
+                tools and the automation that stops revenue leaking out the back.
+              </p>
+              <p>
+                One studio, one invoice, no middle layer. Everything we promise
+                lands in writing, signed and dated.
+              </p>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* ============================ LOGOS ============================ */}
-      <section className="border-t border-rule">
-        <LogoGrid />
-      </section>
-
-      {/* ============================ SCROLL-PINNED AUDIT WALKTHROUGH ============================ */}
-      <ScrollAuditDemo />
-
-      {/* ============================ SERVICES ============================ */}
-      <section className="relative border-t border-rule">
-        <ServiceGrid services={services} />
-      </section>
-
-      {/* ============================ FEATURED WORK ============================ */}
-      {featuredCaseStudy && (
-        <section className="relative py-20 md:py-32 border-t border-rule">
-          <CaseStudyFeature caseStudy={featuredCaseStudy} />
-        </section>
-      )}
-
-      {/* ============================ TOOLS ============================ */}
-      <section className="relative py-20 md:py-32 border-t border-rule">
-        <ToolCTASection />
-      </section>
-
-      {/* ============================ STATS ============================ */}
-      <section className="relative py-20 md:py-32 border-t border-rule">
-        <StatRow />
-      </section>
-
-      {/* ============================ PROCESS ============================ */}
-      <section className="relative py-20 md:py-32 border-t border-rule">
-        <ProcessSteps />
-      </section>
-
-      {featuredTestimonial && (
-        <section className="relative py-20 md:py-32 border-t border-rule">
-          <Testimonial testimonial={featuredTestimonial} />
-        </section>
-      )}
-
-      {/* ============================ CTA ============================ */}
-      <section className="relative py-20 md:py-32 border-t border-rule">
-        <CTASection />
+      {/* CTA card — placeholder, full sections come in Session 2+ */}
+      <section className="py-24 md:py-32 border-t border-[color:var(--color-rule)]">
+        <Container size="wide">
+          <div className="flex flex-col items-center text-center gap-10">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-pencil)]">
+              Session 1 / 8 · Print Hero shipped
+            </p>
+            <h2
+              className="font-sans font-black inline-flex items-end gap-4"
+              style={{
+                fontSize: "clamp(56px, 8vw, 130px)",
+                lineHeight: 0.88,
+                letterSpacing: "-0.04em",
+              }}
+            >
+              show us yours
+              <Stop size="0.36em" color="#C4472E" style={{ marginBottom: "0.08em" }} />
+            </h2>
+            <p className="max-w-[60ch] text-[color:var(--color-ink-soft)] text-lg leading-[1.55]">
+              The hero you just scrolled is signature moment 1 of 8. Coming next
+              sessions: split-flap subtotals, the WebGL ledger, marker
+              annotations on scroll, live receipts ticker, stamp-press CTA
+              transitions.
+            </p>
+            <Link
+              href="/tools/website-audit"
+              className="inline-flex items-center justify-between gap-7 bg-[color:var(--color-ink)] text-[color:var(--color-paper)] px-9 py-7 font-mono text-sm md:text-base font-bold uppercase tracking-[0.16em] hover:bg-[color:var(--color-red)] transition-colors"
+            >
+              <span>Run my audit</span>
+              <span className="text-xl">→</span>
+            </Link>
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-pencil)]">
+              90 seconds · No card · Real data
+            </p>
+          </div>
+        </Container>
       </section>
     </>
   );
