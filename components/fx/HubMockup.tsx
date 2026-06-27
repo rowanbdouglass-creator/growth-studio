@@ -71,23 +71,21 @@ export function HubMockup() {
         className="absolute -inset-8 rounded-3xl pointer-events-none"
         style={{
           background:
-            "radial-gradient(50% 45% at 50% 50%, oklch(0.86 0.012 245 / 0.16), transparent 70%)",
+            "radial-gradient(50% 45% at 50% 50%, oklch(0.460 0.220 252 / 0.10), transparent 70%)",
           filter: "blur(50px)",
         }}
       />
 
       <div
-        className="relative rounded-xl border border-border-strong overflow-hidden backdrop-blur-xl"
+        className="relative rounded-xl border border-border overflow-hidden bg-surface"
         style={{
-          background:
-            "linear-gradient(155deg, oklch(0.18 0.008 260 / 0.65) 0%, oklch(0.13 0.006 260 / 0.92) 70%)",
           boxShadow:
-            "0 30px 80px -20px oklch(0 0 0 / 0.55), 0 0 0 1px oklch(1 0 0 / 0.04) inset",
+            "0 24px 70px -22px oklch(0.20 0.020 60 / 0.16), 0 0 0 1px oklch(0.20 0.020 60 / 0.03) inset",
           aspectRatio: "4 / 3",
         }}
       >
         {/* Window chrome */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-canvas-2/40">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-canvas-2/60">
           <div className="flex items-center gap-2">
             <span className="relative flex w-1.5 h-1.5">
               <span className="absolute inset-0 rounded-full bg-accent animate-ping opacity-60" />
@@ -108,16 +106,16 @@ export function HubMockup() {
             {stations.map((station, i) => (
               <div
                 key={station.key}
-                className="rounded border border-border bg-canvas/60 p-2 transition-all duration-500"
+                className="rounded border p-2 transition-all duration-500"
                 style={{
                   borderColor:
                     i === stage
-                      ? "oklch(0.86 0.012 245 / 0.7)"
-                      : "oklch(0.22 0.006 260)",
+                      ? "oklch(0.460 0.220 252 / 0.6)"
+                      : "oklch(0.880 0.005 75)",
                   backgroundColor:
                     i === stage
-                      ? "oklch(0.86 0.012 245 / 0.06)"
-                      : "oklch(0.13 0.006 260 / 0.5)",
+                      ? "oklch(0.460 0.220 252 / 0.06)"
+                      : "oklch(0.985 0.003 75)",
                 }}
               >
                 <p className="font-mono text-[7px] uppercase tracking-[0.18em] text-ink-mute mb-0.5">
@@ -134,8 +132,8 @@ export function HubMockup() {
           </div>
 
           {/* Orders table */}
-          <div className="rounded border border-border bg-canvas/30 overflow-hidden">
-            <div className="grid grid-cols-[1fr_1.2fr_1fr_0.5fr_1.4fr] gap-3 px-3 py-1.5 border-b border-border bg-canvas-2/50">
+          <div className="rounded border border-border bg-canvas-2/40 overflow-hidden">
+            <div className="grid grid-cols-[1fr_1.2fr_1fr_0.5fr_1.4fr] gap-3 px-3 py-1.5 border-b border-border bg-canvas-2/70">
               {["Ref", "Client", "Method", "Qty", "Status"].map((h) => (
                 <span
                   key={h}

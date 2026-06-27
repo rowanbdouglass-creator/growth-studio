@@ -45,16 +45,15 @@ export function ToolPreview({ variant }: ToolPreviewProps) {
   return (
     <div
       ref={ref}
-      className="relative rounded-lg overflow-hidden border border-border-strong"
+      className="relative rounded-lg overflow-hidden border border-border bg-surface"
       style={{
-        backgroundColor: "oklch(0.13 0.006 260 / 0.92)",
         boxShadow:
-          "0 20px 50px -20px oklch(0 0 0 / 0.5), inset 0 1px 0 0 oklch(1 0 0 / 0.04)",
+          "0 18px 50px -20px oklch(0.20 0.020 60 / 0.14), 0 0 0 1px oklch(0.20 0.020 60 / 0.03) inset",
         aspectRatio: "16 / 9",
       }}
     >
       {/* Window chrome */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-canvas-2/40">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-canvas-2/60">
         <div className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-ink-mute/40" />
           <span className="w-1.5 h-1.5 rounded-full bg-ink-mute/40" />
@@ -126,8 +125,8 @@ function AdAuditPreview({ active }: { active: boolean }) {
               height: active ? `${h}%` : "0%",
               backgroundColor:
                 i === 4 || i === 8
-                  ? "oklch(0.86 0.012 245)"
-                  : "oklch(0.34 0.008 260)",
+                  ? "oklch(0.460 0.220 252)"
+                  : "oklch(0.760 0.006 75)",
               transition: `height 700ms ${i * 50 + 100}ms cubic-bezier(0.16,1,0.3,1)`,
               transformOrigin: "bottom",
             }}
@@ -154,7 +153,7 @@ function SiteAuditPreview({ active }: { active: boolean }) {
             cy="24"
             r="18"
             fill="none"
-            stroke="oklch(0.26 0.008 260)"
+            stroke="oklch(0.880 0.005 75)"
             strokeWidth="3"
           />
           <circle
@@ -162,7 +161,7 @@ function SiteAuditPreview({ active }: { active: boolean }) {
             cy="24"
             r="18"
             fill="none"
-            stroke="oklch(0.86 0.012 245)"
+            stroke="oklch(0.460 0.220 252)"
             strokeWidth="3"
             strokeDasharray={circumference}
             strokeDashoffset={offset}

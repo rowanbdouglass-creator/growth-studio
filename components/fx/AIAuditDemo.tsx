@@ -179,7 +179,7 @@ export function AIAuditDemo() {
                     placeholder={PROMPT_PLACEHOLDERS[placeholderIdx]}
                     autoComplete="off"
                     spellCheck={false}
-                    className="w-full h-11 pl-9 pr-3 bg-canvas/60 border border-border rounded-md text-ink placeholder:text-ink-dim font-mono text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft transition-colors"
+                    className="w-full h-11 pl-9 pr-3 bg-canvas-2/70 border border-border rounded-md text-ink placeholder:text-ink-dim font-mono text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft transition-colors"
                   />
                 </div>
                 <button

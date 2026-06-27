@@ -41,7 +41,7 @@ export function KineticHeadline({
 
   return (
     <h1
-      className={`font-sans font-medium text-ink leading-[1.05] tracking-[-0.04em] text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] mb-10 pb-4 ${className}`}
+      className={`font-sans font-medium text-ink leading-[0.96] tracking-[-0.045em] text-6xl md:text-7xl lg:text-8xl xl:text-[7.5rem] mb-10 pb-4 ${className}`}
       style={{ textWrap: "balance" }}
     >
       {leadWords.map((word, i) => {

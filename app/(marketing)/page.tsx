@@ -31,17 +31,17 @@ export default async function Home() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      <section className="relative isolate pt-16 md:pt-24 pb-20 md:pb-28 flex flex-col justify-center min-h-[calc(100dvh-4rem)]">
+      <section className="relative isolate pt-20 md:pt-28 pb-16 md:pb-20">
         <div aria-hidden className="absolute inset-0 overflow-hidden -z-10">
           <div
-            className="absolute -top-1/4 -left-1/4 w-[55vw] h-[55vw] rounded-full blur-[120px] opacity-60"
+            className="absolute -top-1/4 -left-1/4 w-[55vw] h-[55vw] rounded-full blur-[140px] opacity-60"
             style={{
               background:
                 "radial-gradient(circle at center, oklch(0.460 0.220 252 / 0.10), transparent 65%)",
             }}
           />
           <div
-            className="absolute inset-0 opacity-[0.04]"
+            className="absolute inset-0 opacity-[0.05]"
             style={{
               backgroundImage:
                 "linear-gradient(oklch(0.20 0.020 60 / 0.6) 1px, transparent 1px), linear-gradient(90deg, oklch(0.20 0.020 60 / 0.6) 1px, transparent 1px)",
@@ -53,24 +53,32 @@ export default async function Home() {
         </div>
 
         <Container size="wide">
-          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 lg:gap-20 items-center">
+          <div className="grid lg:grid-cols-[1fr_auto] gap-x-12 gap-y-6 items-end mb-6">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute">
+              A growth studio for UK SMEs
+            </p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-dim hidden lg:block">
+              Est. 2024 · Two operators · No middle layer
+            </p>
+          </div>
+
+          {/* MASSIVE HEADLINE — full width */}
+          <div className="max-w-[1400px]">
+            <KineticHeadline
+              lead="Find out what your last agency"
+              emphasis="missed."
+            />
+          </div>
+
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-start mt-12">
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-mute mb-8">
-                A growth studio for UK SMEs
-              </p>
-
-              <KineticHeadline
-                lead="Find out what your last agency"
-                emphasis="missed."
-              />
-
-              <p className="text-base md:text-lg text-ink-soft max-w-xl leading-relaxed mb-12">
+              <p className="text-lg md:text-xl text-ink-soft max-w-2xl leading-relaxed mb-12">
                 We rebuild paid traffic, custom operations systems, and the
-                intelligence layer between them. Paste your URL on the right.
-                We&rsquo;ll show you the gap in 90 seconds.
+                intelligence layer between them. Run our audit. We&rsquo;ll
+                show you the gap in 90 seconds.
               </p>
 
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
                 <Magnetic>
                   <Link
                     href="/tools/website-audit"
@@ -81,7 +89,7 @@ export default async function Home() {
                 </Magnetic>
                 <Link
                   href="/work"
-                  className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors border-b border-rule hover:border-accent pb-1"
+                  className="inline-flex items-center gap-2 text-ink hover:text-accent transition-colors border-b-2 border-rule hover:border-accent pb-1 text-base"
                 >
                   <span>See selected work</span>
                   <span aria-hidden>→</span>
@@ -89,33 +97,23 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="hidden lg:flex justify-center">
+            <div className="flex justify-center lg:justify-end">
               <AIAuditDemo />
             </div>
           </div>
         </Container>
       </section>
 
-      {/* Audit demo gets its own section on mobile + tablet */}
-      <section className="lg:hidden py-16 px-6 border-t border-rule">
-        <div className="max-w-xl mx-auto">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-mute mb-4 text-center">
-            Try the audit
-          </p>
-          <AIAuditDemo />
-        </div>
-      </section>
-
-      {/* ============================ SCROLL-PINNED AUDIT WALKTHROUGH ============================ */}
-      <ScrollAuditDemo />
-
       {/* ============================ LOGOS ============================ */}
       <section className="border-t border-rule">
         <LogoGrid />
       </section>
 
+      {/* ============================ SCROLL-PINNED AUDIT WALKTHROUGH ============================ */}
+      <ScrollAuditDemo />
+
       {/* ============================ SERVICES ============================ */}
-      <section className="relative">
+      <section className="relative border-t border-rule">
         <ServiceGrid services={services} />
       </section>
 
