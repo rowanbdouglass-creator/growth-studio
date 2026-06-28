@@ -12,24 +12,30 @@ import gsap from "gsap";
  */
 export function HeroDark() {
   const wrap = useRef<HTMLDivElement>(null);
-  const head = useRef<HTMLHeadingElement>(null);
+  const head = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!head.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
+    const eyebrow = head.current.querySelectorAll(".hd-eyebrow");
     const words = head.current.querySelectorAll(".hd-word");
     gsap.fromTo(
+      eyebrow,
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.0, ease: "expo.out", delay: 0.1 }
+    );
+    gsap.fromTo(
       words,
-      { y: 60, opacity: 0, filter: "blur(8px)" },
+      { y: 80, opacity: 0, filter: "blur(12px)" },
       {
         y: 0,
         opacity: 1,
         filter: "blur(0px)",
-        duration: 1.4,
+        duration: 1.6,
         ease: "expo.out",
         stagger: 0.08,
-        delay: 0.2,
+        delay: 0.35,
       }
     );
   }, []);
@@ -96,56 +102,66 @@ export function HeroDark() {
         <span>YOU LOOK BOOKED LTD · UK · EST 2024</span>
       </div>
 
-      {/* Headline — full attention, no wordmark overlay */}
+      {/* Headline — single massive word, with "you look" small at top-right */}
       <div
+        ref={head}
         style={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          alignItems: "stretch",
           zIndex: 3,
           maxWidth: 1480,
           width: "100%",
           margin: "0 auto",
+          position: "relative",
         }}
       >
-        <h1
-          ref={head}
+        {/* "you look" eyebrow — italic serif, top-right of the headline */}
+        <span
+          className="hd-eyebrow"
           style={{
-            fontFamily: "var(--font-syne)",
-            fontWeight: 700,
-            fontSize: "clamp(3.2rem, 9.5vw, 11rem)",
-            lineHeight: 0.92,
-            letterSpacing: "-0.045em",
-            color: "var(--color-paper)",
-            margin: 0,
-            maxWidth: "18ch",
+            display: "block",
+            textAlign: "right",
+            fontFamily: "var(--font-serif)",
+            fontStyle: "italic",
+            fontSize: "clamp(18px, 1.8vw, 28px)",
+            color: "var(--color-paper-soft)",
+            letterSpacing: "-0.01em",
+            marginBottom: "clamp(8px, 1vw, 20px)",
+            paddingRight: "clamp(8px, 2vw, 40px)",
           }}
         >
-          {["We", "make", "UK", "SMEs"].map((w, i) => (
-            <span
-              key={i}
-              className="hd-word"
-              style={{ display: "inline-block", marginRight: "0.22em" }}
-            >
-              {w}
-            </span>
-          ))}
-          <br />
-          <span
-            className="hd-word"
-            style={{ display: "inline-block", marginRight: "0.22em" }}
-          >
-            look
+          you look
+        </span>
+
+        {/* Massive BOOKED. — single dominant word */}
+        <h1
+          style={{
+            fontFamily: "var(--font-syne)",
+            fontWeight: 800,
+            fontSize: "clamp(6rem, 22vw, 22rem)",
+            lineHeight: 0.84,
+            letterSpacing: "-0.06em",
+            color: "var(--color-paper)",
+            margin: 0,
+            textAlign: "center",
+          }}
+          className="hd-mega"
+        >
+          <span className="hd-word" style={{ display: "inline-block" }}>
+            BOOKED
           </span>
           <span
             className="hd-word serif-italic"
             style={{
               display: "inline-block",
-              fontSize: "1.08em",
-              lineHeight: 0.9,
+              fontSize: "1em",
+              lineHeight: 0.84,
+              marginLeft: "0.02em",
             }}
           >
-            booked.
+            .
           </span>
         </h1>
       </div>
