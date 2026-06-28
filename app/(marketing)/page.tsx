@@ -1,4 +1,4 @@
-import { PrismaHero } from "@/components/ui/prisma-hero";
+import { HeroScrollVideo } from "@/components/sections/HeroScrollVideo";
 import { ManifestoPin } from "@/components/sections/ManifestoPin";
 import { ServicesDark } from "@/components/sections/ServicesDark";
 import { WorkDark } from "@/components/sections/WorkDark";
@@ -20,7 +20,7 @@ import { FinalCTA } from "@/components/sections/FinalCTA";
 export default function Home() {
   return (
     <main data-bg="dark" data-hide-site-header>
-      <PrismaHero />
+      <HeroScrollVideo />
       <div id="process">
         <ManifestoPin />
         <ServicesDark />
