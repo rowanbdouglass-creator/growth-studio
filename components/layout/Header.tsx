@@ -13,15 +13,29 @@ import { AudioToggle } from "@/components/fx/AudioToggle";
  */
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     let ticking = false;
+
+    // Pages can opt the global header out by setting data-hide-site-header
+    // on their <main> element. Used by the home page (PrismaHero has its
+    // own top-centre pill nav).
+    const refreshHidden = () => {
+      const home = document.querySelector("[data-hide-site-header]");
+      const heroBottom = home
+        ? home.getBoundingClientRect().top + window.innerHeight * 0.92
+        : 0;
+      setHidden(!!home && window.scrollY < heroBottom);
+    };
+
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
         setScrolled(window.scrollY > 40);
+        refreshHidden();
         ticking = false;
       });
     };
@@ -33,6 +47,8 @@ export function Header() {
   return (
     <header
       className="fixed top-0 left-0 w-full z-50 py-5"
+      aria-hidden={hidden}
+      data-hidden={hidden}
       style={{
         color: "var(--color-paper)",
         background: scrolled ? "rgba(14,13,11,0.78)" : "transparent",
@@ -41,8 +57,10 @@ export function Header() {
         borderBottom: scrolled
           ? "1px solid var(--color-hairline)"
           : "1px solid transparent",
+        opacity: hidden ? 0 : 1,
+        pointerEvents: hidden ? "none" : "auto",
         transition:
-          "background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease",
+          "opacity 0.4s ease, background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease",
       }}
     >
       <Container size="wide">

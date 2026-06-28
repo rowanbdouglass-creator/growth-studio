@@ -1,4 +1,4 @@
-import { HeroDark } from "@/components/sections/HeroDark";
+import { PrismaHero } from "@/components/ui/prisma-hero";
 import { ManifestoPin } from "@/components/sections/ManifestoPin";
 import { ServicesDark } from "@/components/sections/ServicesDark";
 import { WorkDark } from "@/components/sections/WorkDark";
@@ -9,26 +9,28 @@ import { TestimonialDark } from "@/components/sections/TestimonialDark";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
 /**
- * YLB v4 — dark cinematic editorial home.
- * Single scroll story: floating wordmark → manifesto → services →
- * selected work → process → marquee → stats → testimonial → final CTA.
+ * Home — PrismaHero (video background, top-centre pill nav, massive
+ * "booked." headline, side body + CTA) as the hero, followed by the
+ * editorial dark sections.
  *
- * Each section is its own dark layer with hairline rules. The signature
- * floating wordmark anchors the hero; scroll handoff is direct (no
- * colour shifts), unified by atmospheric grain + warm vignette globals.
+ * NOTE: PrismaHero ships with its own top-centre navbar, so the global
+ * site header is hidden on this route via the data-hide-site-header
+ * attribute (Header.tsx watches for this).
  */
 export default function Home() {
   return (
-    <main data-bg="dark">
-      <HeroDark />
-      <ManifestoPin />
-      <ServicesDark />
-      <WorkDark />
-      <ProcessDark />
-      <MarqueeStrip />
-      <StatsDark />
-      <TestimonialDark />
-      <FinalCTA />
+    <main data-bg="dark" data-hide-site-header>
+      <PrismaHero />
+      <div id="process">
+        <ManifestoPin />
+        <ServicesDark />
+        <WorkDark />
+        <ProcessDark />
+        <MarqueeStrip />
+        <StatsDark />
+        <TestimonialDark />
+        <FinalCTA />
+      </div>
     </main>
   );
 }
