@@ -1,22 +1,32 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, JetBrains_Mono } from "next/font/google";
+import { Syne, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
 import { LenisProvider } from "@/components/fx/LenisProvider";
+import { CustomCursor } from "@/components/fx/CustomCursor";
 import "../globals.css";
 
-const archivo = Archivo({
+const syne = Syne({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -60,10 +70,11 @@ export default function MarketingLayout({
   return (
     <html
       lang="en-GB"
-      className={`${archivo.variable} ${jetbrainsMono.variable}`}
+      className={`${syne.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
       <body className="min-h-screen flex flex-col">
         <LenisProvider>
+          <CustomCursor />
           <a
             href="#main"
             className="

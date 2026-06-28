@@ -44,6 +44,7 @@
   --color-success:           #2D8A4E;
 
   /* ----------------- Typography ----------------- */
+  --font-syne:    var(--font-syne), system-ui, -apple-system, sans-serif;
   --font-sans:    var(--font-sans), system-ui, -apple-system, sans-serif;
   --font-mono:    var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
@@ -135,10 +136,17 @@ p, li {
   display: inline-block;
 }
 
-/* Selection */
+/* Selection — bold brand red, paper text */
 ::selection {
-  background: var(--color-accent-soft);
-  color: var(--color-ink);
+  background: var(--color-red);
+  color: var(--color-paper);
+}
+
+/* Easing tokens */
+@property --hold {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }
 
 /* Focus */
