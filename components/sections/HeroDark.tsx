@@ -1,33 +1,35 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
-import { HeroMark } from "@/components/fx/HeroMark";
 
 /**
- * v4 hero — floating wordmark, single editorial headline overlaid,
- * meta strip top, scroll prompt bottom. Cinematic dark atmosphere.
+ * v4.1 hero — headline IS the primary element, not an overlay on the
+ * wordmark. Trionn pattern: huge type top-left, supporting body bottom,
+ * scroll prompt + clear CTA. Wordmark removed from hero entirely (it
+ * lives in the header + footer, doesn't need to be the hero gesture).
  */
 export function HeroDark() {
   const wrap = useRef<HTMLDivElement>(null);
-  const headline = useRef<HTMLHeadingElement>(null);
+  const head = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    if (!headline.current) return;
+    if (!head.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const words = headline.current.querySelectorAll(".hd-word");
+    const words = head.current.querySelectorAll(".hd-word");
     gsap.fromTo(
       words,
-      { y: 40, opacity: 0, filter: "blur(8px)" },
+      { y: 60, opacity: 0, filter: "blur(8px)" },
       {
         y: 0,
         opacity: 1,
         filter: "blur(0px)",
         duration: 1.4,
         ease: "expo.out",
-        stagger: 0.07,
-        delay: 1.8,
+        stagger: 0.08,
+        delay: 0.2,
       }
     );
   }, []);
@@ -39,80 +41,99 @@ export function HeroDark() {
       data-surface="dark"
       style={{
         position: "relative",
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: "var(--color-night)",
         color: "var(--color-paper)",
         overflow: "hidden",
         isolation: "isolate",
+        display: "grid",
+        gridTemplateRows: "auto 1fr auto",
+        padding: "clamp(110px, 14vh, 160px) clamp(24px, 4vw, 72px) clamp(40px, 5vw, 64px)",
       }}
     >
-      <HeroMark />
+      {/* Atmospheric glow behind content */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(circle at 80% 20%, rgba(196,71,46,0.10) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(243,239,230,0.04) 0%, transparent 60%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
 
       {/* Top meta strip */}
       <div
         style={{
-          position: "absolute",
-          top: "min(120px, 18vh)",
-          left: 0,
-          right: 0,
           display: "flex",
           justifyContent: "space-between",
-          padding: "0 clamp(24px, 4vw, 72px)",
           fontFamily: "var(--font-mono)",
           fontSize: 11,
           letterSpacing: "0.22em",
           textTransform: "uppercase",
           color: "var(--color-mute)",
           zIndex: 3,
+          paddingBottom: 40,
+          borderBottom: "1px solid var(--color-hairline)",
+          marginBottom: "clamp(40px, 5vw, 64px)",
         }}
       >
-        <span>
-          <span style={{ color: "var(--color-red)" }}>●</span>{" "}
-          AVAILABLE FROM WEEK 28
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+          <span
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background: "var(--color-red)",
+              animation: "ylb-pulse 2.4s ease-in-out infinite",
+              display: "inline-block",
+            }}
+          />
+          AVAILABLE — WEEK 28 · 2026
         </span>
-        <span>UK · EST. 2024</span>
+        <span>YOU LOOK BOOKED LTD · UK · EST 2024</span>
       </div>
 
-      {/* Headline overlay — centered, sits in front of wordmark */}
+      {/* Headline — full attention, no wordmark overlay */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
           justifyContent: "center",
-          padding: "0 clamp(24px, 4vw, 72px)",
-          zIndex: 4,
-          pointerEvents: "none",
+          zIndex: 3,
+          maxWidth: 1480,
+          width: "100%",
+          margin: "0 auto",
         }}
       >
         <h1
-          ref={headline}
+          ref={head}
           style={{
             fontFamily: "var(--font-syne)",
-            fontWeight: 600,
-            fontSize: "clamp(2.2rem, 4.4vw, 4.4rem)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.03em",
-            textAlign: "center",
-            maxWidth: "22ch",
+            fontWeight: 700,
+            fontSize: "clamp(3.2rem, 9.5vw, 11rem)",
+            lineHeight: 0.92,
+            letterSpacing: "-0.045em",
             color: "var(--color-paper)",
-            mixBlendMode: "screen",
+            margin: 0,
+            maxWidth: "18ch",
           }}
         >
           {["We", "make", "UK", "SMEs"].map((w, i) => (
             <span
               key={i}
               className="hd-word"
-              style={{ display: "inline-block", marginRight: "0.25em" }}
+              style={{ display: "inline-block", marginRight: "0.22em" }}
             >
               {w}
             </span>
           ))}
+          <br />
           <span
             className="hd-word"
-            style={{ display: "inline-block", marginRight: "0.25em" }}
+            style={{ display: "inline-block", marginRight: "0.22em" }}
           >
             look
           </span>
@@ -120,57 +141,103 @@ export function HeroDark() {
             className="hd-word serif-italic"
             style={{
               display: "inline-block",
-              fontSize: "1.15em",
+              fontSize: "1.08em",
               lineHeight: 0.9,
             }}
           >
             booked.
           </span>
         </h1>
-        <p
-          style={{
-            marginTop: 32,
-            maxWidth: "46ch",
-            textAlign: "center",
-            fontFamily: "var(--font-sans)",
-            fontSize: "clamp(15px, 1.4vw, 18px)",
-            lineHeight: 1.5,
-            color: "var(--color-mute)",
-            opacity: 0,
-            animation: "hd-fade 1.4s ease 2.8s forwards",
-          }}
-        >
-          A studio for UK SMEs. We rebuild the website, the operations
-          system, and the paid acquisition — and the calendar fills.
-        </p>
       </div>
 
-      {/* Scroll prompt bottom */}
+      {/* Bottom row: sub + CTA + scroll prompt */}
       <div
         style={{
-          position: "absolute",
-          bottom: 40,
-          left: 0,
-          right: 0,
-          display: "flex",
-          justifyContent: "center",
-          fontFamily: "var(--font-mono)",
-          fontSize: 10,
-          letterSpacing: "0.24em",
-          textTransform: "uppercase",
-          color: "var(--color-mute)",
-          opacity: 0,
-          animation: "hd-fade 1.6s ease 3.2s forwards",
+          display: "grid",
+          gridTemplateColumns: "1.4fr auto auto",
+          gap: "clamp(24px, 4vw, 64px)",
+          alignItems: "end",
           zIndex: 3,
+          paddingTop: 40,
+          borderTop: "1px solid var(--color-hairline)",
+          maxWidth: 1480,
+          width: "100%",
+          margin: "0 auto",
         }}
+        className="hd-foot"
       >
-        <span style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+        <style>{`@media (max-width: 880px) { .hd-foot { grid-template-columns: 1fr !important; } }`}</style>
+
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "clamp(15px, 1.5vw, 19px)",
+            lineHeight: 1.5,
+            color: "var(--color-paper-soft)",
+            maxWidth: "52ch",
+            margin: 0,
+          }}
+        >
+          A studio for UK SMEs. We rebuild the{" "}
+          <b style={{ color: "var(--color-paper)" }}>website</b>, the{" "}
+          <b style={{ color: "var(--color-paper)" }}>operations system</b>, and
+          the <b style={{ color: "var(--color-paper)" }}>paid acquisition</b>.
+          Then the calendar fills.
+        </p>
+
+        <Link
+          href="/contact"
+          data-cur="hold"
+          data-magnetic=""
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 14,
+            padding: "16px 28px",
+            background: "var(--color-red)",
+            color: "var(--color-paper)",
+            fontFamily: "var(--font-mono)",
+            fontSize: 12,
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            fontWeight: 700,
+            borderRadius: 999,
+            transition: "background 0.25s ease, transform 0.25s ease",
+            whiteSpace: "nowrap",
+            justifySelf: "start",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "var(--color-red-hover)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "var(--color-red)";
+          }}
+        >
+          BOOK A SLOT
+          <span style={{ fontSize: 16 }}>→</span>
+        </Link>
+
+        <span
+          style={{
+            display: "inline-flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 10,
+            fontFamily: "var(--font-mono)",
+            fontSize: 10,
+            letterSpacing: "0.24em",
+            textTransform: "uppercase",
+            color: "var(--color-mute)",
+            justifySelf: "end",
+          }}
+        >
           Scroll
           <span
+            aria-hidden
             style={{
               display: "inline-block",
               width: 1,
-              height: 36,
+              height: 32,
               background: "var(--color-paper)",
               opacity: 0.5,
               animation: "hd-line 2.2s ease-in-out infinite",
@@ -181,10 +248,10 @@ export function HeroDark() {
       </div>
 
       <style>{`
-        @keyframes hd-fade { to { opacity: 1; } }
         @keyframes hd-line {
-          0% { transform: scaleY(0); }
-          50% { transform: scaleY(1); }
+          0% { transform: scaleY(0); transform-origin: top; }
+          50% { transform: scaleY(1); transform-origin: top; }
+          51% { transform-origin: bottom; }
           100% { transform: scaleY(0); transform-origin: bottom; }
         }
       `}</style>

@@ -38,7 +38,7 @@ export function ProcessDark() {
       data-surface="dark"
       style={{
         position: "relative",
-        padding: "clamp(96px, 12vw, 180px) 0",
+        padding: "clamp(72px, 9vw, 140px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",
         borderBottom: "1px solid var(--color-hairline)",
@@ -139,7 +139,7 @@ export function ProcessDark() {
                   fontFamily: "var(--font-sans)",
                   fontSize: "clamp(15px, 1.3vw, 18px)",
                   lineHeight: 1.6,
-                  color: "var(--color-mute)",
+                  color: "var(--color-paper-soft)",
                   maxWidth: "52ch",
                 }}
               >

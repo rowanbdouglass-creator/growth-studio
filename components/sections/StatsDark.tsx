@@ -1,6 +1,55 @@
 "use client";
 
-import { NumberTicker } from "@/components/ui/number-ticker";
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * Lightweight scroll-triggered counter — replaces magicui NumberTicker
+ * which animated on mount even when off-screen (caused the screenshot
+ * caught-mid-tick bug). This version stays at final value until
+ * scrolled into view, then ticks up in 1.2s.
+ */
+function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [n, setN] = useState(to);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setN(to);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !started.current) {
+          started.current = true;
+          setN(0);
+          const start = performance.now();
+          const duration = 1200;
+          const tick = () => {
+            const t = Math.min(1, (performance.now() - start) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            setN(Math.round(to * eased));
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, [to]);
+
+  return (
+    <span ref={ref} style={{ fontVariantNumeric: "tabular-nums" }}>
+      {n.toLocaleString("en-GB")}
+      {suffix}
+    </span>
+  );
+}
 
 /**
  * Stats panel — Trionn-style key facts. Four cards in an asymmetric grid
@@ -14,7 +63,7 @@ export function StatsDark() {
       data-surface="dark"
       style={{
         position: "relative",
-        padding: "clamp(96px, 12vw, 180px) 0",
+        padding: "clamp(72px, 9vw, 140px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",
         borderBottom: "1px solid var(--color-hairline)",
@@ -98,7 +147,7 @@ export function StatsDark() {
           <div className="st-card">
             <span className="lbl">REVENUE TRACKED</span>
             <span className="val">
-              £<NumberTicker value={128} className="text-paper" />k
+              £<CountUp to={128} />k
             </span>
             <span className="sub">Through systems we built · 12 months</span>
           </div>
@@ -106,7 +155,7 @@ export function StatsDark() {
           <div className="st-card">
             <span className="lbl">PROJECTS DELIVERED</span>
             <span className="val">
-              <NumberTicker value={12} className="text-paper" /> <em>/yr</em>
+              <CountUp to={12} /> <em>/yr</em>
             </span>
             <span className="sub">Selective intake — quality over volume</span>
           </div>
@@ -114,7 +163,7 @@ export function StatsDark() {
           <div className="st-card">
             <span className="lbl">CLIENT RETENTION</span>
             <span className="val">
-              <NumberTicker value={92} className="text-paper" />%
+              <CountUp to={92} />%
             </span>
             <span className="sub">Year-2 retention across active clients</span>
           </div>
@@ -122,7 +171,7 @@ export function StatsDark() {
           <div className="st-card">
             <span className="lbl">FASTEST RECOVERY</span>
             <span className="val">
-              <NumberTicker value={11} className="text-paper" /> <em>days</em>
+              <CountUp to={11} /> <em>days</em>
             </span>
             <span className="sub">Compromise → fully clean (Cape Kings)</span>
           </div>

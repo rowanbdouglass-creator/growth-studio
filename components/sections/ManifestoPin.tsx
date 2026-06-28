@@ -13,7 +13,7 @@ export function ManifestoPin() {
       data-surface="dark"
       style={{
         position: "relative",
-        padding: "clamp(180px, 22vw, 320px) 0",
+        padding: "clamp(120px, 14vw, 200px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",
         borderTop: "1px solid var(--color-hairline)",

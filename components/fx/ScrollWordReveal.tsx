@@ -43,7 +43,7 @@ export function ScrollWordReveal({
     const words = wrap.querySelectorAll<HTMLElement>(".swr-word");
     if (!words.length) return;
 
-    gsap.set(words, { opacity: 0.18, filter: "blur(2px)" });
+    gsap.set(words, { opacity: 0.42, filter: "blur(1px)" });
 
     const tween = gsap.to(words, {
       opacity: 1,
