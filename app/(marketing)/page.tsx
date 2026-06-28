@@ -2,7 +2,7 @@ import { HeroDark } from "@/components/sections/HeroDark";
 import { WarpSection } from "@/components/sections/WarpSection";
 import { ManifestoPin } from "@/components/sections/ManifestoPin";
 import { ServicesDark } from "@/components/sections/ServicesDark";
-import { WorkDark } from "@/components/sections/WorkDark";
+import { WorkHorizontal } from "@/components/sections/WorkHorizontal";
 import { ProcessDark } from "@/components/sections/ProcessDark";
 import { MarqueeStrip } from "@/components/sections/MarqueeStrip";
 import { StatsDark } from "@/components/sections/StatsDark";
@@ -16,7 +16,7 @@ export default function Home() {
       <WarpSection />
       <ManifestoPin />
       <ServicesDark />
-      <WorkDark />
+      <WorkHorizontal />
       <ProcessDark />
       <MarqueeStrip />
       <StatsDark />
