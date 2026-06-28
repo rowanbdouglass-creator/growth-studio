@@ -1,166 +1,238 @@
+"use client";
+
 import Link from "next/link";
 import { brand } from "@/config/brand";
-import { Container } from "@/components/ui/Container";
-import { Wordmark } from "@/components/brand/Wordmark";
 
 /**
- * Site footer. Dark ink surface with the brand wordmark, three nav
- * columns, an end-of-week sign-off, and a Companies House line.
+ * v4 dark footer — Monolog-style nav panel. Big navigation list left,
+ * studio details right, then bottom legal strip.
  */
 export function Footer() {
   return (
     <footer
-      className="bg-[color:var(--color-ink)] text-[color:var(--color-paper)] pt-20 pb-9"
       data-bg="dark"
+      data-surface="dark"
+      style={{
+        background: "var(--color-night)",
+        color: "var(--color-paper)",
+        padding: "clamp(96px, 12vw, 160px) 0 32px",
+        borderTop: "1px solid var(--color-hairline)",
+      }}
     >
-      <Container size="wide">
-        <div className="grid grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1fr] gap-8 md:gap-14 mb-12 md:mb-20">
-          <div className="col-span-2 md:col-span-1">
-            <Link
-              href="/"
-              aria-label={`${brand.name} home`}
-              className="inline-block hover:opacity-70 transition-opacity"
-              data-cur="pen"
-            >
-              <Wordmark
-                size={36}
-                letterColor="var(--color-paper)"
-                bColor="var(--color-red)"
-              />
-            </Link>
-            <p
-              className="mt-5 max-w-[34ch] leading-[1.55]"
+      <div
+        style={{
+          maxWidth: 1480,
+          margin: "0 auto",
+          padding: "0 clamp(24px, 4vw, 72px)",
+        }}
+      >
+        <div
+          className="ft-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.4fr 1fr",
+            gap: "clamp(40px, 6vw, 100px)",
+            paddingBottom: "clamp(64px, 8vw, 120px)",
+          }}
+        >
+          <style>{`@media (max-width: 880px) { .ft-grid { grid-template-columns: 1fr !important; } }`}</style>
+
+          <div>
+            <div
               style={{
-                color: "var(--color-pencil-soft, #B2A99D)",
-                fontSize: 14,
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "var(--color-mute)",
+                marginBottom: 36,
               }}
             >
-              A growth &amp; systems studio for UK SMEs. We fill the calendar
-              — then build the things that keep it full.
+              <span style={{ color: "var(--color-red)" }}>●</span> NAVIGATION
+            </div>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {[
+                { href: "/work", label: "Work" },
+                { href: "/services", label: "Services" },
+                { href: "/about", label: "About" },
+                { href: "/contact", label: "Contact" },
+              ].map((item, i, arr) => (
+                <li
+                  key={item.href}
+                  style={{
+                    borderBottom:
+                      i < arr.length - 1
+                        ? "1px solid var(--color-hairline)"
+                        : "none",
+                  }}
+                >
+                  <Link
+                    href={item.href}
+                    data-cur="pen"
+                    style={{
+                      display: "block",
+                      padding: "20px 0",
+                      fontFamily: "var(--font-syne)",
+                      fontWeight: 600,
+                      fontSize: "clamp(36px, 4.5vw, 64px)",
+                      letterSpacing: "-0.03em",
+                      lineHeight: 1,
+                      color: "var(--color-paper)",
+                      textDecoration: "none",
+                      transition: "padding 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.paddingLeft = "16px";
+                      e.currentTarget.style.color = "var(--color-red)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.paddingLeft = "0px";
+                      e.currentTarget.style.color = "var(--color-paper)";
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "var(--color-mute)",
+                marginBottom: 36,
+              }}
+            >
+              ( STUDIO DETAILS )
+            </div>
+
+            <div style={{ marginBottom: 36 }}>
+              <Link
+                href={`mailto:${brand.email}`}
+                data-cur="pen"
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "clamp(18px, 1.6vw, 22px)",
+                  color: "var(--color-paper)",
+                  fontWeight: 500,
+                  borderBottom: "1px solid var(--color-paper)",
+                  paddingBottom: 4,
+                  display: "inline-block",
+                }}
+              >
+                ↳ {brand.email}
+              </Link>
+            </div>
+
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: 14,
+                lineHeight: 1.6,
+                color: "var(--color-mute)",
+                marginBottom: 36,
+                maxWidth: "30ch",
+              }}
+            >
+              Based in the United Kingdom. Working with owner-operated
+              SMEs across the UK and Europe.
             </p>
+
+            <div
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "var(--color-mute)",
+                marginBottom: 18,
+              }}
+            >
+              ( ON THE RECORD )
+            </div>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                gap: 24,
+                flexWrap: "wrap",
+              }}
+            >
+              {[
+                { href: "/privacy", label: "Privacy" },
+                { href: "/terms", label: "Terms" },
+                { href: "/accessibility", label: "Accessibility" },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    data-cur="pen"
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: 14,
+                      color: "var(--color-mute)",
+                      textDecoration: "none",
+                      borderBottom: "1px solid transparent",
+                      paddingBottom: 2,
+                      transition: "color 0.25s ease, border-color 0.25s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "var(--color-paper)";
+                      e.currentTarget.style.borderColor = "var(--color-paper)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "var(--color-mute)";
+                      e.currentTarget.style.borderColor = "transparent";
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-
-          <FootCol heading="STUDIO">
-            <FootLink href="/work">Past appointments</FootLink>
-            <FootLink href="/services">Services</FootLink>
-            <FootLink href="/about">About</FootLink>
-          </FootCol>
-
-          <FootCol heading="LEGAL">
-            <FootLink href="/privacy">Privacy</FootLink>
-            <FootLink href="/terms">Terms</FootLink>
-            <FootLink href="/accessibility">Accessibility</FootLink>
-          </FootCol>
-
-          <FootCol heading="CONTACT">
-            <FootLink href={`mailto:${brand.email}`}>{brand.email}</FootLink>
-            <FootLink href="/contact">Find a slot</FootLink>
-            <FootLink href="#">LinkedIn</FootLink>
-          </FootCol>
         </div>
 
         <div
-          className="py-7 border-t border-b flex justify-between items-center flex-wrap gap-3 mb-6"
-          style={{ borderColor: "#3A3833" }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-syne)",
-              fontWeight: 700,
-              fontSize: "clamp(28px, 3.5vw, 46px)",
-              letterSpacing: "-0.022em",
-              lineHeight: 1.1,
-            }}
-          >
-            End of week.
-            <br />
-            <em style={{ color: "var(--color-red)", fontStyle: "italic" }}>
-              See you Monday.
-            </em>
-          </div>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              color: "var(--color-pencil-soft, #B2A99D)",
-              textTransform: "uppercase",
-              lineHeight: 1.6,
-            }}
-          >
-            Next open slot
-            <br />
-            <b style={{ color: "var(--color-red)", fontWeight: 700 }}>
-              Fri · 14 Jul · 14:00
-            </b>
-          </div>
-        </div>
-
-        <div
-          className="flex justify-between flex-wrap gap-3"
           style={{
+            paddingTop: 32,
+            borderTop: "1px solid var(--color-hairline)",
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 16,
             fontFamily: "var(--font-mono)",
             fontSize: 11,
-            letterSpacing: "0.14em",
-            color: "var(--color-pencil)",
+            letterSpacing: "0.16em",
             textTransform: "uppercase",
+            color: "var(--color-dim)",
           }}
         >
           <span>
             © 2026 {brand.legalName} · Companies House{" "}
             {brand.companiesHouseNumber}
           </span>
-          <span>UK</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: "var(--color-red)",
+                animation: "ylb-pulse 2.4s ease-in-out infinite",
+              }}
+            />
+            AVAILABLE · WEEK 28
+          </span>
         </div>
-      </Container>
+      </div>
     </footer>
-  );
-}
-
-function FootCol({
-  heading,
-  children,
-}: {
-  heading: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <h4
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: 10,
-          letterSpacing: "0.18em",
-          color: "var(--color-pencil-soft, #B2A99D)",
-          marginBottom: 18,
-          fontWeight: 600,
-          textTransform: "uppercase",
-        }}
-      >
-        {heading}
-      </h4>
-      <ul className="flex flex-col gap-[11px] list-none p-0">{children}</ul>
-    </div>
-  );
-}
-
-function FootLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <li>
-      <Link
-        href={href}
-        className="hover:text-[color:var(--color-red)] transition-colors"
-        style={{ fontSize: 15, color: "#D4CFC2" }}
-        data-cur="pen"
-      >
-        {children}
-      </Link>
-    </li>
   );
 }

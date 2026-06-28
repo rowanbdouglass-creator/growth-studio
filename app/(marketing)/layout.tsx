@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Syne, IBM_Plex_Sans, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -32,6 +32,14 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
   title: {
@@ -57,8 +65,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F3EFE6",
-  colorScheme: "light",
+  themeColor: "#0E0D0B",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -71,7 +79,7 @@ export default function MarketingLayout({
   return (
     <html
       lang="en-GB"
-      className={`${syne.variable} ${plexSans.variable} ${plexMono.variable}`}
+      className={`${syne.variable} ${plexSans.variable} ${plexMono.variable} ${instrumentSerif.variable}`}
     >
       <body className="min-h-screen flex flex-col">
         <LenisProvider>

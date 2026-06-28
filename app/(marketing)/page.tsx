@@ -1,29 +1,34 @@
-import { HeroWeek } from "@/components/sections/HeroWeek";
-import { HeroWebsite } from "@/components/sections/HeroWebsite";
-import { HeroOperations } from "@/components/sections/HeroOperations";
-import { PastAppointments } from "@/components/sections/PastAppointments";
-import { VoiceNote } from "@/components/sections/VoiceNote";
-import { FirstWeek } from "@/components/sections/FirstWeek";
-import { FindASlot } from "@/components/sections/FindASlot";
+import { HeroDark } from "@/components/sections/HeroDark";
+import { ManifestoPin } from "@/components/sections/ManifestoPin";
+import { ServicesDark } from "@/components/sections/ServicesDark";
+import { WorkDark } from "@/components/sections/WorkDark";
+import { ProcessDark } from "@/components/sections/ProcessDark";
+import { MarqueeStrip } from "@/components/sections/MarqueeStrip";
+import { StatsDark } from "@/components/sections/StatsDark";
+import { TestimonialDark } from "@/components/sections/TestimonialDark";
+import { FinalCTA } from "@/components/sections/FinalCTA";
 
 /**
- * Home page. Composes the three hero demonstrations (Week / Website /
- * Operations) and the supporting sections (Past appointments / Voice
- * note / First week / Find a slot).
+ * YLB v4 — dark cinematic editorial home.
+ * Single scroll story: floating wordmark → manifesto → services →
+ * selected work → process → marquee → stats → testimonial → final CTA.
  *
- * Direct colour hand-offs between sections — no zoom transitions.
- * Each section sets data-bg so the header switches colour cleanly.
+ * Each section is its own dark layer with hairline rules. The signature
+ * floating wordmark anchors the hero; scroll handoff is direct (no
+ * colour shifts), unified by atmospheric grain + warm vignette globals.
  */
 export default function Home() {
   return (
-    <main>
-      <HeroWeek />
-      <HeroWebsite />
-      <HeroOperations />
-      <PastAppointments />
-      <VoiceNote />
-      <FirstWeek />
-      <FindASlot />
+    <main data-bg="dark">
+      <HeroDark />
+      <ManifestoPin />
+      <ServicesDark />
+      <WorkDark />
+      <ProcessDark />
+      <MarqueeStrip />
+      <StatsDark />
+      <TestimonialDark />
+      <FinalCTA />
     </main>
   );
 }

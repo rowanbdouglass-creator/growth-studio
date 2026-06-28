@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 /* ==================================================================
    Growth Studio — Design system v3
    ------------------------------------------------------------------
@@ -9,44 +11,60 @@
    ================================================================== */
 
 @theme {
-  /* ----------------- Receipts identity palette ----------------- */
+  /* ----------------- YLB v4 — Dark cinematic editorial ----------------- */
+  /* Backgrounds */
+  --color-night:             #0E0D0B;
+  --color-night-soft:        #14130F;
+  --color-surface:           #161512;
+  --color-surface-elevated:  #1B1A17;
+  /* Text */
   --color-paper:             #F3EFE6;
-  --color-paper-soft:        #EEE9DD;
-  --color-slip:              #FCFBF7;
-  --color-ink:               #1B1A17;
-  --color-ink-soft:          #3A3833;
+  --color-paper-soft:        #E8E2D3;
+  --color-mute:              #A6A29A;
+  --color-dim:               #67645E;
+  --color-faint:             #3A3833;
+  /* Brand accent — used sparingly: italic emphasis, wordmark indicator, CTA */
   --color-red:               #C4472E;
-  --color-pencil:            #8C887D;
-  --color-rule:              #DACBB1;
-  --color-rule-soft:         #E8E0CE;
-  --color-rule-ink:          #3A3833;
+  --color-red-soft:          rgba(196, 71, 46, 0.14);
+  --color-red-glow:          rgba(196, 71, 46, 0.35);
+  --color-red-hover:         #D85A40;
+  /* Rules / hairlines (always vs night surface) */
+  --color-hairline:          rgba(243, 239, 230, 0.08);
+  --color-hairline-strong:   rgba(243, 239, 230, 0.16);
 
-  /* ----------------- Tailwind canonical names (mapped to brand) ----------------- */
-  --color-canvas:            #F3EFE6;
-  --color-canvas-2:          #EEE9DD;
-  --color-surface:           #FCFBF7;
-  --color-surface-elevated:  #FFFFFF;
-  --color-border:            #DACBB1;
-  --color-border-strong:     #8C887D;
-  --color-ink-mute:          #8C887D;
-  --color-ink-dim:           #B2A99D;
+  /* Legacy aliases — keep so we don't have to touch every existing file */
+  --color-ink:               #F3EFE6;        /* now reads light, so "ink" text on dark works */
+  --color-ink-soft:          #A6A29A;
+  --color-slip:              #14130F;
+  --color-pencil:            #67645E;
+  --color-pencil-soft:       #67645E;
+  --color-rule:              rgba(243, 239, 230, 0.12);
+  --color-rule-soft:         rgba(243, 239, 230, 0.08);
+  --color-rule-ink:          rgba(243, 239, 230, 0.16);
+
+  --color-canvas:            #0E0D0B;
+  --color-canvas-2:          #14130F;
+  --color-border:            rgba(243, 239, 230, 0.10);
+  --color-border-strong:     rgba(243, 239, 230, 0.18);
+  --color-ink-mute:          #A6A29A;
+  --color-ink-dim:           #67645E;
   --color-accent:            #C4472E;
-  --color-accent-soft:       rgba(196, 71, 46, 0.10);
-  --color-accent-hover:      #A93A24;
-  --color-accent-glow:       rgba(196, 71, 46, 0.22);
+  --color-accent-soft:       rgba(196, 71, 46, 0.14);
+  --color-accent-hover:      #D85A40;
+  --color-accent-glow:       rgba(196, 71, 46, 0.35);
 
-  /* Legacy aliases */
-  --color-background:        #F3EFE6;
-  --color-text-primary:      #1B1A17;
-  --color-text-secondary:    #3A3833;
-  --color-text-tertiary:     #8C887D;
-  --color-accent-subtle:     rgba(196, 71, 46, 0.10);
-  --color-success:           #2D8A4E;
+  --color-background:        #0E0D0B;
+  --color-text-primary:      #F3EFE6;
+  --color-text-secondary:    #A6A29A;
+  --color-text-tertiary:     #67645E;
+  --color-accent-subtle:     rgba(196, 71, 46, 0.14);
+  --color-success:           #4EA66A;
 
   /* ----------------- Typography ----------------- */
   --font-syne:    var(--font-syne), system-ui, -apple-system, sans-serif;
   --font-sans:    var(--font-sans), system-ui, -apple-system, sans-serif;
   --font-mono:    var(--font-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif:   var(--font-serif), "Cormorant Garamond", Georgia, serif;
 
   /* Tighter, fits-in-viewport type scale */
   --text-xs:      clamp(0.75rem, 0.7rem + 0.2vw, 0.85rem);
@@ -85,8 +103,40 @@
    ================================================================== */
 
 html, body {
-  background: var(--color-canvas);
-  color: var(--color-ink);
+  background: var(--color-night);
+  color: var(--color-paper);
+}
+
+/* Atmospheric film grain — sits over everything at low opacity */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+/* Soft warm vignette so the eye lands on the centre */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, transparent 0%, rgba(14, 13, 11, 0.45) 100%);
+}
+
+/* Editorial italic serif — used inline for the one emphasis word per headline */
+.serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-red);
+  letter-spacing: -0.01em;
 }
 
 body {
@@ -459,3 +509,83 @@ body::before {
 @keyframes vt-fade-in {
   from { opacity: 0; transform: translateY(8px); }
 }
+
+@theme inline {
+  --animate-marquee:             marquee var(--duration) infinite linear;
+  --animate-marquee-vertical:             marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+  from {
+    transform:             translateX(0);
+    }
+  to {
+    transform:             translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform:             translateY(0);
+    }
+  to {
+    transform:             translateY(calc(-100% - var(--gap)));
+    }
+  }
+  --animate-shimmer-slide:             shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around:             spin-around calc(var(--speed) * 2) infinite linear
+;
+  @keyframes shimmer-slide {
+  to {
+    transform:             translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+  0% {
+    transform:             translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform:             translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform:             translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform:             translateZ(0) rotate(360deg);
+    }
+  }
+  --animate-shiny-text:             shiny-text 8s infinite;
+  @keyframes shiny-text {
+  0%, 90%, 100% {
+    background-position:             calc(-100% - var(--shiny-width)) 0;
+    }
+  30%, 60% {
+    background-position:             calc(100% + var(--shiny-width)) 0;
+    }
+  }
+  --animate-aurora:             aurora 8s ease-in-out infinite alternate;
+  @keyframes aurora {
+  0% {
+    background-position:             0% 50%;
+    transform:             rotate(-5deg) scale(0.9);
+    }
+  25% {
+    background-position:             50% 100%;
+    transform:             rotate(5deg) scale(1.1);
+    }
+  50% {
+    background-position:             100% 50%;
+    transform:             rotate(-3deg) scale(0.95);
+    }
+  75% {
+    background-position:             50% 0%;
+    transform:             rotate(3deg) scale(1.05);
+    }
+  100% {
+    background-position:             0% 50%;
+    transform:             rotate(-5deg) scale(0.9);
+    }
+  }
+  --animate-gradient:             gradient 8s linear infinite;
+  @keyframes gradient {
+  to {
+    background-position:             var(--bg-size, 300%) 0;
+    }
+  }}
