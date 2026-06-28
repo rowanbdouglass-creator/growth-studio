@@ -104,7 +104,8 @@ export function HeroDark() {
           you look
         </span>
 
-        {/* Massive BOOKED. — single dominant word. */}
+        {/* Massive BOOKED. — single dominant word.
+            Horizontal scaleX stretches glyphs wider without changing height. */}
         <h1
           style={{
             fontFamily: "var(--font-syne)",
@@ -116,6 +117,8 @@ export function HeroDark() {
             margin: 0,
             textAlign: "center",
             whiteSpace: "nowrap",
+            transform: "scaleX(1.18)",
+            transformOrigin: "center center",
           }}
           className="hd-mega"
         >
