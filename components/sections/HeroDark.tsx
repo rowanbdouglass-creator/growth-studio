@@ -102,7 +102,8 @@ export function HeroDark() {
         <span>YOU LOOK BOOKED LTD · UK · EST 2024</span>
       </div>
 
-      {/* Headline — single massive word, with "you look" small at top-right */}
+      {/* Headline block — editorial layout with mono label top-left,
+          italic serif eyebrow top-right, massive BOOKED. centred */}
       <div
         ref={head}
         style={{
@@ -115,37 +116,58 @@ export function HeroDark() {
           width: "100%",
           margin: "0 auto",
           position: "relative",
+          overflow: "hidden",
         }}
       >
-        {/* "you look" eyebrow — italic serif, top-right of the headline */}
-        <span
+        {/* Top row: mono label left / italic serif "you look" right */}
+        <div
           className="hd-eyebrow"
           style={{
-            display: "block",
-            textAlign: "right",
-            fontFamily: "var(--font-serif)",
-            fontStyle: "italic",
-            fontSize: "clamp(18px, 1.8vw, 28px)",
-            color: "var(--color-paper-soft)",
-            letterSpacing: "-0.01em",
-            marginBottom: "clamp(8px, 1vw, 20px)",
-            paddingRight: "clamp(8px, 2vw, 40px)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+            marginBottom: "clamp(12px, 1.2vw, 24px)",
+            paddingInline: "clamp(8px, 1.5vw, 32px)",
           }}
         >
-          you look
-        </span>
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "var(--color-mute)",
+              fontWeight: 600,
+            }}
+          >
+            (01) — Hero
+          </span>
+          <span
+            style={{
+              fontFamily: "var(--font-serif)",
+              fontStyle: "italic",
+              fontSize: "clamp(20px, 2vw, 32px)",
+              color: "var(--color-paper-soft)",
+              letterSpacing: "-0.01em",
+              lineHeight: 1,
+            }}
+          >
+            you look
+          </span>
+        </div>
 
-        {/* Massive BOOKED. — single dominant word */}
+        {/* Massive BOOKED. — single dominant word, scales to fit viewport */}
         <h1
           style={{
             fontFamily: "var(--font-syne)",
             fontWeight: 800,
-            fontSize: "clamp(6rem, 22vw, 22rem)",
-            lineHeight: 0.84,
+            fontSize: "clamp(4.5rem, 17vw, 17rem)",
+            lineHeight: 0.86,
             letterSpacing: "-0.06em",
             color: "var(--color-paper)",
             margin: 0,
             textAlign: "center",
+            whiteSpace: "nowrap",
           }}
           className="hd-mega"
         >
@@ -157,7 +179,7 @@ export function HeroDark() {
             style={{
               display: "inline-block",
               fontSize: "1em",
-              lineHeight: 0.84,
+              lineHeight: 0.86,
               marginLeft: "0.02em",
             }}
           >
