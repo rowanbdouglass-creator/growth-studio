@@ -142,13 +142,6 @@ p, li {
   color: var(--color-paper);
 }
 
-/* Easing tokens */
-@property --hold {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-
 /* Focus */
 :focus-visible {
   outline: 1px solid var(--color-accent);
