@@ -126,17 +126,17 @@ export function Header() {
             >
               About
             </Link>
-            <Link href="/contact" data-cur="pen">
-              <PressAndHold
-                duration={600}
-                variant="outline"
-                showHint={false}
-                trailing={null}
-                onComplete={() => (window.location.href = "/contact")}
-              >
-                Find a slot
-              </PressAndHold>
-            </Link>
+            <PressAndHold
+              duration={600}
+              variant="outline"
+              showHint={false}
+              trailing={null}
+              onComplete={() => {
+                window.location.href = "/contact";
+              }}
+            >
+              Find a slot
+            </PressAndHold>
           </nav>
 
           <div className="md:hidden">

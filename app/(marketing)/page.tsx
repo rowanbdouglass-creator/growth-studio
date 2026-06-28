@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { brand } from "@/config/brand";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { BracketLabel } from "@/components/brand/BracketLabel";
@@ -81,16 +80,14 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap gap-4 items-center">
-            <Link href="/contact" data-cur="pen">
-              <PressAndHold
-                duration={600}
-                onComplete={() => {
-                  // placeholder
-                }}
-              >
-                Hold to book
-              </PressAndHold>
-            </Link>
+            <PressAndHold
+              duration={600}
+              onComplete={() => {
+                window.location.href = "/contact";
+              }}
+            >
+              Hold to book
+            </PressAndHold>
             <span
               style={{
                 fontFamily: "var(--font-mono)",
