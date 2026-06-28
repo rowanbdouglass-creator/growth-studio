@@ -1,3 +1,5 @@
+"use client";
+
 import { brand } from "@/config/brand";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { BracketLabel } from "@/components/brand/BracketLabel";
@@ -5,8 +7,6 @@ import { BookedStamp } from "@/components/brand/BookedStamp";
 import { PressAndHold } from "@/components/fx/PressAndHold";
 import { ScrollReveal } from "@/components/fx/ScrollReveal";
 import { Counter } from "@/components/fx/Counter";
-
-export const dynamic = "force-dynamic";
 
 /**
  * Session 1 — Foundation verification page.
