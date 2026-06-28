@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YLB — Engineered Logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EFE6; --slip:#FCFBF7; --ink:#1B1A17; --red:#C4472E;
+    --pencil:#8C887D; --rule:#DACBB1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1200px;margin:0 auto;padding:48px 32px 96px}
+
+  header{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:18px;margin-bottom:48px;gap:24px;flex-wrap:wrap}
+  .h1{font-weight:700;font-size:clamp(24px,2.4vw,36px);letter-spacing:-0.02em;line-height:1.05}
+  .h1 small{display:block;font-weight:500;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--pencil);margin-bottom:6px;font-family:"IBM Plex Mono",monospace}
+  .meta{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--pencil);text-align:right;line-height:1.5}
+
+  .intro{max-width:64ch;font-size:14px;line-height:1.6;color:#3A3833;margin-bottom:40px}
+  .intro b{color:var(--ink)}
+
+  /* Hero section */
+  .hero{padding:64px;background:var(--ink);border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:32px}
+  .hero svg{width:100%;max-width:520px;height:auto;display:block}
+
+  /* Size validation strip */
+  .sizes{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:40px}
+  @media(max-width:760px){ .sizes{grid-template-columns:repeat(3,1fr)} }
+  .size{background:var(--slip);padding:24px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;min-height:140px;justify-content:space-between}
+  .size-stage{flex:1;display:flex;align-items:center;justify-content:center}
+  .size-stage svg{display:block;background:var(--ink)}
+  .size-label{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.16em;color:var(--pencil);text-transform:uppercase}
+
+  /* Surface variants */
+  .surfaces{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:40px}
+  @media(max-width:760px){ .surfaces{grid-template-columns:1fr} }
+  .surface{padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;min-height:200px;justify-content:center}
+  .surface.paper{background:var(--paper)}
+  .surface.ink{background:var(--ink);color:var(--paper)}
+  .surface.red{background:var(--red);color:var(--paper)}
+  .surface svg{width:140px;height:auto;display:block}
+  .surface-label{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6}
+
+  /* Browser tab mock */
+  .browser{background:#E8E0CE;border-radius:6px 6px 0 0;padding:8px;max-width:520px;margin-bottom:40px}
+  .browser-tabs{display:flex;gap:4px}
+  .browser-tab{background:var(--slip);padding:7px 12px;border-radius:4px 4px 0 0;display:flex;align-items:center;gap:8px;font-family:"IBM Plex Sans";font-size:11px;color:var(--ink)}
+  .browser-tab.active{background:var(--paper)}
+  .browser-tab svg{display:block}
+
+  /* Code block */
+  .code-wrap{background:#0F0E0D;color:#E8E0CE;padding:24px 28px;font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.6;border-radius:0;overflow-x:auto;margin-bottom:40px}
+  .code-wrap .c-tag{color:#7DA9C7}
+  .code-wrap .c-attr{color:#C9B370}
+  .code-wrap .c-val{color:#C4884B}
+  .code-wrap .c-com{color:#65645E;font-style:italic}
+
+  footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--rule);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--pencil);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  .pick{margin-top:32px;padding:28px 32px;background:var(--ink);color:var(--paper);display:flex;justify-content:space-between;gap:24px;align-items:center;flex-wrap:wrap}
+  .pick h3{font-weight:700;font-size:18px;font-family:"IBM Plex Sans"}
+  .pick p{font-size:13px;color:#B6B1A4;line-height:1.55;max-width:50ch;margin-top:6px}
+
+  .section-label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--pencil);margin-bottom:14px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px dotted var(--rule);padding-bottom:6px}
+  .section-label b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="h1">
+    <small>You Look Booked / Logo / Final SVG</small>
+    Mathematically engineered to brief.
+  </div>
+  <div class="meta">Rev 05<br>28.06.2026<br>UK · YLB</div>
+</header>
+
+<p class="intro">
+  Single 12u stroke modulus across every stem. Bowl is a true half-circle with
+  constant 12u thickness. Brand red lives <b>inside</b> the b's counter — no
+  floating fragments. Three letters, four grid lines, two SVG paths and two
+  polygons. Production-ready.
+</p>
+
+<!-- Hero -->
+<div class="section-label"><b>Hero</b><span>520px wide · on ink</span></div>
+<div class="hero">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" role="img" aria-label="ylb">
+    <rect width="130" height="100" fill="#1B1A17"/>
+    <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+    <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+    <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+    <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+    <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+  </svg>
+</div>
+
+<!-- Size validation -->
+<div class="section-label"><b>Size validation</b><span>16 → 256 px on ink</span></div>
+<div class="sizes">
+  <div class="size">
+    <div class="size-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" width="16" height="12">
+        <rect width="130" height="100" fill="#1B1A17"/>
+        <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+        <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+        <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+        <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+      </svg>
+    </div>
+    <div class="size-label">16 px</div>
+  </div>
+  <div class="size">
+    <div class="size-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" width="32" height="25">
+        <rect width="130" height="100" fill="#1B1A17"/>
+        <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+        <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+        <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+        <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+      </svg>
+    </div>
+    <div class="size-label">32 px</div>
+  </div>
+  <div class="size">
+    <div class="size-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" width="48" height="37">
+        <rect width="130" height="100" fill="#1B1A17"/>
+        <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+        <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+        <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+        <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+      </svg>
+    </div>
+    <div class="size-label">48 px</div>
+  </div>
+  <div class="size">
+    <div class="size-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" width="80" height="62">
+        <rect width="130" height="100" fill="#1B1A17"/>
+        <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+        <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+        <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+        <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+      </svg>
+    </div>
+    <div class="size-label">80 px</div>
+  </div>
+  <div class="size">
+    <div class="size-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" width="128" height="98">
+        <rect width="130" height="100" fill="#1B1A17"/>
+        <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+        <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+        <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+        <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+      </svg>
+    </div>
+    <div class="size-label">128 px</div>
+  </div>
+  <div class="size">
+    <div class="size-stage">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" width="200" height="154">
+        <rect width="130" height="100" fill="#1B1A17"/>
+        <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+        <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+        <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+        <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+      </svg>
+    </div>
+    <div class="size-label">200 px</div>
+  </div>
+</div>
+
+<!-- Surface variants -->
+<div class="section-label"><b>Surface variants</b><span>paper · ink · red</span></div>
+<div class="surfaces">
+  <div class="surface paper">
+    <!-- Inverted: black on paper, red counter -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100">
+      <rect width="130" height="100" fill="#F3EFE6"/>
+      <polygon points="10,30 22,30 32,68 20,68" fill="#1B1A17"/>
+      <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#1B1A17"/>
+      <rect x="60" y="12" width="12" height="58" fill="#1B1A17"/>
+      <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#1B1A17" fill-rule="evenodd"/>
+      <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+    </svg>
+    <div class="surface-label">PAPER</div>
+  </div>
+  <div class="surface ink">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100">
+      <rect width="130" height="100" fill="#1B1A17"/>
+      <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+      <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+      <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+      <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+      <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+    </svg>
+    <div class="surface-label">INK</div>
+  </div>
+  <div class="surface red">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100">
+      <rect width="130" height="100" fill="#C4472E"/>
+      <polygon points="10,30 22,30 32,68 20,68" fill="#F3EFE6"/>
+      <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#F3EFE6"/>
+      <rect x="60" y="12" width="12" height="58" fill="#F3EFE6"/>
+      <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#F3EFE6" fill-rule="evenodd"/>
+      <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#1B1A17"/>
+    </svg>
+    <div class="surface-label">RED</div>
+  </div>
+</div>
+
+<!-- Browser tab -->
+<div class="section-label"><b>Browser tab — favicon at 16px</b><span>real Chrome scale</span></div>
+<div class="browser">
+  <div class="browser-tabs">
+    <div class="browser-tab active">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 100" width="14" height="11">
+        <rect width="130" height="100" fill="#1B1A17"/>
+        <polygon points="10,30 22,30 32,68 20,68" fill="#FFFFFF"/>
+        <polygon points="32,30 44,30 32,68 32,92 20,92 20,68" fill="#FFFFFF"/>
+        <rect x="60" y="12" width="12" height="58" fill="#FFFFFF"/>
+        <path d="M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z" fill="#FFFFFF" fill-rule="evenodd"/>
+        <path d="M 100,42 A 8 8 0 0 1 100,58 Z" fill="#C4472E"/>
+      </svg>
+      You Look Booked — A growth &amp; systems studio
+    </div>
+    <div class="browser-tab" style="opacity:0.6">Gmail</div>
+    <div class="browser-tab" style="opacity:0.6">Notion</div>
+  </div>
+</div>
+
+<!-- Source code -->
+<div class="section-label"><b>Source SVG</b><span>copy / paste-ready · 130×100 viewBox</span></div>
+<pre class="code-wrap"><span class="c-tag">&lt;svg</span> <span class="c-attr">xmlns</span>=<span class="c-val">"http://www.w3.org/2000/svg"</span> <span class="c-attr">viewBox</span>=<span class="c-val">"0 0 130 100"</span> <span class="c-attr">role</span>=<span class="c-val">"img"</span> <span class="c-attr">aria-label</span>=<span class="c-val">"ylb"</span><span class="c-tag">&gt;</span>
+  <span class="c-com">&lt;!-- Black container --&gt;</span>
+  <span class="c-tag">&lt;rect</span> <span class="c-attr">width</span>=<span class="c-val">"130"</span> <span class="c-attr">height</span>=<span class="c-val">"100"</span> <span class="c-attr">fill</span>=<span class="c-val">"#000000"</span><span class="c-tag">/&gt;</span>
+
+  <span class="c-com">&lt;!-- y · left arm (12u perpendicular) --&gt;</span>
+  <span class="c-tag">&lt;polygon</span> <span class="c-attr">points</span>=<span class="c-val">"10,30 22,30 32,68 20,68"</span> <span class="c-attr">fill</span>=<span class="c-val">"#FFFFFF"</span><span class="c-tag">/&gt;</span>
+
+  <span class="c-com">&lt;!-- y · right arm + descender (12u, vertical descender) --&gt;</span>
+  <span class="c-tag">&lt;polygon</span> <span class="c-attr">points</span>=<span class="c-val">"32,30 44,30 32,68 32,92 20,92 20,68"</span> <span class="c-attr">fill</span>=<span class="c-val">"#FFFFFF"</span><span class="c-tag">/&gt;</span>
+
+  <span class="c-com">&lt;!-- l · 12u stem, ascender → baseline --&gt;</span>
+  <span class="c-tag">&lt;rect</span> <span class="c-attr">x</span>=<span class="c-val">"60"</span> <span class="c-attr">y</span>=<span class="c-val">"12"</span> <span class="c-attr">width</span>=<span class="c-val">"12"</span> <span class="c-attr">height</span>=<span class="c-val">"58"</span> <span class="c-attr">fill</span>=<span class="c-val">"#FFFFFF"</span><span class="c-tag">/&gt;</span>
+
+  <span class="c-com">&lt;!-- b · stem + true half-circle bowl, D-counter cut (evenodd) --&gt;</span>
+  <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-val">"M 88,12 L 100,12 L 100,30 A 20 20 0 0 1 100,70 L 88,70 Z M 100,42 A 8 8 0 0 1 100,58 Z"</span>
+        <span class="c-attr">fill</span>=<span class="c-val">"#FFFFFF"</span> <span class="c-attr">fill-rule</span>=<span class="c-val">"evenodd"</span><span class="c-tag">/&gt;</span>
+
+  <span class="c-com">&lt;!-- Brand accent · the b's counter filled red --&gt;</span>
+  <span class="c-tag">&lt;path</span> <span class="c-attr">d</span>=<span class="c-val">"M 100,42 A 8 8 0 0 1 100,58 Z"</span> <span class="c-attr">fill</span>=<span class="c-val">"#C4472E"</span><span class="c-tag">/&gt;</span>
+<span class="c-tag">&lt;/svg&gt;</span></pre>
+
+<section class="pick">
+  <div>
+    <h3>Verdict?</h3>
+    <p>If this lands, reply <b>"ship it"</b> and I save the SVG to
+    /public/assets/, wire the Header + favicon + og:image, lock brand.ts.
+    Logo done. Site build starts.</p>
+  </div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:#B6B1A4;text-align:right">
+    YLB · v5.FINAL<br>
+    12u STROKE MODULUS<br>
+    r=20 BOWL · r=8 COUNTER<br>
+    RED INSIDE THE b
+  </div>
+</section>
+
+<footer>
+  <span>You Look Booked Ltd · Companies House 17020720</span>
+  <span>Rev 05 · 28.06.2026 · Engineered SVG</span>
+</footer>
+
+</div>
+</body>
+</html>
