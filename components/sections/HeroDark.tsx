@@ -85,7 +85,7 @@ export function HeroDark() {
           position: "relative",
         }}
       >
-        {/* Left-aligned italic serif "you look" eyebrow */}
+        {/* Left-aligned italic serif "you look" — enlarged secondary headline */}
         <span
           className="hd-eyebrow"
           style={{
@@ -93,18 +93,18 @@ export function HeroDark() {
             textAlign: "left",
             fontFamily: "var(--font-serif)",
             fontStyle: "italic",
-            fontSize: "clamp(20px, 2vw, 32px)",
+            fontSize: "clamp(48px, 6vw, 112px)",
             color: "var(--color-paper-soft)",
-            letterSpacing: "-0.01em",
-            lineHeight: 1,
-            marginBottom: "clamp(16px, 1.8vw, 32px)",
+            letterSpacing: "-0.02em",
+            lineHeight: 0.95,
+            marginBottom: "clamp(8px, 1vw, 16px)",
             paddingLeft: "clamp(8px, 1.5vw, 32px)",
           }}
         >
           you look
         </span>
 
-        {/* Massive BOOKED. — single dominant word, scales to fit viewport.
+        {/* Massive BOOKED. — single dominant word.
             Vertical scaleY stretches glyphs taller without overflowing width. */}
         <h1
           style={{
@@ -117,9 +117,9 @@ export function HeroDark() {
             margin: 0,
             textAlign: "center",
             whiteSpace: "nowrap",
-            transform: "scaleY(1.5)",
-            transformOrigin: "center center",
-            padding: "clamp(40px, 5vw, 80px) 0",
+            transform: "scaleY(1.85)",
+            transformOrigin: "center top",
+            padding: "clamp(60px, 7vw, 120px) 0",
           }}
           className="hd-mega"
         >
