@@ -1,4 +1,5 @@
 import { HeroDark } from "@/components/sections/HeroDark";
+import { WarpSection } from "@/components/sections/WarpSection";
 import { ManifestoPin } from "@/components/sections/ManifestoPin";
 import { ServicesDark } from "@/components/sections/ServicesDark";
 import { WorkDark } from "@/components/sections/WorkDark";
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <main data-bg="dark">
       <HeroDark />
+      <WarpSection />
       <ManifestoPin />
       <ServicesDark />
       <WorkDark />
