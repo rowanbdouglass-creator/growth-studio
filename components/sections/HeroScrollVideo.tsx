@@ -40,6 +40,10 @@ const SCENES = [
     eyebrow: "04 — TRAFFIC",
     line: "We run the ads that fill it.",
   },
+  {
+    eyebrow: "05 — RESULT",
+    line: "Your business runs busy. And in control.",
+  },
 ];
 
 export function HeroScrollVideo() {
@@ -66,7 +70,7 @@ export function HeroScrollVideo() {
       const scrub = ScrollTrigger.create({
         trigger: wrap,
         start: "top top",
-        end: "+=400%",
+        end: "+=500%",
         pin: true,
         scrub: 0.6,
         anticipatePin: 1,
@@ -85,7 +89,7 @@ export function HeroScrollVideo() {
         ScrollTrigger.create({
           trigger: wrap,
           start: "top top",
-          end: "+=400%",
+          end: "+=500%",
           scrub: 0.4,
           onUpdate: (self) => {
             const p = self.progress;
