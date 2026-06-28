@@ -70,40 +70,7 @@ export function HeroDark() {
         }}
       />
 
-      {/* Top meta strip */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          fontFamily: "var(--font-mono)",
-          fontSize: 11,
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          color: "var(--color-mute)",
-          zIndex: 3,
-          paddingBottom: 40,
-          borderBottom: "1px solid var(--color-hairline)",
-          marginBottom: "clamp(40px, 5vw, 64px)",
-        }}
-      >
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "var(--color-red)",
-              animation: "ylb-pulse 2.4s ease-in-out infinite",
-              display: "inline-block",
-            }}
-          />
-          AVAILABLE — WEEK 28 · 2026
-        </span>
-        <span>YOU LOOK BOOKED LTD · UK · EST 2024</span>
-      </div>
-
-      {/* Headline block — editorial layout with mono label top-left,
-          italic serif eyebrow top-right, massive BOOKED. centred */}
+      {/* Headline block — left-aligned 'you look' eyebrow + massive BOOKED. */}
       <div
         ref={head}
         style={{
@@ -116,45 +83,26 @@ export function HeroDark() {
           width: "100%",
           margin: "0 auto",
           position: "relative",
-          overflow: "hidden",
         }}
       >
-        {/* Top row: mono label left / italic serif "you look" right */}
-        <div
+        {/* Left-aligned italic serif "you look" eyebrow */}
+        <span
           className="hd-eyebrow"
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "baseline",
-            marginBottom: "clamp(12px, 1.2vw, 24px)",
-            paddingInline: "clamp(8px, 1.5vw, 32px)",
+            display: "block",
+            textAlign: "left",
+            fontFamily: "var(--font-serif)",
+            fontStyle: "italic",
+            fontSize: "clamp(20px, 2vw, 32px)",
+            color: "var(--color-paper-soft)",
+            letterSpacing: "-0.01em",
+            lineHeight: 1,
+            marginBottom: "clamp(16px, 1.8vw, 32px)",
+            paddingLeft: "clamp(8px, 1.5vw, 32px)",
           }}
         >
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              color: "var(--color-mute)",
-              fontWeight: 600,
-            }}
-          >
-            (01) — Hero
-          </span>
-          <span
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontStyle: "italic",
-              fontSize: "clamp(20px, 2vw, 32px)",
-              color: "var(--color-paper-soft)",
-              letterSpacing: "-0.01em",
-              lineHeight: 1,
-            }}
-          >
-            you look
-          </span>
-        </div>
+          you look
+        </span>
 
         {/* Massive BOOKED. — single dominant word, scales to fit viewport */}
         <h1
@@ -162,7 +110,7 @@ export function HeroDark() {
             fontFamily: "var(--font-syne)",
             fontWeight: 800,
             fontSize: "clamp(3.5rem, 12.5vw, 15rem)",
-            lineHeight: 0.86,
+            lineHeight: 1,
             letterSpacing: "-0.06em",
             color: "var(--color-paper)",
             margin: 0,
@@ -179,7 +127,7 @@ export function HeroDark() {
             style={{
               display: "inline-block",
               fontSize: "1em",
-              lineHeight: 0.86,
+              lineHeight: 1,
               marginLeft: "0.02em",
             }}
           >
