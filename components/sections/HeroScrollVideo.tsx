@@ -38,11 +38,11 @@ const SCENES = [
   },
   {
     eyebrow: "04 — TRAFFIC",
-    line: "We run the ads that fill it.",
+    line: "We run the ads. Daily. By hand.",
   },
   {
     eyebrow: "05 — RESULT",
-    line: "Your business runs busy. And in control.",
+    line: "Modernised. Automated. Sold out.",
   },
 ];
 
