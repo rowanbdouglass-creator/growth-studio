@@ -142,6 +142,66 @@ p, li {
   color: var(--color-paper);
 }
 
+/* ==================================================================
+   Custom cursor + pen trail
+   Hidden on touch devices and reduced-motion. Default cursor returns
+   when keyboard nav is active (set on body by CustomCursor component).
+   ================================================================== */
+body[data-cursor-on] { cursor: none; }
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  body[data-cursor-on] { cursor: auto; }
+}
+#ylb-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+  background: var(--color-red);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition:
+    width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 0.3s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+  will-change: transform;
+}
+#ylb-cursor.pen {
+  width: 24px; height: 24px;
+  border-radius: 0;
+  background: var(--color-ink);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+#ylb-cursor.hold {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid var(--color-red);
+}
+#ylb-cursor.hold::after {
+  content: "HOLD";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--color-red);
+  font-weight: 700;
+}
+#ylb-trail {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+
 /* Focus */
 :focus-visible {
   outline: 1px solid var(--color-accent);

@@ -46,10 +46,10 @@ export function Footer() {
             <FootLink href="/about">About</FootLink>
           </FootCol>
 
-          <FootCol heading="TOOLS">
-            <FootLink href="/tools/website-audit">Website audit</FootLink>
-            <FootLink href="/tools/ad-audit">Ad audit</FootLink>
-            <FootLink href="/tools/discovery-hub">Discovery hub</FootLink>
+          <FootCol heading="LEGAL">
+            <FootLink href="/privacy">Privacy</FootLink>
+            <FootLink href="/terms">Terms</FootLink>
+            <FootLink href="/accessibility">Accessibility</FootLink>
           </FootCol>
 
           <FootCol heading="CONTACT">

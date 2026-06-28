@@ -74,7 +74,7 @@ export default function MarketingLayout({
     >
       <body className="min-h-screen flex flex-col">
         <LenisProvider>
-          {/* CustomCursor temporarily disabled while diagnosing hydration */}
+          <CustomCursor />
           <a
             href="#main"
             className="

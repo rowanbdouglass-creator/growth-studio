@@ -1,59 +1,47 @@
 import type { MetadataRoute } from "next";
 import { brand } from "@/config/brand";
-import { getCaseStudies, getServices } from "@/lib/payload/queries";
+import { APPOINTMENTS } from "@/lib/content/appointments";
+import { SERVICES } from "@/lib/content/services";
 
-export const dynamic = "force-dynamic";
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+/**
+ * Sitemap — sources from the local content modules (single source of truth)
+ * rather than a CMS. Static so it builds at compile time.
+ */
+export default function sitemap(): MetadataRoute.Sitemap {
   const base = brand.url.replace(/\/$/, "");
   const now = new Date();
 
-  const staticPaths = [
-    "",
-    "/services",
-    "/work",
-    "/tools",
-    "/tools/ad-audit",
-    "/tools/website-audit",
-    "/tools/discovery-hub",
-    "/about",
-    "/contact",
-    "/blog",
+  const staticPaths: { p: string; priority: number; freq: "weekly" | "monthly" | "yearly" }[] = [
+    { p: "", priority: 1.0, freq: "weekly" },
+    { p: "/work", priority: 0.9, freq: "weekly" },
+    { p: "/services", priority: 0.9, freq: "weekly" },
+    { p: "/about", priority: 0.7, freq: "monthly" },
+    { p: "/contact", priority: 0.8, freq: "monthly" },
+    { p: "/privacy", priority: 0.3, freq: "yearly" },
+    { p: "/terms", priority: 0.3, freq: "yearly" },
+    { p: "/accessibility", priority: 0.3, freq: "yearly" },
   ];
 
-  const staticEntries: MetadataRoute.Sitemap = staticPaths.map((p) => ({
+  const staticEntries: MetadataRoute.Sitemap = staticPaths.map(({ p, priority, freq }) => ({
     url: `${base}${p}`,
     lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: p === "" ? 1.0 : 0.7,
+    changeFrequency: freq,
+    priority,
   }));
 
-  let dynamicEntries: MetadataRoute.Sitemap = [];
+  const workEntries: MetadataRoute.Sitemap = APPOINTMENTS.map((a) => ({
+    url: `${base}/work/${a.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
 
-  try {
-    const [services, caseStudies] = await Promise.all([
-      getServices(),
-      getCaseStudies(100),
-    ]);
+  const serviceEntries: MetadataRoute.Sitemap = SERVICES.map((s) => ({
+    url: `${base}/services/${s.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.85,
+  }));
 
-    dynamicEntries = [
-      ...services.map((s) => ({
-        url: `${base}/services/${s.slug}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-      })),
-      ...caseStudies.map((cs) => ({
-        url: `${base}/work/${cs.slug}`,
-        lastModified: cs.publishedAt ? new Date(cs.publishedAt) : now,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      })),
-    ];
-  } catch {
-    // If Payload is unreachable during sitemap generation, fall back to
-    // static entries only rather than 500ing.
-  }
-
-  return [...staticEntries, ...dynamicEntries];
+  return [...staticEntries, ...workEntries, ...serviceEntries];
 }
