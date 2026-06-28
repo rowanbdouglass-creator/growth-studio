@@ -104,21 +104,21 @@ export function HeroDark() {
           you look
         </span>
 
-        {/* Massive BOOKED. — single dominant word.
-            Horizontal scaleX stretches glyphs wider without changing height. */}
+        {/* Massive BOOKED. — capped so it never overflows horizontal margins.
+            14vw stays inside the container at every viewport from 1366 up;
+            18rem cap keeps it from getting absurd on ultra-wide. */}
         <h1
           style={{
             fontFamily: "var(--font-syne)",
             fontWeight: 800,
-            fontSize: "clamp(3.5rem, 13vw, 16rem)",
+            fontSize: "clamp(3rem, 14vw, 18rem)",
             lineHeight: 1,
             letterSpacing: "-0.06em",
             color: "var(--color-paper)",
             margin: 0,
             textAlign: "center",
             whiteSpace: "nowrap",
-            transform: "scaleX(1.18)",
-            transformOrigin: "center center",
+            maxWidth: "100%",
           }}
           className="hd-mega"
         >
