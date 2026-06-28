@@ -195,6 +195,48 @@ body[data-cursor-on] { cursor: none; }
   color: var(--color-red);
   font-weight: 700;
 }
+#ylb-cursor.cell {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--color-red);
+}
+#ylb-cursor.cell::after {
+  content: "SLOT";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--color-paper);
+  font-weight: 700;
+}
+#ylb-cursor.case {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+}
+#ylb-cursor.case::after {
+  content: "OPEN ↗";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--color-ink);
+  font-weight: 700;
+}
+/* Surface-aware default cursor colour */
+body[data-surface="dark"] #ylb-cursor:not(.hold):not(.case):not(.pen):not(.cell) {
+  background: var(--color-paper);
+}
+body[data-surface="dark"] #ylb-cursor.pen { background: var(--color-paper); }
 #ylb-trail {
   position: fixed;
   inset: 0;

@@ -131,7 +131,7 @@ export default function WorkPage() {
 
           <div className="work-list">
             {APPOINTMENTS.map((a) => (
-              <Link key={a.slug} href={`/work/${a.slug}`} className="work-row">
+              <Link key={a.slug} href={`/work/${a.slug}`} className="work-row" data-cur="case">
                 <div className="date">
                   <span className="dow">{a.dayOfWeek}</span>
                   <span className="num">{a.day}</span>

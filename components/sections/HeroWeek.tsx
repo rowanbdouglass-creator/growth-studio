@@ -4,6 +4,8 @@ import { brand } from "@/config/brand";
 import { BracketLabel } from "@/components/brand/BracketLabel";
 import { PressAndHold } from "@/components/fx/PressAndHold";
 import { CalendarGrid } from "@/components/ui/CalendarGrid";
+import { KineticHeading } from "@/components/fx/KineticHeading";
+import { MagneticButton } from "@/components/fx/MagneticButton";
 
 /**
  * Hero 01 — WEEK. Split layout on paper: massive italic-emphasis
@@ -122,10 +124,10 @@ export function HeroWeek() {
       </div>
 
       <div className="h-grid">
-        <h1 className="ylb-hero-h">
+        <KineticHeading as="h1" className="ylb-hero-h" variant="fly" delay={1700}>
           <span className="small">we make your week</span>
           look like <em>this</em>.
-        </h1>
+        </KineticHeading>
         <CalendarGrid zoomTarget={{ day: 4, hour: 4 }} />
       </div>
 
@@ -135,14 +137,16 @@ export function HeroWeek() {
           schedules, quotes, invoices, and ships the work — end-to-end,
           owned by you.
         </p>
-        <PressAndHold
-          duration={600}
-          onComplete={() => {
-            window.location.href = "/contact";
-          }}
-        >
-          Hold to book a slot
-        </PressAndHold>
+        <MagneticButton>
+          <PressAndHold
+            duration={600}
+            onComplete={() => {
+              window.location.href = "/contact";
+            }}
+          >
+            Hold to book a slot
+          </PressAndHold>
+        </MagneticButton>
       </div>
     </section>
   );

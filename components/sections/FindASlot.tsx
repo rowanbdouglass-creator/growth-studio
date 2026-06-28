@@ -2,6 +2,8 @@
 
 import { BracketLabel } from "@/components/brand/BracketLabel";
 import { PressAndHold } from "@/components/fx/PressAndHold";
+import { Scramble } from "@/components/fx/Scramble";
+import { MagneticButton } from "@/components/fx/MagneticButton";
 
 /**
  * Final CTA — massive "find a slot." headline on red, press-and-hold to book.
@@ -78,7 +80,17 @@ export function FindASlot() {
 
         <div className="ylb-find-grid">
           <h2>
-            find a <em>slot</em>.
+            find a{" "}
+            <em>
+              <Scramble
+                final="slot"
+                pool="ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*"
+                intervalMs={4200}
+                durationMs={520}
+                inline
+              />
+            </em>
+            .
           </h2>
           <div className="ylb-find-side">
             <p>
@@ -86,15 +98,17 @@ export function FindASlot() {
               what we&rsquo;d do about it —{" "}
               <b>in writing, before you pay anything</b>.
             </p>
-            <PressAndHold
-              variant="on-red"
-              duration={600}
-              onComplete={() => {
-                window.location.href = "/contact";
-              }}
-            >
-              Hold to book
-            </PressAndHold>
+            <MagneticButton>
+              <PressAndHold
+                variant="on-red"
+                duration={600}
+                onComplete={() => {
+                  window.location.href = "/contact";
+                }}
+              >
+                Hold to book
+              </PressAndHold>
+            </MagneticButton>
             <div className="ylb-find-foot">
               30 min · no pitch · bring numbers
             </div>

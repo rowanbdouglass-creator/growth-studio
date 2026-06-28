@@ -3,6 +3,8 @@
 import { BracketLabel } from "@/components/brand/BracketLabel";
 import { PressAndHold } from "@/components/fx/PressAndHold";
 import { BrowserMockup } from "@/components/ui/BrowserMockup";
+import { KineticHeading } from "@/components/fx/KineticHeading";
+import { MagneticButton } from "@/components/fx/MagneticButton";
 
 /**
  * Hero 02 — WEBSITE (red bg). Same split layout: massive headline left,
@@ -35,11 +37,11 @@ export function HeroWebsite() {
       </div>
 
       <div className="h-grid">
-        <h1 className="ylb-hero-h">
+        <KineticHeading as="h1" className="ylb-hero-h" variant="fly">
           <span className="small">we make your website</span>
           feel like{" "}
           <em style={{ color: "var(--color-ink)" }}>this</em>.
-        </h1>
+        </KineticHeading>
         <BrowserMockup />
       </div>
 
@@ -49,15 +51,17 @@ export function HeroWebsite() {
           WordPress or Shopify — whichever fits the job.{" "}
           <b>Speed scores 95+, accessibility scores AA, bookings land in your inbox.</b>
         </p>
-        <PressAndHold
-          duration={600}
-          variant="on-red"
-          onComplete={() => {
-            window.location.href = "/work";
-          }}
-        >
-          See live builds
-        </PressAndHold>
+        <MagneticButton>
+          <PressAndHold
+            duration={600}
+            variant="on-red"
+            onComplete={() => {
+              window.location.href = "/work";
+            }}
+          >
+            See live builds
+          </PressAndHold>
+        </MagneticButton>
       </div>
     </section>
   );

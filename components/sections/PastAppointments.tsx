@@ -1,6 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BracketLabel } from "@/components/brand/BracketLabel";
 import { APPOINTMENTS } from "@/lib/content/appointments";
+
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Past appointments — case studies formatted as calendar entries.
@@ -8,8 +15,65 @@ import { APPOINTMENTS } from "@/lib/content/appointments";
  * outcome figure + scheduling metadata on the right.
  */
 export function PastAppointments() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Cursor-proximity warp on date numbers
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    const nums = sectionRef.current.querySelectorAll<HTMLElement>(".ylb-appt .num");
+
+    let rafId = 0;
+    let cursorX = -10000;
+    let cursorY = -10000;
+    const targets: { el: HTMLElement; tx: number; ty: number; cx: number; cy: number }[] = [];
+    nums.forEach((el) => {
+      targets.push({ el, tx: 0, ty: 0, cx: 0, cy: 0 });
+    });
+
+    const onMove = (e: PointerEvent) => {
+      cursorX = e.clientX;
+      cursorY = e.clientY;
+    };
+
+    const loop = () => {
+      targets.forEach((t) => {
+        const r = t.el.getBoundingClientRect();
+        const ecx = r.left + r.width / 2;
+        const ecy = r.top + r.height / 2;
+        const dx = cursorX - ecx;
+        const dy = cursorY - ecy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const radius = 280;
+        if (dist < radius) {
+          const f = (1 - dist / radius) * 24;
+          t.tx = (dx / dist) * f;
+          t.ty = (dy / dist) * f;
+        } else {
+          t.tx = 0;
+          t.ty = 0;
+        }
+        t.cx += (t.tx - t.cx) * 0.12;
+        t.cy += (t.ty - t.cy) * 0.12;
+        t.el.style.transform = `translate(${t.cx}px, ${t.cy}px)`;
+      });
+      rafId = requestAnimationFrame(loop);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    rafId = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       data-bg="light"
       style={{
         padding: "clamp(96px, 11vw, 160px) 0",
@@ -91,6 +155,9 @@ export function PastAppointments() {
           line-height: 0.9;
           color: var(--color-ink);
           letter-spacing: -0.045em;
+          display: inline-block;
+          will-change: transform;
+          transition: transform 0.18s linear;
         }
         .ylb-appt .date .my {
           font-size: 11px;
@@ -224,7 +291,7 @@ export function PastAppointments() {
 
         <div className="ylb-appts">
           {APPOINTMENTS.map((a) => (
-            <Link key={a.slug} href={`/work/${a.slug}`} className="ylb-appt">
+            <Link key={a.slug} href={`/work/${a.slug}`} className="ylb-appt" data-cur="case">
               <div className="date">
                 <span className="dow">{a.dayOfWeek}</span>
                 <span className="num">{a.day}</span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { Counter } from "@/components/fx/Counter";
 
 /**
@@ -29,6 +30,22 @@ export function Dashboard() {
         entries.forEach((e) => {
           if (e.isIntersecting) {
             node.classList.add("dash-in");
+
+            // Spring-physics chart bars via GSAP
+            const bars = node.querySelectorAll<HTMLElement>(".dash-chart-bars .b");
+            gsap.fromTo(
+              bars,
+              { scaleY: 0 },
+              {
+                scaleY: 1,
+                duration: 1.05,
+                ease: "back.out(2)",
+                stagger: 0.06,
+                delay: 0.55,
+                transformOrigin: "bottom",
+              }
+            );
+
             io.unobserve(node);
           }
         });
@@ -157,14 +174,8 @@ export function Dashboard() {
           border-radius: 1px;
           transform-origin: bottom;
           transform: scaleY(0);
-          transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: transform;
         }
-        .ylb-dash.dash-in .dash-chart-bars .b {
-          transform: scaleY(1);
-        }
-        ${CHART_HEIGHTS.map((_, i) =>
-          `.ylb-dash.dash-in .dash-chart-bars .b:nth-child(${i + 1}) { transition-delay: ${0.5 + i * 0.05}s; }`
-        ).join("\n")}
       `}</style>
 
       <div className="dash-head">

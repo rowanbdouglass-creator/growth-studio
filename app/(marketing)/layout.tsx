@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
 import { LenisProvider } from "@/components/fx/LenisProvider";
 import { CustomCursor } from "@/components/fx/CustomCursor";
+import { Loader } from "@/components/fx/Loader";
 import "../globals.css";
 
 const syne = Syne({
@@ -74,6 +75,7 @@ export default function MarketingLayout({
     >
       <body className="min-h-screen flex flex-col">
         <LenisProvider>
+          <Loader />
           <CustomCursor />
           <a
             href="#main"

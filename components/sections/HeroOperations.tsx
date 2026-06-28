@@ -3,6 +3,8 @@
 import { BracketLabel } from "@/components/brand/BracketLabel";
 import { PressAndHold } from "@/components/fx/PressAndHold";
 import { Dashboard } from "@/components/ui/Dashboard";
+import { KineticHeading } from "@/components/fx/KineticHeading";
+import { MagneticButton } from "@/components/fx/MagneticButton";
 
 /**
  * Hero 03 — OPERATIONS (ink bg). Same split layout: massive headline
@@ -35,10 +37,10 @@ export function HeroOperations() {
       </div>
 
       <div className="h-grid">
-        <h1 className="ylb-hero-h">
+        <KineticHeading as="h1" className="ylb-hero-h" variant="fly">
           <span className="small">we make your operations</span>
           run like <em>this</em>.
-        </h1>
+        </KineticHeading>
         <Dashboard />
       </div>
 
@@ -48,15 +50,17 @@ export function HeroOperations() {
           the operational software your business actually runs on.{" "}
           <b>Built end-to-end. Owned by you. Connects to QuickBooks, Stripe, WooCommerce.</b>
         </p>
-        <PressAndHold
-          duration={600}
-          variant="on-ink"
-          onComplete={() => {
-            window.location.href = "/work";
-          }}
-        >
-          See live builds
-        </PressAndHold>
+        <MagneticButton>
+          <PressAndHold
+            duration={600}
+            variant="on-ink"
+            onComplete={() => {
+              window.location.href = "/work";
+            }}
+          >
+            See live builds
+          </PressAndHold>
+        </MagneticButton>
       </div>
     </section>
   );
