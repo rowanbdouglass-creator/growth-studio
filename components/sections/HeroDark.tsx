@@ -104,7 +104,8 @@ export function HeroDark() {
           you look
         </span>
 
-        {/* Massive BOOKED. — single dominant word, scales to fit viewport */}
+        {/* Massive BOOKED. — single dominant word, scales to fit viewport.
+            Vertical scaleY stretches glyphs taller without overflowing width. */}
         <h1
           style={{
             fontFamily: "var(--font-syne)",
@@ -116,6 +117,9 @@ export function HeroDark() {
             margin: 0,
             textAlign: "center",
             whiteSpace: "nowrap",
+            transform: "scaleY(1.5)",
+            transformOrigin: "center center",
+            padding: "clamp(40px, 5vw, 80px) 0",
           }}
           className="hd-mega"
         >
