@@ -156,12 +156,24 @@ export function PressAndHold({
         .ph-btn > * {
           position: relative;
           z-index: 1;
+        }
+        /* Solid-bg variants use mix-blend-mode for clean colour inversion on fill */
+        .ph-btn.var-primary > *,
+        .ph-btn.var-on-red > *,
+        .ph-btn.var-on-ink > * {
           mix-blend-mode: difference;
           color: var(--color-paper);
         }
         .ph-btn.var-on-red.is-holding > *,
         .ph-btn.var-on-ink.is-holding > * {
           color: var(--color-ink);
+        }
+        /* Outline variant: explicit current-colour, no blend trickery */
+        .ph-btn.var-outline > * {
+          color: currentColor;
+        }
+        .ph-btn.var-outline.is-holding > * {
+          color: var(--color-paper);
         }
         .ph-btn .arrow {
           display: inline-block;
