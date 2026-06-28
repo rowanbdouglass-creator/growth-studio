@@ -223,6 +223,24 @@ const PrismaHero = () => {
         <div className="absolute bottom-0 left-0 right-0 px-4 pb-2 sm:px-6 md:px-10">
           <div className="grid grid-cols-12 items-end gap-4">
             <div className="col-span-12 lg:col-span-8">
+              {/* Small italic serif "you look" eyebrow above the BOOKED. wordmark */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontStyle: "italic",
+                  fontSize: "clamp(24px, 3vw, 56px)",
+                  color: "#E1E0CC",
+                  letterSpacing: "-0.01em",
+                  lineHeight: 1,
+                  marginBottom: "clamp(8px, 1vw, 16px)",
+                  paddingLeft: "0.05em",
+                }}
+              >
+                you look
+              </motion.div>
               <h1
                 className="font-medium leading-[0.85] tracking-[-0.07em] text-[26vw] sm:text-[24vw] md:text-[22vw] lg:text-[20vw] xl:text-[19vw] 2xl:text-[20vw]"
                 style={{

@@ -1,22 +1,30 @@
+import { PrismaHero } from "@/components/ui/prisma-hero";
 import { HeroDark } from "@/components/sections/HeroDark";
-import { WarpSection } from "@/components/sections/WarpSection";
 import { ManifestoPin } from "@/components/sections/ManifestoPin";
 import { ServicesDark } from "@/components/sections/ServicesDark";
-import { WorkHorizontal } from "@/components/sections/WorkHorizontal";
+import { WorkRiseUp } from "@/components/sections/WorkRiseUp";
+import { DarkSpacer } from "@/components/sections/DarkSpacer";
 import { ProcessDark } from "@/components/sections/ProcessDark";
 import { MarqueeStrip } from "@/components/sections/MarqueeStrip";
 import { StatsDark } from "@/components/sections/StatsDark";
 import { TestimonialDark } from "@/components/sections/TestimonialDark";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
+/**
+ * Home composition. PrismaHero (video bg + "you look BOOKED.") sits
+ * above the simpler HeroDark as a backup option. Warp section removed
+ * (didn't fit). Work uses the new 50/50 rise-up pattern followed by a
+ * dark empty spacer.
+ */
 export default function Home() {
   return (
     <main data-bg="dark">
+      <PrismaHero />
       <HeroDark />
-      <WarpSection />
       <ManifestoPin />
       <ServicesDark />
-      <WorkHorizontal />
+      <WorkRiseUp />
+      <DarkSpacer />
       <ProcessDark />
       <MarqueeStrip />
       <StatsDark />
