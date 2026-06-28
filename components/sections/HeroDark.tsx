@@ -161,7 +161,7 @@ export function HeroDark() {
           style={{
             fontFamily: "var(--font-syne)",
             fontWeight: 800,
-            fontSize: "clamp(4.5rem, 17vw, 17rem)",
+            fontSize: "clamp(3.5rem, 12.5vw, 15rem)",
             lineHeight: 0.86,
             letterSpacing: "-0.06em",
             color: "var(--color-paper)",
