@@ -8,19 +8,32 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * KineticTypographyHero — Z-axis fly-through. Text only, nothing else.
+ * KineticTypographyHero — overlap + real perspective.
  *
- * Four text layers at different translateZ depths. On scroll the
- * container slides forward in Z, the layers fly past the camera.
- * Final hero settles in once the chain finishes.
+ * Each phrase lives in 3D space. Lifecycle:
+ *   z = -2500 (far, small, dim)
+ *   z =     0 (readable, full opacity)
+ *   z =  +470 (close, ~17x apparent size, fading -> 0)
+ *
+ * With perspective: 500px, z=+470 makes the phrase appear ~17x its
+ * base size — which is what fills the screen with letter fragments.
+ *
+ * Heavy overlap (stagger = 0.28 of timeline) so when panel N is at
+ * z≈+400 (huge fragments, opacity ~0.25), panel N+1 is at z=0
+ * (readable, opacity 1). That's the layered moment the reference
+ * shows.
+ *
+ * No tags, no scroll cue, no extras. Just text.
  */
 
-const LAYERS = [
-  { lines: ["BESPOKE", "SOFTWARE."], z: -4200 },
-  { lines: ["CUSTOM", "WEBSITES."], z: -2800 },
-  { lines: ["PAID", "TRAFFIC."], z: -1400 },
-  { lines: ["FOR AMBITIOUS", "UK SMES."], z: 0 },
+const PANELS = [
+  ["BESPOKE", "SOFTWARE."],
+  ["CUSTOM", "WEBSITES."],
+  ["PAID", "TRAFFIC."],
+  ["FOR AMBITIOUS", "UK SMES."],
 ];
+
+const STAGGER = 0.28;
 
 export function KineticTypographyHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -31,31 +44,48 @@ export function KineticTypographyHero() {
     if (!section) return;
 
     if (reduced) {
-      gsap.set(".kt-stage", { z: 4200 });
       gsap.set(".kt-final", { opacity: 1, y: 0 });
+      gsap.set(".kt-panel", { opacity: 0 });
       return;
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(".kt-stage", { z: 0 });
+      gsap.set(".kt-panel", { z: -2500, opacity: 0 });
       gsap.set(".kt-final", { opacity: 0, y: 40 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=500%",
+          end: "+=600%",
           pin: true,
           scrub: 1.2,
           anticipatePin: 1,
         },
       });
 
-      tl.to(".kt-stage", { z: 5200, duration: 0.85, ease: "none" }, 0);
+      PANELS.forEach((_, i) => {
+        const start = i * STAGGER;
+        // Far -> readable: phrase approaches the camera plane
+        tl.fromTo(
+          `.kt-panel-${i}`,
+          { z: -2500, opacity: 0 },
+          { z: 0, opacity: 1, duration: 0.22, ease: "power2.out" },
+          start
+        );
+        // Readable -> huge fragments -> gone
+        tl.to(
+          `.kt-panel-${i}`,
+          { z: 470, opacity: 0, duration: 0.62, ease: "power2.in" },
+          start + 0.22
+        );
+      });
+
+      const finalStart = (PANELS.length - 1) * STAGGER + 0.92;
       tl.to(
         ".kt-final",
-        { opacity: 1, y: 0, duration: 0.18, ease: "power2.out" },
-        0.88
+        { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" },
+        finalStart
       );
     }, section);
 
@@ -65,8 +95,6 @@ export function KineticTypographyHero() {
   return (
     <section
       ref={sectionRef}
-      data-bg="dark"
-      data-hide-site-header
       style={{
         position: "relative",
         height: "100vh",
@@ -81,58 +109,47 @@ export function KineticTypographyHero() {
         style={{
           position: "absolute",
           inset: 0,
-          perspective: "1200px",
+          perspective: "500px",
           perspectiveOrigin: "50% 50%",
+          transformStyle: "preserve-3d",
         }}
       >
-        <div
-          className="kt-stage"
-          style={{
-            position: "absolute",
-            inset: 0,
-            transformStyle: "preserve-3d",
-            willChange: "transform",
-          }}
-        >
-          {LAYERS.map((layer, i) => (
-            <div
-              key={i}
+        {PANELS.map((lines, i) => (
+          <div
+            key={i}
+            className={`kt-panel kt-panel-${i}`}
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              transformStyle: "preserve-3d",
+              willChange: "transform, opacity",
+              pointerEvents: "none",
+            }}
+          >
+            <h2
               style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                transform: `translateZ(${layer.z}px)`,
-                transformStyle: "preserve-3d",
-                pointerEvents: "none",
+                fontFamily: "var(--font-syne)",
+                fontWeight: 800,
+                fontSize: "clamp(64px, 10vw, 180px)",
+                lineHeight: 0.88,
+                letterSpacing: "-0.055em",
+                color: "var(--color-paper)",
+                margin: 0,
+                textAlign: "center",
               }}
             >
-              <h2
-                style={{
-                  fontFamily: "var(--font-syne)",
-                  fontWeight: 800,
-                  fontSize: "clamp(72px, 11vw, 200px)",
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.055em",
-                  color:
-                    i === LAYERS.length - 1
-                      ? "var(--color-red)"
-                      : "var(--color-paper)",
-                  margin: 0,
-                  textAlign: "center",
-                }}
-              >
-                {layer.lines.map((line, idx) => (
-                  <span key={idx} style={{ display: "block" }}>
-                    {line}
-                  </span>
-                ))}
-              </h2>
-            </div>
-          ))}
-        </div>
+              {lines.map((line, idx) => (
+                <span key={idx} style={{ display: "block" }}>
+                  {line}
+                </span>
+              ))}
+            </h2>
+          </div>
+        ))}
       </div>
 
       <div
