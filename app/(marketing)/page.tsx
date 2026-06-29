@@ -2,7 +2,7 @@ import { PrismaHero } from "@/components/ui/prisma-hero";
 import { HeroDark } from "@/components/sections/HeroDark";
 import { ManifestoPin } from "@/components/sections/ManifestoPin";
 import { ServicesDark } from "@/components/sections/ServicesDark";
-import { WorkRiseUp } from "@/components/sections/WorkRiseUp";
+import { WorkTrionn } from "@/components/sections/WorkTrionn";
 import { DarkSpacer } from "@/components/sections/DarkSpacer";
 import { ProcessDark } from "@/components/sections/ProcessDark";
 import { MarqueeStrip } from "@/components/sections/MarqueeStrip";
@@ -23,7 +23,7 @@ export default function Home() {
       <HeroDark />
       <ManifestoPin />
       <ServicesDark />
-      <WorkRiseUp />
+      <WorkTrionn />
       <DarkSpacer />
       <ProcessDark />
       <MarqueeStrip />
