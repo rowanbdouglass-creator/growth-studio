@@ -26,35 +26,64 @@ gsap.registerPlugin(ScrollTrigger);
  * extras.
  */
 
-const ROOMS = [
-  ["BESPOKE", "SOFTWARE."],
-  ["CUSTOM", "WEBSITES."],
-  ["PAID", "TRAFFIC."],
-  ["FOR AMBITIOUS", "UK SMES."],
+const ROOMS: { title: string[]; desc: string }[] = [
+  {
+    title: ["BESPOKE", "SOFTWARE."],
+    desc: "Custom ops platforms — quote-to-invoice, stock-per-line, customer portals — built for ambitious UK SMEs.",
+  },
+  {
+    title: ["CUSTOM", "WEBSITES."],
+    desc: "High-converting builds in WordPress and Next.js, designed to pass the credibility check in ninety seconds.",
+  },
+  {
+    title: ["PAID", "TRAFFIC."],
+    desc: "Performance acquisition on Meta and Google, run daily by the two operators who own the work.",
+  },
+  {
+    title: ["FOR AMBITIOUS", "UK SMES."],
+    desc: "Two operators. Direct line. AI-native. No retainers. No proposal decks. No account managers in between.",
+  },
 ];
 
 const ROOM_STRIDE = 0.34;
 
-function RoomContent({ lines }: { lines: string[] }) {
+function RoomContent({
+  title,
+  desc,
+}: {
+  title: string[];
+  desc: string;
+}) {
   return (
     <div className="kt-room-content">
-      {lines.map((line, idx) => (
-        <div key={idx} className="kt-room-line">
-          {line}
-        </div>
-      ))}
+      <div className="kt-room-title">
+        {title.map((line, idx) => (
+          <div key={idx} className="kt-room-line">
+            {line}
+          </div>
+        ))}
+      </div>
+      <p className="kt-room-desc">{desc}</p>
     </div>
   );
 }
 
-function Room({ lines, index }: { lines: string[]; index: number }) {
+function Room({
+  title,
+  desc,
+  index,
+}: {
+  title: string[];
+  desc: string;
+  index: number;
+}) {
   return (
     <div className={`kt-room kt-room-${index}`}>
       <div className="kt-cube">
         {[1, 2, 3, 4, 5].map((n) => (
           <div key={n} className={`kt-wall kt-w-${n}`}>
             <div className="kt-internal">
-              <RoomContent lines={lines} />
+              <RoomContent title={title} desc={desc} />
             </div>
           </div>
         ))}
@@ -111,13 +140,13 @@ export function KineticTypographyHero() {
           start
         );
 
-        // THIS IS THE KEY: perspective shrinks dramatically. 350vmin -> 60vmin
-        // = fish-eye intensifies, side walls bend toward the camera, letters
-        // appear to extrude in 3D. This is what was missing.
+        // Perspective shrinks during the dive (fish-eye intensifies),
+        // but eased back to 90vmin (not 60vmin) so the climax stays
+        // legible instead of letters becoming pure abstract distortion.
         tl.fromTo(
           `.kt-room-${i} .kt-cube`,
           { perspective: "350vmin" },
-          { perspective: "60vmin", duration: 0.55, ease: "power2.in" },
+          { perspective: "90vmin", duration: 0.55, ease: "power2.in" },
           start
         );
 
@@ -152,8 +181,8 @@ export function KineticTypographyHero() {
         color: "var(--color-paper)",
       }}
     >
-      {ROOMS.map((lines, i) => (
-        <Room key={i} lines={lines} index={i} />
+      {ROOMS.map((room, i) => (
+        <Room key={i} title={room.title} desc={room.desc} index={i} />
       ))}
 
       <div
@@ -337,25 +366,41 @@ export function KineticTypographyHero() {
           transform-origin: 50% 44.8vmin;
         }
 
-        /* Content sized to roughly fill the cube interior at scale 1 */
+        /* Content fills the cube interior — title + description */
         .kt-room-content {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 1vmin;
+          gap: 2vmin;
           text-align: center;
           padding: 2vmin;
           color: var(--color-paper);
           max-width: 44vmin;
         }
 
+        .kt-room-title {
+          display: flex;
+          flex-direction: column;
+        }
+
         .kt-room-line {
           font-family: var(--font-syne);
           font-weight: 800;
-          font-size: 12vmin;
+          font-size: 9vmin;
           letter-spacing: -0.05em;
           line-height: 0.88;
+        }
+
+        .kt-room-desc {
+          font-family: var(--font-sans);
+          font-weight: 400;
+          font-size: 2vmin;
+          letter-spacing: -0.005em;
+          line-height: 1.35;
+          color: rgba(243, 239, 230, 0.78);
+          margin: 0;
+          max-width: 30vmin;
         }
       `}</style>
     </section>
