@@ -62,6 +62,7 @@ const VISUALS: Record<string, Visual> = {
 export function WorkTrionn() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const fadeRef = useRef<HTMLDivElement>(null);
   const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
@@ -100,6 +101,26 @@ export function WorkTrionn() {
       },
     });
 
+    // Fade-to-black overlay covers the cards during the last 25% of pin
+    // so the visual handoff into DarkSpacer is a seamless fade, not a cut.
+    const fadeTween = fadeRef.current
+      ? gsap.fromTo(
+          fadeRef.current,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            ease: "power2.in",
+            scrollTrigger: {
+              trigger: section,
+              start: () => `top+=${scrollAmount * 0.75} top`,
+              end: () => `top+=${scrollAmount + window.innerHeight * 0.4} top`,
+              scrub: 0.5,
+              invalidateOnRefresh: true,
+            },
+          }
+        )
+      : null;
+
     const onResize = () => {
       calculate();
       ScrollTrigger.refresh();
@@ -110,6 +131,8 @@ export function WorkTrionn() {
       window.removeEventListener("resize", onResize);
       tween.scrollTrigger?.kill();
       tween.kill();
+      fadeTween?.scrollTrigger?.kill();
+      fadeTween?.kill();
     };
   }, [isDesktop]);
 
@@ -261,6 +284,19 @@ export function WorkTrionn() {
           overflow: "hidden",
         }}
       >
+        {/* Fade-to-black overlay (animates in during the last 25% of pin) */}
+        <div
+          ref={fadeRef}
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "var(--color-night)",
+            zIndex: 10,
+            pointerEvents: "none",
+            opacity: 0,
+          }}
+        />
         <div
           ref={trackRef}
           style={{
