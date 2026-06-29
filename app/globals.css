@@ -21,7 +21,7 @@
   --color-paper:             #F3EFE6;
   --color-paper-soft:        #E8E2D3;
   --color-mute:              #A6A29A;
-  --color-dim:               #67645E;
+  --color-dim:               #8E8B84;
   --color-faint:             #3A3833;
   /* Brand accent — used sparingly: italic emphasis, wordmark indicator, CTA */
   --color-red:               #C4472E;
@@ -56,7 +56,7 @@
   --color-background:        #0E0D0B;
   --color-text-primary:      #F3EFE6;
   --color-text-secondary:    #A6A29A;
-  --color-text-tertiary:     #67645E;
+  --color-text-tertiary:     #8E8B84;
   --color-accent-subtle:     rgba(196, 71, 46, 0.14);
   --color-success:           #4EA66A;
 
@@ -128,6 +128,37 @@ body::after {
   z-index: 1;
   background:
     radial-gradient(ellipse 80% 60% at 50% 30%, transparent 0%, rgba(14, 13, 11, 0.45) 100%);
+}
+
+/* ==================================================================
+   Accessibility — focus-visible + focus-not-obscured (WCAG 2.4.7, 2.4.11)
+   ================================================================== */
+:focus { outline: none; }
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Account for fixed header (~80px) when keyboard scrolls to focused content */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+:target {
+  scroll-margin-top: 96px;
+  scroll-margin-bottom: 48px;
 }
 
 /* Editorial italic serif — used inline for the one emphasis word per headline */

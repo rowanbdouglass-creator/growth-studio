@@ -10,50 +10,51 @@ import { TestimonialDark } from "@/components/sections/TestimonialDark";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { SectionEntry } from "@/components/fx/SectionEntry";
 import { ScrollProgress } from "@/components/fx/ScrollProgress";
+import { BgParallax } from "@/components/fx/BgParallax";
 
 /**
- * Home composition. Each section wrapped in a SectionEntry with a
- * different motion variant so the scroll feels orchestrated, not
- * linear:
- *   - Manifesto enters tilted from upper-left
- *   - Services tiles scatter in from different corners
- *   - Work pins horizontally and fades to black into DarkSpacer
- *   - Process rises from below in stagger
- *   - Stats panel snaps in from right at angle
- *   - Testimonial fades up
- *   - Final CTA assembles from below
+ * Home composition.
  *
- * Persistent: vertical red scroll-progress line on the left edge.
+ * Per audit findings:
+ *  - BgParallax sits fixed behind everything → persistent atmospheric
+ *    thread (calendar grid + warm bloom) that scrolls at 0.3× page
+ *    speed. This is the spatial-continuity layer the ui-ux-pro-max
+ *    audit identified as missing.
+ *  - SectionEntry now uses ONE unified motion variant (fade-up) across
+ *    every section, satisfying the motion-consistency rule.
+ *  - WorkTrionn keeps its pin (deliberate hierarchical move) and fades
+ *    to black into DarkSpacer for a seamless handoff.
  */
 export default function Home() {
   return (
     <>
+      <BgParallax />
       <ScrollProgress />
-      <main data-bg="dark">
+      <main data-bg="dark" style={{ position: "relative", zIndex: 1 }}>
         <HeroDark />
 
-        <SectionEntry variant="tilt-left">
+        <SectionEntry>
           <ManifestoPin />
         </SectionEntry>
 
-        <SectionEntry variant="scatter" staggerSelector=".sv-card">
+        <SectionEntry>
           <ServicesDark />
         </SectionEntry>
 
         <WorkTrionn />
         <DarkSpacer />
 
-        <SectionEntry variant="rise-stagger" staggerSelector=".proc-row">
+        <SectionEntry>
           <ProcessDark />
         </SectionEntry>
 
         <MarqueeStrip />
 
-        <SectionEntry variant="tilt-right">
+        <SectionEntry>
           <StatsDark />
         </SectionEntry>
 
-        <SectionEntry variant="fade-up">
+        <SectionEntry>
           <TestimonialDark />
         </SectionEntry>
 

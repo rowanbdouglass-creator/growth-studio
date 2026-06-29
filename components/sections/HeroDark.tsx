@@ -57,16 +57,63 @@ export function HeroDark() {
         padding: "clamp(110px, 14vh, 160px) clamp(24px, 4vw, 72px) clamp(40px, 5vw, 64px)",
       }}
     >
-      {/* Atmospheric glow behind content */}
+      {/* DEPTH LAYER 1 — faint calendar grid diagonal at low opacity.
+          The brand metaphor as background depth — implies the hero
+          sits on a planner page. Tilted -8°, drifts subtly with scroll. */}
+      <div
+        aria-hidden
+        className="hd-grid"
+        style={{
+          position: "absolute",
+          inset: "-20%",
+          backgroundImage:
+            "linear-gradient(rgba(243,239,230,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(243,239,230,0.045) 1px, transparent 1px)",
+          backgroundSize: "120px 70px",
+          transform: "rotate(-8deg) translateZ(0)",
+          transformOrigin: "center center",
+          pointerEvents: "none",
+          zIndex: 0,
+          willChange: "transform",
+          maskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%)",
+        }}
+      />
+
+      {/* DEPTH LAYER 2 — atmospheric lighting. Warm tungsten key from
+          upper-left, cool electric rim from upper-right (suggests
+          distant storm). Strong vignette frames the centre. */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
-          background:
-            "radial-gradient(circle at 80% 20%, rgba(196,71,46,0.10) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(243,239,230,0.04) 0%, transparent 60%)",
+          background: [
+            "radial-gradient(ellipse 50% 40% at 15% 10%, rgba(255,180,100,0.10) 0%, transparent 60%)",
+            "radial-gradient(ellipse 35% 30% at 88% 8%, rgba(120,180,255,0.06) 0%, transparent 65%)",
+            "radial-gradient(ellipse 60% 50% at 50% 100%, rgba(196,71,46,0.08) 0%, transparent 65%)",
+            "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 30%, rgba(14,13,11,0.4) 100%)",
+          ].join(", "),
           pointerEvents: "none",
-          zIndex: 0,
+          zIndex: 1,
+        }}
+      />
+
+      {/* DEPTH LAYER 3 — drifting dust particles in the warm light beam */}
+      <div
+        aria-hidden
+        className="hd-dust"
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 1,
+          opacity: 0.4,
+          backgroundImage:
+            "radial-gradient(circle at 12% 30%, rgba(255,220,180,0.5) 0.5px, transparent 1.5px), radial-gradient(circle at 28% 18%, rgba(255,220,180,0.4) 0.5px, transparent 1.5px), radial-gradient(circle at 22% 55%, rgba(255,220,180,0.6) 0.5px, transparent 2px), radial-gradient(circle at 18% 72%, rgba(255,220,180,0.35) 0.5px, transparent 1.5px), radial-gradient(circle at 32% 88%, rgba(255,220,180,0.5) 0.5px, transparent 1.5px)",
+          backgroundSize: "600px 600px",
+          animation: "hd-drift 30s linear infinite",
         }}
       />
 
@@ -242,6 +289,14 @@ export function HeroDark() {
           50% { transform: scaleY(1); transform-origin: top; }
           51% { transform-origin: bottom; }
           100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+        @keyframes hd-drift {
+          0% { transform: translate3d(0, 0, 0); }
+          50% { transform: translate3d(-40px, 30px, 0); }
+          100% { transform: translate3d(0, 0, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hd-dust, .hd-grid { animation: none !important; }
         }
       `}</style>
     </section>

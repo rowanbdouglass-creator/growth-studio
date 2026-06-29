@@ -43,7 +43,9 @@ export function ScrollWordReveal({
     const words = wrap.querySelectorAll<HTMLElement>(".swr-word");
     if (!words.length) return;
 
-    gsap.set(words, { opacity: 0.22 });
+    // Minimum 0.45 opacity unrevealed so text passes WCAG contrast against
+    // the dark bg (lifted-but-still-faint state). Reveal completes to 1.
+    gsap.set(words, { opacity: 0.45 });
 
     const tween = gsap.to(words, {
       opacity: 1,
