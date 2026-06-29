@@ -37,13 +37,47 @@ export function HeroFinal() {
         alignItems: "center",
       }}
     >
+      {/* Lime lightning backdrop — Kling-generated, looping silent */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        src="/video/lime-lightning.mp4"
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          opacity: 0.55,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Radial vignette over centre — darkens the area where the
+          hero text lives so it stays legible against the lime
+          lightning, while letting the bolts read at the edges */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          background:
+            "radial-gradient(ellipse at center, rgba(14,13,11,0.72) 0%, rgba(14,13,11,0.45) 35%, rgba(14,13,11,0.15) 70%, rgba(14,13,11,0) 100%)",
+        }}
+      />
+
       {/* Subtle grain overlay */}
       <div
         aria-hidden
         style={{
           position: "absolute",
           inset: 0,
-          opacity: 0.35,
+          opacity: 0.28,
           mixBlendMode: "overlay",
           pointerEvents: "none",
           backgroundImage:
