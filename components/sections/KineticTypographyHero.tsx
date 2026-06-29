@@ -45,7 +45,19 @@ const ROOMS: { title: string[]; desc: string }[] = [
   },
 ];
 
-const ROOM_STRIDE = 0.34;
+// Each room owns this much of the timeline before the next one starts.
+// Higher = more uncontested scroll per room.
+const ROOM_STRIDE = 0.55;
+
+// Per-cube base rotation so the side walls are visible from the start
+// (this is what creates the "letters in front of letters" ghost look
+// even at scale 0.5 with cursor centred).
+const ROOM_ROTATIONS = [
+  { rotationX: 4, rotationY: 1 },
+  { rotationX: -5, rotationY: 1 },
+  { rotationX: 3, rotationY: -1 },
+  { rotationX: -6, rotationY: 1 },
+];
 
 function RoomContent({
   title,
@@ -95,6 +107,46 @@ function Room({
 export function KineticTypographyHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // Mouse-driven perspective-origin parallax (the "look around inside
+  // the cube" effect). Smoothed with rAF lerp toward cursor target.
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let targetX = 0.5;
+    let targetY = 0.5;
+    let currentX = 0.5;
+    let currentY = 0.5;
+    let rafId = 0;
+
+    const onMove = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      targetX = (e.clientX - rect.left) / rect.width;
+      targetY = (e.clientY - rect.top) / rect.height;
+    };
+
+    const tick = () => {
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+      // Map 0..1 cursor to perspective-origin offset (~ ±30% / ±20%)
+      const px = 50 + (0.5 - currentX) * 60;
+      const py = 50 + (0.5 - currentY) * 40;
+      section.style.setProperty("--kt-px", `${px}%`);
+      section.style.setProperty("--kt-py", `${py}%`);
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
+    window.addEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const section = sectionRef.current;
@@ -107,15 +159,22 @@ export function KineticTypographyHero() {
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(".kt-cube", { scale: 0.5 });
-      gsap.set(".kt-room", { opacity: 0, "--kt-perspective": "350vmin" });
+      // Initial per-cube rotation so side walls are visible from start
+      ROOM_ROTATIONS.forEach((r, i) => {
+        gsap.set(`.kt-room-${i} .kt-cube`, {
+          scale: 0.5,
+          rotationX: r.rotationX,
+          rotationY: r.rotationY,
+        });
+      });
+      gsap.set(".kt-room", { opacity: 0 });
       gsap.set(".kt-final", { opacity: 0, y: 40 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=600%",
+          end: "+=900%",
           pin: true,
           scrub: 1.2,
           anticipatePin: 1,
@@ -124,6 +183,8 @@ export function KineticTypographyHero() {
 
       ROOMS.forEach((_, i) => {
         const start = i * ROOM_STRIDE;
+        // Each room gets ~ROOM_STRIDE (0.55) units of dedicated zoom
+        const zoomDuration = ROOM_STRIDE * 0.95; // 0.52
 
         tl.fromTo(
           `.kt-room-${i}`,
@@ -132,32 +193,30 @@ export function KineticTypographyHero() {
           start
         );
 
-        // Modest scale animation
-        tl.fromTo(
+        // Scale: modest grow
+        tl.to(
           `.kt-room-${i} .kt-cube`,
-          { scale: 0.5 },
-          { scale: 1.3, duration: 0.55, ease: "power2.in" },
+          { scale: 1.3, duration: zoomDuration, ease: "power2.in" },
           start
         );
 
-        // Perspective shrinks during the dive (fish-eye intensifies),
-        // but eased back to 90vmin (not 60vmin) so the climax stays
-        // legible instead of letters becoming pure abstract distortion.
+        // Perspective: shrinks dramatically (this is the 3D fish-eye)
         tl.fromTo(
           `.kt-room-${i} .kt-cube`,
           { perspective: "350vmin" },
-          { perspective: "90vmin", duration: 0.55, ease: "power2.in" },
+          { perspective: "90vmin", duration: zoomDuration, ease: "power2.in" },
           start
         );
 
+        // Fade out at the very end of this room's window
         tl.to(
           `.kt-room-${i}`,
-          { opacity: 0, duration: 0.18, ease: "power2.in" },
-          start + 0.42
+          { opacity: 0, duration: 0.15, ease: "power2.in" },
+          start + zoomDuration - 0.05
         );
       });
 
-      const finalStart = (ROOMS.length - 1) * ROOM_STRIDE + 0.65;
+      const finalStart = ROOMS.length * ROOM_STRIDE + 0.05;
       tl.to(
         ".kt-final",
         { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" },
@@ -261,15 +320,18 @@ export function KineticTypographyHero() {
           will-change: opacity;
         }
 
-        /* The 70vmin perspective wrapper */
+        /* The 70vmin perspective wrapper.
+           perspective-origin tracks the cursor via CSS vars set
+           from the rAF loop in JS — that's the "look around" effect.
+           Rotation is set via GSAP per-room in the timeline init. */
         .kt-cube {
           position: relative;
           width: 70vmin;
           height: 70vmin;
-          transform: scale(0.5);
           transform-style: preserve-3d;
           perspective: 350vmin;
-          will-change: transform;
+          perspective-origin: var(--kt-px, 50%) var(--kt-py, 50%);
+          will-change: transform, perspective, perspective-origin;
         }
 
         /* Outline mask at depth — hides everything outside the cube
