@@ -38,15 +38,18 @@ const PHRASE_SPACING = 25; // units between phrase groups in Z
 
 const BRAND_FONT = "/fonts/bricolage-bold.ttf";
 
-function PhraseGroup({
+// One wall's worth of stacked text lines
+function TextLines({
   lines,
-  position,
+  rotation = [0, 0, 0],
+  position = [0, 0, 0],
 }: {
   lines: string[];
-  position: [number, number, number];
+  rotation?: [number, number, number];
+  position?: [number, number, number];
 }) {
   return (
-    <group position={position}>
+    <group position={position} rotation={rotation}>
       {lines.map((line, idx) => (
         <Text
           key={idx}
@@ -62,6 +65,36 @@ function PhraseGroup({
           {line}
         </Text>
       ))}
+    </group>
+  );
+}
+
+// A "room" = front wall + left wall + right wall + ceiling + floor,
+// all showing the SAME phrase. Camera flies through the centre.
+function PhraseGroup({
+  lines,
+  position,
+}: {
+  lines: string[];
+  position: [number, number, number];
+}) {
+  const WALL = 11; // wall distance from camera path centre
+  return (
+    <group position={position}>
+      {/* Front wall — directly facing the camera as it approaches */}
+      <TextLines lines={lines} position={[0, 0, 0]} />
+
+      {/* Left wall — perpendicular to camera path, facing inward */}
+      <TextLines lines={lines} position={[-WALL, 0, 0]} rotation={[0, Math.PI / 2, 0]} />
+
+      {/* Right wall — perpendicular to camera path, facing inward */}
+      <TextLines lines={lines} position={[WALL, 0, 0]} rotation={[0, -Math.PI / 2, 0]} />
+
+      {/* Ceiling — facing down */}
+      <TextLines lines={lines} position={[0, WALL * 0.55, 0]} rotation={[Math.PI / 2, 0, 0]} />
+
+      {/* Floor — facing up */}
+      <TextLines lines={lines} position={[0, -WALL * 0.55, 0]} rotation={[-Math.PI / 2, 0, 0]} />
     </group>
   );
 }
