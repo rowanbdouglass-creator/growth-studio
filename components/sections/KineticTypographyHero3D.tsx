@@ -4,6 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
+import {
+  EffectComposer,
+  DepthOfField,
+  Noise,
+  Vignette,
+} from "@react-three/postprocessing";
 import * as THREE from "three";
 
 /**
@@ -246,6 +252,20 @@ export function KineticTypographyHero3D() {
             mouseX={mouseX}
             mouseY={mouseY}
           />
+          <EffectComposer>
+            {/* Cinematic focal plane — text in focus is sharp,
+                everything in front/behind softens */}
+            <DepthOfField
+              focusDistance={0.0}
+              focalLength={0.04}
+              bokehScale={3}
+              height={480}
+            />
+            {/* Film grain for texture / tooth */}
+            <Noise opacity={0.045} premultiply />
+            {/* Pulls the eye to centre */}
+            <Vignette eskil={false} offset={0.15} darkness={0.65} />
+          </EffectComposer>
         </Canvas>
 
         {/* Final hero — overlays once scroll is nearly complete */}
