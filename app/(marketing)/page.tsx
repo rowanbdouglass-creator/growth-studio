@@ -2,9 +2,7 @@ import { HeroDark } from "@/components/sections/HeroDark";
 import { ManifestoPin } from "@/components/sections/ManifestoPin";
 import { ServicesDark } from "@/components/sections/ServicesDark";
 import { WorkTrionn } from "@/components/sections/WorkTrionn";
-import { DarkSpacer } from "@/components/sections/DarkSpacer";
 import { ProcessDark } from "@/components/sections/ProcessDark";
-import { MarqueeStrip } from "@/components/sections/MarqueeStrip";
 import { StatsDark } from "@/components/sections/StatsDark";
 import { TestimonialDark } from "@/components/sections/TestimonialDark";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -13,17 +11,15 @@ import { ScrollProgress } from "@/components/fx/ScrollProgress";
 import { BgParallax } from "@/components/fx/BgParallax";
 
 /**
- * Home composition.
- *
- * Per audit findings:
- *  - BgParallax sits fixed behind everything → persistent atmospheric
- *    thread (calendar grid + warm bloom) that scrolls at 0.3× page
- *    speed. This is the spatial-continuity layer the ui-ux-pro-max
- *    audit identified as missing.
- *  - SectionEntry now uses ONE unified motion variant (fade-up) across
- *    every section, satisfying the motion-consistency rule.
- *  - WorkTrionn keeps its pin (deliberate hierarchical move) and fades
- *    to black into DarkSpacer for a seamless handoff.
+ * Home composition (v5):
+ *  - BgParallax behind everything (calendar grid + warm bloom at
+ *    0.3× / 0.15× page velocity — spatial-continuity thread)
+ *  - Removed: DarkSpacer (was reading as empty filler between Work
+ *    and Process), MarqueeStrip (dates were meaningless)
+ *  - Services rebuilt as editorial poster spread (different motion
+ *    from Process — no pinning, zig-zag asymmetric, parallax depth)
+ *  - Process rebuilt as visual staircase (literal stair shape, each
+ *    step offset right + up + connected by diagonal red line)
  */
 export default function Home() {
   return (
@@ -42,13 +38,10 @@ export default function Home() {
         </SectionEntry>
 
         <WorkTrionn />
-        <DarkSpacer />
 
         <SectionEntry>
           <ProcessDark />
         </SectionEntry>
-
-        <MarqueeStrip />
 
         <SectionEntry>
           <StatsDark />

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Syne, IBM_Plex_Sans, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono, Newsreader } from "next/font/google";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -10,9 +10,11 @@ import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Loader } from "@/components/fx/Loader";
 import "../globals.css";
 
-const syne = Syne({
+// Display: Bricolage Grotesque — variable, more distinctive than Syne (less AI-default).
+// Variable name kept as --font-syne so components don't need rewiring.
+const syne = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-syne",
   display: "swap",
 });
@@ -32,9 +34,11 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
+// Italic emphasis: Newsreader (editorial serif, much less AI-default than
+// Instrument Serif). Variable, italic-only weight 400.
+const instrumentSerif = Newsreader({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",

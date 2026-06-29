@@ -23,11 +23,12 @@
   --color-mute:              #A6A29A;
   --color-dim:               #8E8B84;
   --color-faint:             #3A3833;
-  /* Brand accent — used sparingly: italic emphasis, wordmark indicator, CTA */
-  --color-red:               #C4472E;
-  --color-red-soft:          rgba(196, 71, 46, 0.14);
-  --color-red-glow:          rgba(196, 71, 46, 0.35);
-  --color-red-hover:         #D85A40;
+  /* Brand accent — LIME (anti-AI-default). Used sparingly: italic
+     emphasis, wordmark indicator, CTAs, indicator dots. */
+  --color-red:               #B4E813;
+  --color-red-soft:          rgba(180, 232, 19, 0.14);
+  --color-red-glow:          rgba(180, 232, 19, 0.40);
+  --color-red-hover:         #C4F542;
   /* Rules / hairlines (always vs night surface) */
   --color-hairline:          rgba(243, 239, 230, 0.08);
   --color-hairline-strong:   rgba(243, 239, 230, 0.16);
