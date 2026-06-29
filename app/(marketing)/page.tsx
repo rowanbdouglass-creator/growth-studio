@@ -1,4 +1,5 @@
 import { HeroDark } from "@/components/sections/HeroDark";
+import { Section02Philosophy } from "@/components/sections/Section02Philosophy";
 
 /**
  * Home — CLONE BUILD IN PROGRESS (portfolio references).
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <main data-bg="dark" data-hide-site-header>
       <HeroDark />
+      <Section02Philosophy />
     </main>
   );
 }
