@@ -8,40 +8,52 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Kinetic Typography Hero — Monolog-style.
+ * KineticTypographyHero — CSS 3D room fly-through.
  *
- * Three service panels. Each panel: massive Bricolage word(s) zoom
- * from scale 0.4 → 1 → 28, while a small descriptive sentence fades
- * in over the top, then out. Panels overlap by 30% of their duration
- * so two layers of type are always on screen — the previous panel's
- * big word is still scaling out as the next emerges. Pure type, no
- * imagery, no graphics. The drama is the impossible scale.
+ * Faithful adaptation of the loader technique from
+ * spatial-festival.program.studio. Five wall children form a
+ * virtual room around the camera:
  *
- * Pinned section, GSAP ScrollTrigger scrub. Honours reduced motion
- * by skipping the timeline and settling on the final state.
+ *   .kt-w-1  front face          no transform
+ *   .kt-w-2  left wall           rotateY( 80deg)
+ *   .kt-w-3  right wall          rotateY(-80deg)
+ *   .kt-w-4  ceiling             rotateX(-80deg)
+ *   .kt-w-5  floor               rotateX( 80deg)
+ *
+ * Each wall carries the same content. Each `.kt-internal` is
+ * clip-pathed so only the strip closest to the camera is visible
+ * AND counter-rotated so the text stays oriented to the viewer.
+ * The wrapper has perspective: 350vmin. The `.kt-cube` container
+ * starts at scale(0.5).
+ *
+ * On scroll, GSAP scales the cube from 0.5 → 1.5 → 2.6 + fade
+ * out. As scale grows, the room expands AROUND the camera —
+ * creating the fly-through perspective effect (you appear to
+ * move forward into / through the text on the walls).
+ *
+ * After the fly-through, the static hero settles in.
+ *
+ * Honours prefers-reduced-motion: skips timeline, renders the
+ * static hero immediately.
  */
 
-const PANELS = [
-  {
-    bigLines: ["BESPOKE", "SOFTWARE."],
-    tag: "01 · Bespoke Software",
-    desc: "Custom operations platforms — quote-to-invoice, stock-per-line, customer portals — built for ambitious UK SMEs.",
-  },
-  {
-    bigLines: ["CUSTOM", "WEBSITES."],
-    tag: "02 · Custom Websites",
-    desc: "High-converting builds in WordPress and Next.js. Designed to pass the credibility check in 90 seconds.",
-  },
-  {
-    bigLines: ["PAID", "TRAFFIC."],
-    tag: "03 · Paid Traffic",
-    desc: "Performance acquisition on Meta and Google. Run daily by the two operators who own the work — no account managers.",
-  },
-];
+const ROOM = {
+  title: "ylb",
+  lines: ["Bespoke software.", "Custom websites.", "Paid traffic."],
+};
 
-const PANEL_DURATION = 1.0;
-const PANEL_OVERLAP = 0.3;
-const PANEL_STRIDE = PANEL_DURATION - PANEL_OVERLAP; // 0.7
+function RoomContent() {
+  return (
+    <div className="kt-room-content">
+      <div className="kt-room-title">{ROOM.title}</div>
+      <div className="kt-room-lines">
+        {ROOM.lines.map((l, i) => (
+          <div key={i}>{l}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function KineticTypographyHero() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -52,22 +64,22 @@ export function KineticTypographyHero() {
     if (!section) return;
 
     if (reduced) {
+      gsap.set(".kt-cube", { scale: 1 });
       gsap.set(".kt-final", { opacity: 1, y: 0 });
-      gsap.set(".kt-big, .kt-small", { opacity: 0 });
+      gsap.set(".kt-scroll-cue", { opacity: 0 });
       return;
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(".kt-big", { scale: 0.4, opacity: 0 });
-      gsap.set(".kt-small", { opacity: 0, y: 20 });
-      gsap.set(".kt-final", { opacity: 0, y: 60 });
+      gsap.set(".kt-cube", { scale: 0.5, opacity: 1 });
+      gsap.set(".kt-final", { opacity: 0, y: 40 });
       gsap.set(".kt-scroll-cue", { opacity: 1 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=620%",
+          end: "+=400%",
           pin: true,
           scrub: 1.2,
           anticipatePin: 1,
@@ -75,44 +87,13 @@ export function KineticTypographyHero() {
       });
 
       tl.to(".kt-scroll-cue", { opacity: 0, duration: 0.08 }, 0);
-
-      PANELS.forEach((_, i) => {
-        const start = i * PANEL_STRIDE;
-
-        // Big word: emerge
-        tl.fromTo(
-          `.kt-big-${i}`,
-          { scale: 0.4, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.15, ease: "power2.out" },
-          start
-        );
-
-        // Small descriptor: fade in just after the big word lands
-        tl.fromTo(
-          `.kt-small-${i}`,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.18, ease: "power2.out" },
-          start + 0.22
-        );
-
-        // Big word: massive zoom out
-        tl.to(
-          `.kt-big-${i}`,
-          { scale: 28, opacity: 0, duration: 0.55, ease: "power2.in" },
-          start + 0.35
-        );
-
-        // Small descriptor: fade out as the next panel approaches
-        tl.to(
-          `.kt-small-${i}`,
-          { opacity: 0, duration: 0.18, ease: "power2.in" },
-          start + 0.62
-        );
-      });
-
-      // Final hero
-      const finalStart = PANELS.length * PANEL_STRIDE + 0.05;
-      tl.to(".kt-final", { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }, finalStart);
+      tl.to(".kt-cube", { scale: 1.5, duration: 0.55, ease: "power2.in" }, 0);
+      tl.to(".kt-cube", { scale: 2.6, opacity: 0, duration: 0.2 }, 0.55);
+      tl.to(
+        ".kt-final",
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
+        0.78
+      );
     }, section);
 
     return () => ctx.revert();
@@ -127,29 +108,43 @@ export function KineticTypographyHero() {
         position: "relative",
         height: "100vh",
         width: "100%",
-        background: "#000",
+        background: "#0E0D0B",
         overflow: "hidden",
-        color: "var(--color-paper)",
         zIndex: 1,
+        color: "var(--color-paper)",
       }}
     >
+      {/* 3D ROOM */}
+      <div className="kt-wrapper">
+        <div className="kt-cube">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <div key={n} className={`kt-wall kt-w-${n}`}>
+              <div className="kt-internal">
+                <RoomContent />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Top-left tag */}
       <div
         style={{
           position: "absolute",
           top: 28,
           left: 32,
-          zIndex: 30,
+          zIndex: 50,
           fontFamily: "var(--font-mono)",
           fontSize: 11,
           letterSpacing: "0.24em",
           textTransform: "uppercase",
-          color: "rgba(243,239,230,0.6)",
-          fontWeight: 600,
+          color: "var(--color-paper)",
+          mixBlendMode: "difference",
+          fontWeight: 700,
           display: "flex",
           alignItems: "center",
           gap: 10,
-          mixBlendMode: "difference",
+          pointerEvents: "none",
         }}
       >
         <span
@@ -162,152 +157,44 @@ export function KineticTypographyHero() {
             boxShadow: "0 0 10px rgba(180,232,19,0.6)",
           }}
         />
-        <span style={{ color: "var(--color-paper)", fontWeight: 700 }}>ylb</span>
-        <span style={{ opacity: 0.5 }}>·</span>
-        <span>v6 prototype</span>
+        ylb · v6
       </div>
 
-      {/* Top-right indicator */}
       <div
         style={{
           position: "absolute",
           top: 28,
           right: 32,
-          zIndex: 30,
+          zIndex: 50,
           fontFamily: "var(--font-mono)",
           fontSize: 11,
           letterSpacing: "0.24em",
           textTransform: "uppercase",
-          color: "rgba(243,239,230,0.45)",
-          fontWeight: 600,
+          color: "var(--color-paper)",
           mixBlendMode: "difference",
+          fontWeight: 600,
+          opacity: 0.65,
+          pointerEvents: "none",
         }}
       >
-        scroll · 01 → 03
+        scroll · fly through
       </div>
-
-      {/* Big zooming words */}
-      {PANELS.map((p, i) => (
-        <div
-          key={`big-${i}`}
-          className={`kt-big kt-big-${i}`}
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 4 + i,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            pointerEvents: "none",
-            willChange: "transform, opacity",
-            transformOrigin: "center center",
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: "var(--font-syne)",
-              fontWeight: 800,
-              fontSize: "clamp(72px, 13vw, 220px)",
-              lineHeight: 0.9,
-              letterSpacing: "-0.055em",
-              color: "var(--color-paper)",
-              margin: 0,
-              textAlign: "center",
-              textShadow: "0 0 80px rgba(243,239,230,0.06)",
-            }}
-          >
-            {p.bigLines.map((line, idx) => (
-              <span key={idx}>
-                {line}
-                {idx < p.bigLines.length - 1 && <br />}
-              </span>
-            ))}
-          </h1>
-        </div>
-      ))}
-
-      {/* Small descriptors */}
-      {PANELS.map((p, i) => (
-        <div
-          key={`small-${i}`}
-          className={`kt-small kt-small-${i}`}
-          style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 20,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "0 clamp(24px, 4vw, 72px)",
-            pointerEvents: "none",
-            willChange: "opacity, transform",
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              letterSpacing: "0.28em",
-              textTransform: "uppercase",
-              color: "var(--color-red)",
-              fontWeight: 700,
-              marginBottom: 24,
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-            }}
-          >
-            <span
-              aria-hidden
-              style={{
-                width: 32,
-                height: 1,
-                background: "var(--color-red)",
-              }}
-            />
-            {p.tag}
-            <span
-              aria-hidden
-              style={{
-                width: 32,
-                height: 1,
-                background: "var(--color-red)",
-              }}
-            />
-          </div>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "clamp(17px, 1.6vw, 24px)",
-              lineHeight: 1.45,
-              color: "var(--color-paper)",
-              maxWidth: "44ch",
-              textAlign: "center",
-              margin: 0,
-              fontWeight: 400,
-              textShadow: "0 2px 24px rgba(0,0,0,0.85)",
-            }}
-          >
-            {p.desc}
-          </p>
-        </div>
-      ))}
 
       {/* Scroll cue */}
       <div
         className="kt-scroll-cue"
         style={{
           position: "absolute",
-          bottom: 32,
+          bottom: 36,
           left: "50%",
           transform: "translateX(-50%)",
-          zIndex: 30,
+          zIndex: 50,
           fontFamily: "var(--font-mono)",
           fontSize: 10,
           letterSpacing: "0.32em",
           textTransform: "uppercase",
-          color: "rgba(243,239,230,0.6)",
+          color: "var(--color-paper)",
+          mixBlendMode: "difference",
           fontWeight: 600,
           display: "flex",
           flexDirection: "column",
@@ -322,7 +209,7 @@ export function KineticTypographyHero() {
           style={{
             width: 1,
             height: 36,
-            background: "var(--color-red)",
+            background: "currentColor",
             opacity: 0.7,
             animation: "kt-line 1.8s ease-in-out infinite",
             transformOrigin: "top",
@@ -330,13 +217,13 @@ export function KineticTypographyHero() {
         />
       </div>
 
-      {/* Final hero */}
+      {/* Final hero — settles after the fly-through */}
       <div
         className="kt-final"
         style={{
           position: "absolute",
           inset: 0,
-          zIndex: 40,
+          zIndex: 100,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -368,7 +255,7 @@ export function KineticTypographyHero() {
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "clamp(15px, 1.4vw, 19px)",
-            color: "rgba(243,239,230,0.7)",
+            color: "rgba(243,239,230,0.75)",
             maxWidth: "48ch",
             lineHeight: 1.5,
             margin: 0,
@@ -430,6 +317,157 @@ export function KineticTypographyHero() {
       </div>
 
       <style>{`
+        /* ============================================================ */
+        /* 3D ROOM TECHNIQUE                                            */
+        /* ============================================================ */
+
+        .kt-wrapper {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 70vmin;
+          height: 70vmin;
+          perspective: 350vmin;
+          transform: translate(-50%, -50%);
+          z-index: 5;
+        }
+
+        .kt-cube {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transform: scale(0.5);
+          transform-style: preserve-3d;
+          will-change: transform, opacity;
+        }
+
+        /* Masking frame at depth — hides everything outside the
+           cube interior. 46vmin square at 70vmin depth, with a
+           100vmin solid outline acting as the surround. */
+        .kt-cube::before {
+          content: "";
+          position: absolute;
+          height: 46vmin;
+          width: 46vmin;
+          left: 50%;
+          top: 50%;
+          outline: 100vmin solid #0E0D0B;
+          transform: translate3d(-50%, -50%, 70vmin);
+          z-index: 1;
+        }
+
+        .kt-wall {
+          width: 70vmin;
+          height: 70vmin;
+          perspective: 350vmin;
+        }
+
+        .kt-wall,
+        .kt-wall .kt-internal {
+          align-items: center;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          background-color: #0E0D0B;
+          display: flex;
+          justify-content: center;
+        }
+
+        .kt-wall .kt-internal {
+          position: relative;
+          height: 100%;
+          width: 100%;
+        }
+
+        .kt-wall:not(.kt-w-1) {
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+
+        /* LEFT WALL */
+        .kt-w-2 {
+          perspective: 71.1173vmin;
+          perspective-origin: -318.3594vmin 50%;
+          transform: rotateY(80deg);
+          transform-origin: 24.5vmin 50%;
+        }
+        .kt-w-2 .kt-internal {
+          clip-path: polygon(0 0, 36% 0, 36% 100%, 0 100%);
+          transform: rotateY(-80deg);
+          transform-origin: 24.5vmin 50%;
+        }
+
+        /* RIGHT WALL */
+        .kt-w-3 {
+          perspective: 70.4280vmin;
+          perspective-origin: 387.7810vmin 50%;
+          transform: rotateY(-80deg);
+          transform-origin: 44.8vmin 50%;
+        }
+        .kt-w-3 .kt-internal {
+          clip-path: polygon(63% 0, 100% 0, 100% 100%, 63% 100%);
+          transform: rotateY(80deg);
+          transform-origin: 44.8vmin 50%;
+        }
+
+        /* CEILING */
+        .kt-w-4 {
+          perspective: 71.7603vmin;
+          perspective-origin: 50% -322.0060vmin;
+          transform: rotateX(-80deg);
+          transform-origin: 50% 24.5vmin;
+        }
+        .kt-w-4 .kt-internal {
+          clip-path: polygon(0 0, 100% 0, 100% 36%, 0 36%);
+          transform: rotateX(80deg);
+          transform-origin: 50% 24.5vmin;
+        }
+
+        /* FLOOR */
+        .kt-w-5 {
+          perspective: 71.0281vmin;
+          perspective-origin: 50% 391.1845vmin;
+          transform: rotateX(80deg);
+          transform-origin: 50% 44.8vmin;
+        }
+        .kt-w-5 .kt-internal {
+          clip-path: polygon(0 63%, 100% 63%, 100% 100%, 0 100%);
+          transform: rotateX(-80deg);
+          transform-origin: 50% 44.8vmin;
+        }
+
+        /* ============================================================ */
+        /* ROOM CONTENT TYPOGRAPHY                                      */
+        /* ============================================================ */
+
+        .kt-room-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 3.5vmin;
+          text-align: center;
+          padding: 4vmin;
+          color: var(--color-paper);
+        }
+
+        .kt-room-title {
+          font-family: var(--font-syne);
+          font-weight: 800;
+          font-size: 16vmin;
+          letter-spacing: -0.05em;
+          line-height: 0.88;
+          color: var(--color-red);
+        }
+
+        .kt-room-lines {
+          font-family: var(--font-syne);
+          font-weight: 500;
+          font-size: 4.4vmin;
+          letter-spacing: -0.02em;
+          line-height: 1.18;
+        }
+
         @keyframes kt-line {
           0%   { transform: scaleY(0); transform-origin: top; }
           50%  { transform: scaleY(1); transform-origin: top; }
