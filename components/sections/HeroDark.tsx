@@ -5,44 +5,52 @@ import Link from "next/link";
 import gsap from "gsap";
 
 /**
- * v4.1 hero — headline IS the primary element, not an overlay on the
- * wordmark. Trionn pattern: huge type top-left, supporting body bottom,
- * scroll prompt + clear CTA. Wordmark removed from hero entirely (it
- * lives in the header + footer, doesn't need to be the hero gesture).
+ * Hero v6 — video background + glass aesthetic, modelled on the
+ * Creative Marketing Agency reference.
+ *
+ * Composition:
+ *  - Full-bleed atmospheric stock video (Pexels CDN, loops, muted),
+ *    fades to night at the bottom for a clean handoff to the next
+ *    section.
+ *  - Top glass nav rail floats over the video (backdrop-blur, subtle
+ *    border, dark-tinted glass).
+ *  - Left-aligned hero headline: 'you look booked.' as the entire
+ *    statement — brand promise IS the hero, not the wordmark.
+ *  - Below: short subhead + two CTAs (lime primary + glass secondary).
+ *  - Scroll cue bottom-right.
  */
+
+const HERO_VIDEO =
+  "https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4";
+const HERO_POSTER =
+  "https://images.pexels.com/videos/3163534/free-video-3163534.jpg?auto=compress&cs=tinysrgb&w=1920";
+
 export function HeroDark() {
-  const wrap = useRef<HTMLDivElement>(null);
-  const head = useRef<HTMLDivElement>(null);
+  const headRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    if (!head.current) return;
+    const head = headRef.current;
+    if (!head) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const eyebrow = head.current.querySelectorAll(".hd-eyebrow");
-    const words = head.current.querySelectorAll(".hd-word");
-    gsap.fromTo(
-      eyebrow,
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.0, ease: "expo.out", delay: 0.1 }
-    );
+    const words = head.querySelectorAll(".hd-word");
     gsap.fromTo(
       words,
-      { y: 80, opacity: 0, filter: "blur(12px)" },
+      { y: 60, opacity: 0, filter: "blur(8px)" },
       {
         y: 0,
         opacity: 1,
         filter: "blur(0px)",
-        duration: 1.6,
+        duration: 1.4,
         ease: "expo.out",
-        stagger: 0.08,
-        delay: 0.35,
+        stagger: 0.07,
+        delay: 0.4,
       }
     );
   }, []);
 
   return (
     <section
-      ref={wrap}
       data-bg="dark"
       data-surface="dark"
       style={{
@@ -52,235 +60,400 @@ export function HeroDark() {
         color: "var(--color-paper)",
         overflow: "hidden",
         isolation: "isolate",
-        display: "grid",
-        gridTemplateRows: "auto 1fr auto",
-        padding: "clamp(110px, 14vh, 160px) clamp(24px, 4vw, 72px) clamp(40px, 5vw, 64px)",
       }}
     >
-      {/* DEPTH LAYER 1 — faint calendar grid diagonal at low opacity.
-          The brand metaphor as background depth — implies the hero
-          sits on a planner page. Tilted -8°, drifts subtly with scroll. */}
-      <div
-        aria-hidden
-        className="hd-grid"
-        style={{
-          position: "absolute",
-          inset: "-20%",
-          backgroundImage:
-            "linear-gradient(rgba(243,239,230,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(243,239,230,0.045) 1px, transparent 1px)",
-          backgroundSize: "120px 70px",
-          transform: "rotate(-8deg) translateZ(0)",
-          transformOrigin: "center center",
-          pointerEvents: "none",
-          zIndex: 0,
-          willChange: "transform",
-          maskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%)",
-        }}
-      />
-
-      {/* DEPTH LAYER 2 — atmospheric lighting. Warm tungsten key from
-          upper-left, cool electric rim from upper-right (suggests
-          distant storm). Strong vignette frames the centre. */}
-      <div
-        aria-hidden
+      {/* Background video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        poster={HERO_POSTER}
+        src={HERO_VIDEO}
+        aria-hidden="true"
         style={{
           position: "absolute",
           inset: 0,
-          background: [
-            "radial-gradient(ellipse 50% 40% at 15% 10%, rgba(255,180,100,0.10) 0%, transparent 60%)",
-            "radial-gradient(ellipse 35% 30% at 88% 8%, rgba(120,180,255,0.06) 0%, transparent 65%)",
-            "radial-gradient(ellipse 60% 50% at 50% 100%, rgba(196,71,46,0.08) 0%, transparent 65%)",
-            "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 30%, rgba(14,13,11,0.4) 100%)",
-          ].join(", "),
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      />
-
-      {/* DEPTH LAYER 3 — drifting dust particles in the warm light beam */}
-      <div
-        aria-hidden
-        className="hd-dust"
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 1,
-          opacity: 0.4,
-          backgroundImage:
-            "radial-gradient(circle at 12% 30%, rgba(255,220,180,0.5) 0.5px, transparent 1.5px), radial-gradient(circle at 28% 18%, rgba(255,220,180,0.4) 0.5px, transparent 1.5px), radial-gradient(circle at 22% 55%, rgba(255,220,180,0.6) 0.5px, transparent 2px), radial-gradient(circle at 18% 72%, rgba(255,220,180,0.35) 0.5px, transparent 1.5px), radial-gradient(circle at 32% 88%, rgba(255,220,180,0.5) 0.5px, transparent 1.5px)",
-          backgroundSize: "600px 600px",
-          animation: "hd-drift 30s linear infinite",
-        }}
-      />
-
-      {/* Headline block — left-aligned 'you look' eyebrow + massive BOOKED. */}
-      <div
-        ref={head}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "stretch",
-          zIndex: 3,
-          maxWidth: 1480,
           width: "100%",
-          margin: "0 auto",
-          position: "relative",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: 0,
+        }}
+      />
+
+      {/* Subtle noise grain overlay */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+          opacity: 0.5,
+          mixBlendMode: "overlay",
+          pointerEvents: "none",
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+          backgroundSize: "240px",
+        }}
+      />
+
+      {/* Gradient — dim top for header legibility, full black at bottom
+          for the fade-into-next-section handoff */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 2,
+          pointerEvents: "none",
+          background:
+            "linear-gradient(180deg, rgba(14,13,11,0.55) 0%, rgba(14,13,11,0.25) 25%, rgba(14,13,11,0.4) 55%, rgba(14,13,11,1) 100%)",
+        }}
+      />
+
+      {/* GLASS HEADER NAV — floats over video */}
+      <div
+        style={{
+          position: "absolute",
+          top: 16,
+          left: 16,
+          right: 16,
+          zIndex: 10,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "12px 20px",
+          background: "rgba(14,13,11,0.45)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%)",
+          border: "1px solid rgba(243,239,230,0.10)",
+          borderRadius: 999,
         }}
       >
-        {/* Left-aligned italic serif "you look" — enlarged secondary headline */}
-        <span
-          className="hd-eyebrow"
+        <Link
+          href="/"
+          aria-label="YLB home"
+          data-cur="pen"
           style={{
-            display: "block",
-            textAlign: "left",
-            fontFamily: "var(--font-serif)",
-            fontStyle: "italic",
-            fontSize: "clamp(48px, 6vw, 112px)",
-            color: "var(--color-paper-soft)",
-            letterSpacing: "-0.02em",
-            lineHeight: 0.95,
-            marginBottom: "clamp(8px, 1vw, 16px)",
-            paddingLeft: "clamp(8px, 1.5vw, 32px)",
-          }}
-        >
-          you look
-        </span>
-
-        {/* Massive BOOKED. — capped so it never overflows horizontal margins.
-            14vw stays inside the container at every viewport from 1366 up;
-            18rem cap keeps it from getting absurd on ultra-wide. */}
-        <h1
-          style={{
-            fontFamily: "var(--font-syne)",
-            fontWeight: 800,
-            fontSize: "clamp(3rem, 12vw, 15rem)",
-            lineHeight: 1,
-            letterSpacing: "-0.06em",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
             color: "var(--color-paper)",
-            margin: 0,
-            textAlign: "center",
-            whiteSpace: "nowrap",
-            maxWidth: "100%",
+            textDecoration: "none",
           }}
-          className="hd-mega"
         >
-          <span className="hd-word" style={{ display: "inline-block" }}>
-            BOOKED
-          </span>
           <span
-            className="hd-word serif-italic"
             style={{
-              display: "inline-block",
-              fontSize: "1em",
+              fontFamily: "var(--font-syne)",
+              fontWeight: 800,
+              fontSize: 18,
+              letterSpacing: "-0.04em",
               lineHeight: 1,
-              marginLeft: "0.02em",
             }}
           >
-            .
+            ylb
           </span>
-        </h1>
+          <span
+            aria-hidden
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: "var(--color-red)",
+              boxShadow: "0 0 10px var(--color-red-glow)",
+              animation: "ylb-pulse 2.4s ease-in-out infinite",
+            }}
+          />
+        </Link>
+
+        <nav
+          aria-label="Main"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "clamp(16px, 2vw, 32px)",
+          }}
+        >
+          {[
+            { href: "/work", label: "Work" },
+            { href: "/services", label: "Services" },
+            { href: "/about", label: "About" },
+          ].map((i) => (
+            <Link
+              key={i.href}
+              href={i.href}
+              data-cur="pen"
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                fontWeight: 600,
+                color: "rgba(243,239,230,0.85)",
+                textDecoration: "none",
+                transition: "color 0.25s ease",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--color-paper)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(243,239,230,0.85)")}
+            >
+              {i.label}
+            </Link>
+          ))}
+          <Link
+            href="/contact"
+            data-cur="hold"
+            data-magnetic=""
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 18px",
+              background: "var(--color-red)",
+              color: "var(--color-night)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              borderRadius: 999,
+              textDecoration: "none",
+              transition: "background 0.25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "var(--color-red-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "var(--color-red)";
+            }}
+          >
+            Get started
+            <span style={{ fontSize: 14 }}>↗</span>
+          </Link>
+        </nav>
       </div>
 
-      {/* Bottom row: sub + CTA + scroll prompt */}
+      {/* Top-right floating status pill (over video, glass) */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1.4fr auto auto",
-          gap: "clamp(24px, 4vw, 64px)",
-          alignItems: "end",
+          position: "absolute",
+          top: 90,
+          right: 24,
+          zIndex: 5,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "8px 14px",
+          background: "rgba(14,13,11,0.5)",
+          backdropFilter: "blur(14px) saturate(150%)",
+          WebkitBackdropFilter: "blur(14px) saturate(150%)",
+          border: "1px solid rgba(243,239,230,0.10)",
+          borderRadius: 999,
+          fontFamily: "var(--font-mono)",
+          fontSize: 10,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: "var(--color-paper)",
+          fontWeight: 600,
+        }}
+      >
+        <span
+          aria-hidden
+          style={{
+            width: 6,
+            height: 6,
+            borderRadius: "50%",
+            background: "var(--color-red)",
+            animation: "ylb-pulse 2.4s ease-in-out infinite",
+          }}
+        />
+        Available Week 28
+      </div>
+
+      {/* HERO CONTENT — left-aligned, glass-tinted backing for legibility */}
+      <div
+        style={{
+          position: "relative",
           zIndex: 3,
-          paddingTop: 40,
-          borderTop: "1px solid var(--color-hairline)",
+          minHeight: "100svh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          padding: "0 clamp(24px, 4vw, 64px) clamp(48px, 8vh, 96px)",
           maxWidth: 1480,
-          width: "100%",
           margin: "0 auto",
         }}
-        className="hd-foot"
       >
-        <style>{`@media (max-width: 880px) { .hd-foot { grid-template-columns: 1fr !important; } }`}</style>
+        <h1
+          ref={headRef}
+          style={{
+            fontFamily: "var(--font-syne)",
+            fontWeight: 600,
+            fontSize: "clamp(3rem, 6vw, 7rem)",
+            lineHeight: 0.98,
+            letterSpacing: "-0.035em",
+            margin: 0,
+            marginBottom: 32,
+            color: "var(--color-paper)",
+            maxWidth: "18ch",
+            textShadow: "0 2px 40px rgba(0,0,0,0.4)",
+          }}
+        >
+          {["Elevate", "your", "business", "with"].map((w, i) => (
+            <span
+              key={i}
+              className="hd-word"
+              style={{ display: "inline-block", marginRight: "0.22em" }}
+            >
+              {w}
+            </span>
+          ))}
+          <br />
+          <span
+            className="hd-word"
+            style={{ display: "inline-block", marginRight: "0.22em" }}
+          >
+            custom
+          </span>
+          <span
+            className="hd-word"
+            style={{
+              display: "inline-block",
+              fontFamily: "var(--font-serif)",
+              fontStyle: "italic",
+              fontWeight: 400,
+              fontSize: "1.08em",
+            }}
+          >
+            systems.
+          </span>
+        </h1>
 
         <p
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "clamp(15px, 1.5vw, 19px)",
             lineHeight: 1.5,
-            color: "var(--color-paper-soft)",
-            maxWidth: "52ch",
+            color: "rgba(243,239,230,0.82)",
+            maxWidth: "48ch",
             margin: 0,
+            marginBottom: 36,
+            textShadow: "0 1px 20px rgba(0,0,0,0.5)",
           }}
         >
-          A studio for UK SMEs. We rebuild the{" "}
-          <b style={{ color: "var(--color-paper)" }}>website</b>, the{" "}
-          <b style={{ color: "var(--color-paper)" }}>operations system</b>, and
-          the <b style={{ color: "var(--color-paper)" }}>paid acquisition</b>.
-          Then the calendar fills.
+          A UK studio building the operations software, websites and paid
+          acquisition that grow ambitious SMEs.
         </p>
 
-        <Link
-          href="/contact"
-          data-cur="hold"
-          data-magnetic=""
+        <div
           style={{
-            display: "inline-flex",
-            alignItems: "center",
+            display: "flex",
             gap: 14,
-            padding: "16px 28px",
-            background: "var(--color-red)",
-            color: "var(--color-night)",
-            fontFamily: "var(--font-mono)",
-            fontSize: 12,
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-            borderRadius: 999,
-            transition: "background 0.25s ease, transform 0.25s ease",
-            whiteSpace: "nowrap",
-            justifySelf: "start",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "var(--color-red-hover)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--color-red)";
-          }}
-        >
-          BOOK A SLOT
-          <span style={{ fontSize: 16 }}>→</span>
-        </Link>
-
-        <span
-          style={{
-            display: "inline-flex",
-            flexDirection: "column",
+            flexWrap: "wrap",
             alignItems: "center",
-            gap: 10,
-            fontFamily: "var(--font-mono)",
-            fontSize: 10,
-            letterSpacing: "0.24em",
-            textTransform: "uppercase",
-            color: "var(--color-mute)",
-            justifySelf: "end",
           }}
         >
-          Scroll
-          <span
-            aria-hidden
+          {/* Primary CTA — solid lime */}
+          <Link
+            href="/contact"
+            data-cur="hold"
+            data-magnetic=""
             style={{
-              display: "inline-block",
-              width: 1,
-              height: 32,
-              background: "var(--color-paper)",
-              opacity: 0.5,
-              animation: "hd-line 2.2s ease-in-out infinite",
-              transformOrigin: "top",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "16px 28px",
+              background: "var(--color-red)",
+              color: "var(--color-night)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 12,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              borderRadius: 999,
+              textDecoration: "none",
+              transition: "background 0.25s ease",
             }}
-          />
-        </span>
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "var(--color-red-hover)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "var(--color-red)";
+            }}
+          >
+            Book a slot
+            <span style={{ fontSize: 16 }}>→</span>
+          </Link>
+
+          {/* Secondary CTA — glass */}
+          <Link
+            href="/work"
+            data-cur="pen"
+            data-magnetic=""
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "16px 28px",
+              background: "rgba(243,239,230,0.06)",
+              backdropFilter: "blur(14px) saturate(150%)",
+              WebkitBackdropFilter: "blur(14px) saturate(150%)",
+              border: "1px solid rgba(243,239,230,0.18)",
+              color: "var(--color-paper)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 12,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              borderRadius: 999,
+              textDecoration: "none",
+              transition: "background 0.25s ease, border-color 0.25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(243,239,230,0.12)";
+              e.currentTarget.style.borderColor = "rgba(243,239,230,0.28)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(243,239,230,0.06)";
+              e.currentTarget.style.borderColor = "rgba(243,239,230,0.18)";
+            }}
+          >
+            See the work
+          </Link>
+        </div>
+      </div>
+
+      {/* Bottom-right scroll cue */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 24,
+          right: 32,
+          zIndex: 4,
+          display: "inline-flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 10,
+          fontFamily: "var(--font-mono)",
+          fontSize: 10,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          color: "rgba(243,239,230,0.7)",
+        }}
+      >
+        Scroll
+        <span
+          aria-hidden
+          style={{
+            display: "inline-block",
+            width: 1,
+            height: 32,
+            background: "var(--color-paper)",
+            opacity: 0.5,
+            animation: "hd-line 2.2s ease-in-out infinite",
+            transformOrigin: "top",
+          }}
+        />
       </div>
 
       <style>{`
@@ -289,14 +462,6 @@ export function HeroDark() {
           50% { transform: scaleY(1); transform-origin: top; }
           51% { transform-origin: bottom; }
           100% { transform: scaleY(0); transform-origin: bottom; }
-        }
-        @keyframes hd-drift {
-          0% { transform: translate3d(0, 0, 0); }
-          50% { transform: translate3d(-40px, 30px, 0); }
-          100% { transform: translate3d(0, 0, 0); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .hd-dust, .hd-grid { animation: none !important; }
         }
       `}</style>
     </section>
