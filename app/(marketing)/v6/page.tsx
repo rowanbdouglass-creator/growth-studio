@@ -1,17 +1,29 @@
-import { KineticTypographyHero } from "@/components/sections/KineticTypographyHero";
+"use client";
+
+import dynamic from "next/dynamic";
+
+const KineticTypographyHero3D = dynamic(
+  () =>
+    import("@/components/sections/KineticTypographyHero3D").then(
+      (m) => m.KineticTypographyHero3D
+    ),
+  { ssr: false }
+);
 
 /**
- * /v6 — just the kinetic hero. No other sections.
- * Stripped for fast load while we tune the hero animation.
+ * /v6 — real 3D kinetic typography via Three.js / R3F.
+ *
+ * Dynamic import + ssr:false because R3F renders to canvas and
+ * needs the browser. Avoids hydration mismatch errors.
  */
 export default function V6Page() {
   return (
     <main
       data-bg="dark"
       data-hide-site-header
-      style={{ position: "relative", zIndex: 0, background: "#000" }}
+      style={{ position: "relative", zIndex: 0, background: "#0E0D0B" }}
     >
-      <KineticTypographyHero />
+      <KineticTypographyHero3D />
     </main>
   );
 }
