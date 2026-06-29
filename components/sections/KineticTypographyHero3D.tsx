@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Text } from "@react-three/drei";
+import { Text3D, Center } from "@react-three/drei";
 import {
   EffectComposer,
   DepthOfField,
@@ -13,25 +13,28 @@ import {
 import * as THREE from "three";
 
 /**
- * KineticTypographyHero3D — actual 3D with Three.js / R3F.
+ * KineticTypographyHero3D — REAL extruded 3D letters.
  *
- * Replaces the CSS-3D approximation. Text is rendered as real 3D
- * meshes via troika-three-text (SDF — stays crisp at any scale).
- * Camera dolly is driven by scroll.
+ * Letters are now actual 3D meshes with depth (height prop on
+ * Text3D). When the camera passes close to a phrase, you see the
+ * SIDE FACES of the letters — the black blocks the user pointed
+ * out in the Spatial reference are the visible extrusion sides.
  *
- * This is the technique Spatial Festival uses (their bundle
- * contains THREE.*, WebGLRenderer, PerspectiveCamera, BufferGeometry,
- * shaders, etc). Pure CSS could not reach the same crispness +
- * depth — bitmap scaling will always blur transform: scale(big).
+ * Previous version used <Text> (troika SDF) — that's 2D text on a
+ * plane, no real depth. Switched to <Text3D> + TextGeometry which
+ * produces actual extruded meshes.
  *
- * Scene composition:
- *  - 4 phrase groups positioned at Z = 0, -25, -50, -75 (deep into
- *    the scene). Each phrase has 3 lines stacked vertically.
- *  - Camera starts at Z = 10, looking forward.
- *  - On scroll, camera Z animates from 10 -> -90, dollying forward
- *    through all four phrase groups.
- *  - Mouse moves camera rotation slightly for "look around" parallax.
+ * Lighting added because MeshStandardMaterial needs lights to
+ * render (would be black otherwise). Two directional lights +
+ * ambient give shading that reveals the depth of the letters.
+ *
+ * Font: Helvetiker Bold (default Three.js font) for now. Bricolage
+ * Grotesque needs to be converted from TTF to typeface.json format
+ * (via facetype.js) — pending. The extrusion technique is the
+ * headline change here; font face is the next iteration.
  */
+
+const FONT_JSON = "/fonts/helvetiker-bold.typeface.json";
 
 const PHRASES: string[][] = [
   ["Bespoke software", "for ambitious", "UK businesses."],
@@ -40,48 +43,33 @@ const PHRASES: string[][] = [
   ["Direct line.", "Two operators.", "No managers."],
 ];
 
-const PHRASE_SPACING = 45; // units between phrase groups in Z — wide
-                            // enough that the next phrase doesn't
-                            // bleed into the current one
+const PHRASE_SPACING = 50;
 
-const BRAND_FONT = "/fonts/bricolage-bold.ttf";
-
-// One wall's worth of stacked text lines
-function TextLines({
-  lines,
-  rotation = [0, 0, 0],
-  position = [0, 0, 0],
-}: {
-  lines: string[];
-  rotation?: [number, number, number];
-  position?: [number, number, number];
-}) {
+function ExtrudedLine({ text, y }: { text: string; y: number }) {
   return (
-    <group position={position} rotation={rotation}>
-      {lines.map((line, idx) => (
-        <Text
-          key={idx}
-          font={BRAND_FONT}
-          position={[0, (lines.length / 2 - idx - 0.5) * 4.4, 0]}
-          fontSize={4.4}
+    <Center position={[0, y, 0]}>
+      <Text3D
+        font={FONT_JSON}
+        size={3.6}
+        height={1.4}
+        curveSegments={8}
+        bevelEnabled
+        bevelThickness={0.06}
+        bevelSize={0.05}
+        bevelOffset={0}
+        bevelSegments={2}
+      >
+        {text}
+        <meshStandardMaterial
           color="#F3EFE6"
-          anchorX="center"
-          anchorY="middle"
-          letterSpacing={-0.055}
-          maxWidth={50}
-        >
-          {line}
-        </Text>
-      ))}
-    </group>
+          metalness={0.0}
+          roughness={0.65}
+        />
+      </Text3D>
+    </Center>
   );
 }
 
-// One big phrase positioned in 3D space. Camera flies toward it,
-// it scales massively via natural perspective, then camera passes
-// through. No walls — just one crisp 3D text plane per phrase.
-// (Spatial's main scrolling pages use this, not the cube — that's
-// only their intro loader.)
 function PhraseGroup({
   lines,
   position,
@@ -91,49 +79,52 @@ function PhraseGroup({
 }) {
   return (
     <group position={position}>
-      <TextLines lines={lines} position={[0, 0, 0]} />
+      {lines.map((line, idx) => (
+        <ExtrudedLine
+          key={idx}
+          text={line}
+          y={(lines.length / 2 - idx - 0.5) * 4.6}
+        />
+      ))}
     </group>
   );
 }
 
 /**
- * Map raw scroll progress (0..1) to camera-Z so the camera DWELLS
- * at each phrase plane briefly before accelerating to the next.
- *
- * Each phrase gets 1/N of the scroll. Within its slice:
- *   - 60% spent approaching (fast)
- *   - 40% spent passing through the phrase plane (slow — the
- *     "fragments fill the screen" moment)
+ * Eased camera Z so the camera DWELLS at each phrase before
+ * accelerating to the next — gives each phrase its dramatic
+ * "fragments fill the screen" climax.
  */
-function easedCameraZ(progress: number, n: number, startZ: number, endZ: number, spacing: number) {
+function easedCameraZ(
+  progress: number,
+  n: number,
+  startZ: number,
+  endZ: number,
+  spacing: number
+) {
   const slice = 1 / n;
   const idx = Math.min(n - 1, Math.floor(progress / slice));
-  const local = (progress - idx * slice) / slice; // 0..1 within this phrase
+  const local = (progress - idx * slice) / slice;
 
   const phraseZ = -spacing * (idx + 1);
   const prevZ = idx === 0 ? startZ : -spacing * idx;
   const nextZ = idx === n - 1 ? endZ : -spacing * (idx + 2);
 
-  // Three sub-phases: approach -> close-pass -> recede
-  const APPROACH = 0.50;
+  const APPROACH = 0.5;
   const PASS = 0.35;
-  // RECEDE = 0.15
 
   if (local < APPROACH) {
-    // Approach: prev pos -> phrase + 2 (just in front)
     const t = local / APPROACH;
-    const eased = 1 - Math.pow(1 - t, 2); // ease-out
-    return prevZ + (phraseZ + 2 - prevZ) * eased;
+    const eased = 1 - Math.pow(1 - t, 2);
+    return prevZ + (phraseZ + 3 - prevZ) * eased;
   } else if (local < APPROACH + PASS) {
-    // Close pass: phrase + 2 -> phrase - 1.5 (camera passes through plane slowly)
     const t = (local - APPROACH) / PASS;
-    const eased = t * t * (3 - 2 * t); // smoothstep
-    return (phraseZ + 2) + (-3.5) * eased;
+    const eased = t * t * (3 - 2 * t);
+    return phraseZ + 3 + -5 * eased;
   } else {
-    // Recede: phrase - 1.5 -> next - 2 (approaching next phrase)
     const t = (local - APPROACH - PASS) / (1 - APPROACH - PASS);
-    const eased = t * t; // ease-in
-    return (phraseZ - 1.5) + (nextZ + 2 - (phraseZ - 1.5)) * eased;
+    const eased = t * t;
+    return phraseZ - 2 + (nextZ + 3 - (phraseZ - 2)) * eased;
   }
 }
 
@@ -150,7 +141,7 @@ function Scene({
   const targetOffset = useRef({ x: 0, y: 0 });
 
   useFrame(() => {
-    const startZ = 8;
+    const startZ = 10;
     const endZ = -PHRASE_SPACING * (PHRASES.length + 0.6);
     camera.position.z = easedCameraZ(
       scrollProgress,
@@ -160,9 +151,8 @@ function Scene({
       PHRASE_SPACING
     );
 
-    // Mouse parallax — camera position offset, look forward
-    targetOffset.current.x = (mouseX - 0.5) * 1.4;
-    targetOffset.current.y = (0.5 - mouseY) * 0.8;
+    targetOffset.current.x = (mouseX - 0.5) * 2.0;
+    targetOffset.current.y = (0.5 - mouseY) * 1.2;
     camera.position.x += (targetOffset.current.x - camera.position.x) * 0.06;
     camera.position.y += (targetOffset.current.y - camera.position.y) * 0.06;
 
@@ -171,7 +161,12 @@ function Scene({
 
   return (
     <>
-      <ambientLight intensity={1.2} />
+      {/* Lighting — Text3D uses MeshStandardMaterial which needs lights */}
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[8, 10, 10]} intensity={1.2} />
+      <directionalLight position={[-8, -5, 6]} intensity={0.6} />
+      <directionalLight position={[0, 0, 20]} intensity={0.5} />
+
       {PHRASES.map((lines, i) => (
         <PhraseGroup
           key={i}
@@ -243,7 +238,7 @@ export function KineticTypographyHero3D() {
         }}
       >
         <Canvas
-          camera={{ position: [0, 0, 10], fov: 65, near: 0.1, far: 200 }}
+          camera={{ position: [0, 0, 10], fov: 65, near: 0.1, far: 250 }}
           style={{ width: "100%", height: "100%", background: "#0E0D0B" }}
           dpr={[1, 2]}
         >
@@ -253,22 +248,17 @@ export function KineticTypographyHero3D() {
             mouseY={mouseY}
           />
           <EffectComposer>
-            {/* Cinematic focal plane — text in focus is sharp,
-                everything in front/behind softens */}
             <DepthOfField
               focusDistance={0.0}
               focalLength={0.04}
               bokehScale={3}
               height={480}
             />
-            {/* Film grain for texture / tooth */}
-            <Noise opacity={0.045} premultiply />
-            {/* Pulls the eye to centre */}
-            <Vignette eskil={false} offset={0.15} darkness={0.65} />
+            <Noise opacity={0.04} premultiply />
+            <Vignette eskil={false} offset={0.15} darkness={0.6} />
           </EffectComposer>
         </Canvas>
 
-        {/* Final hero — overlays once scroll is nearly complete */}
         <div
           style={{
             position: "absolute",
