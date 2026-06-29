@@ -11,13 +11,15 @@ import { MagneticButton } from "@/components/fx/MagneticButton";
 export function FindASlot() {
   return (
     <section
-      data-bg="red"
+      data-bg="dark"
+      data-surface="dark"
       style={{
         padding: "clamp(96px, 11vw, 160px) 0",
-        background: "var(--color-red)",
+        background: "var(--color-night)",
         color: "var(--color-paper)",
         position: "relative",
         overflow: "hidden",
+        borderTop: "1px solid var(--color-hairline)",
       }}
     >
       <style>{`
@@ -40,8 +42,9 @@ export function FindASlot() {
         }
         .ylb-find-grid h2 em {
           font-style: italic;
-          color: var(--color-ink);
-          font-family: var(--font-syne);
+          color: var(--color-red);
+          font-family: var(--font-serif);
+          font-weight: 400;
         }
         .ylb-find-side p {
           font-size: clamp(16px, 1.7vw, 22px);

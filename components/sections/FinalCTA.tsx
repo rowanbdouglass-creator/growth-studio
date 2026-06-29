@@ -86,7 +86,7 @@ export function FinalCTA() {
             <Link href="/contact" data-magnetic="" data-cur="hold">
               <ShimmerButton
                 background="var(--color-red)"
-                shimmerColor="#F3EFE6"
+                shimmerColor="#0E0D0B"
                 shimmerDuration="3.4s"
                 className="ylb-shimmer"
               >
@@ -97,7 +97,7 @@ export function FinalCTA() {
                     letterSpacing: "0.22em",
                     textTransform: "uppercase",
                     fontWeight: 700,
-                    color: "var(--color-paper)",
+                    color: "var(--color-night)",
                     padding: "4px 8px",
                   }}
                 >

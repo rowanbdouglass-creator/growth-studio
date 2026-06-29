@@ -231,7 +231,7 @@ export function HeroDark() {
             gap: 14,
             padding: "16px 28px",
             background: "var(--color-red)",
-            color: "var(--color-paper)",
+            color: "var(--color-night)",
             fontFamily: "var(--font-mono)",
             fontSize: 12,
             letterSpacing: "0.22em",

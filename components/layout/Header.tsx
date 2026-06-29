@@ -153,7 +153,7 @@ export function Header() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "var(--color-red)";
-                e.currentTarget.style.color = "var(--color-paper)";
+                e.currentTarget.style.color = "var(--color-night)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = "var(--color-paper)";
