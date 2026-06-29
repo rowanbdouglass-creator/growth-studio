@@ -1,3 +1,4 @@
+import { VideoBackdrop } from "@/components/sections/VideoBackdrop";
 import { HeroFinal } from "@/components/sections/HeroFinal";
 import { Section02Philosophy } from "@/components/sections/Section02Philosophy";
 import { Section03OperatingModel } from "@/components/sections/Section03OperatingModel";
@@ -7,12 +8,15 @@ import { Section06Clients } from "@/components/sections/Section06Clients";
 import { Section07Cta } from "@/components/sections/Section07Cta";
 
 /**
- * Home — clean HeroFinal (post Spatial-detour) plus the rest of
- * the home sections. VideoBackdrop removed since HeroFinal is
- * opaque and the previous video backdrop wasn't doing useful
- * work under it. Once the lime-lightning Kling clip is ready,
- * it'll plug back in here as a transparent-hero atmospheric
- * layer.
+ * Home — lime lightning backdrop bleeds through hero + sections
+ * 02 + 03. Solid sections from 04 onward hide it. Architecture:
+ *
+ *   00 VideoBackdrop      fixed, full-viewport, behind everything
+ *   01 HeroFinal          transparent — lightning shows fully
+ *   02 Philosophy         translucent veil — lightning bleeds
+ *   03 Operating model    translucent veil — lightning fades
+ *   04 Selected work      solid night — lightning hidden
+ *   05–07                 solid
  *
  * Previous home preserved at /v5.
  */
@@ -22,6 +26,7 @@ export default function Home() {
       data-bg="dark"
       style={{ position: "relative", zIndex: 0 }}
     >
+      <VideoBackdrop />
       <HeroFinal />
       <Section02Philosophy />
       <Section03OperatingModel />

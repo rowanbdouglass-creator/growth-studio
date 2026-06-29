@@ -3,23 +3,22 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Page-wide atmospheric video backdrop with SCROLL-SCRUBBED playback.
+ * Page-wide atmospheric video backdrop.
  *
- *   • Video time is driven by scroll position, not the wall clock.
- *   • Scroll down → frames advance. Scroll up → frames reverse.
- *   • The mapping ranges from scrollY = 0 (frame 0) to scrollY =
- *     [data-video-cutoff].offsetTop (last frame). Past the cutoff,
- *     scrolling does nothing — the video sits at its last frame
- *     under the solid-black sections below.
- *   • Updates are rAF-lerped toward the target time so fast scrolls
- *     ease in instead of snapping.
- *   • prefers-reduced-motion: pause, no scrubbing.
+ * position: fixed, full viewport, behind everything (z-index: 0).
+ * The hero is transparent so the backdrop shows fully. Sections
+ * 02 and 03 have translucent dark veils so the lightning bleeds
+ * through subtly. Section 04 onward is solid night, naturally
+ * hiding the backdrop.
  *
- * The source mp4 is re-encoded with every-frame-keyframe for smooth
- * seeking (see /public/video pipeline).
+ * Source: lime lightning Kling clip, watermark cropped, audio
+ * stripped, faststart-encoded. Loops natively (not scroll-scrubbed
+ * any more — lightning reads better at its native pace).
+ *
+ * prefers-reduced-motion: paused, shows the poster frame.
  */
 
-const HERO_VIDEO = "/video/hero-backdrop.mp4";
+const HERO_VIDEO = "/video/lime-lightning.mp4";
 
 export function VideoBackdrop() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -32,70 +31,8 @@ export function VideoBackdrop() {
       v.pause();
       return;
     }
-
-    v.pause();
-
-    let target = 0;
-    let rafId = 0;
-    let cutoff = 0;
-
-    const recomputeCutoff = () => {
-      const el = document.querySelector<HTMLElement>("[data-video-cutoff]");
-      cutoff = el ? el.offsetTop : window.innerHeight * 3;
-    };
-
-    const tick = () => {
-      if (!v.duration || !isFinite(v.duration)) {
-        rafId = 0;
-        return;
-      }
-      const cur = v.currentTime;
-      const diff = target - cur;
-      if (Math.abs(diff) < 0.008) {
-        try {
-          v.currentTime = target;
-        } catch {
-          /* noop */
-        }
-        rafId = 0;
-        return;
-      }
-      try {
-        v.currentTime = cur + diff * 0.22;
-      } catch {
-        /* noop */
-      }
-      rafId = requestAnimationFrame(tick);
-    };
-
-    const updateTarget = () => {
-      if (!v.duration || !isFinite(v.duration) || cutoff <= 0) return;
-      const progress = Math.min(1, Math.max(0, window.scrollY / cutoff));
-      target = progress * v.duration;
-      if (!rafId) rafId = requestAnimationFrame(tick);
-    };
-
-    const onScroll = () => updateTarget();
-    const onResize = () => {
-      recomputeCutoff();
-      updateTarget();
-    };
-    const onMeta = () => {
-      recomputeCutoff();
-      updateTarget();
-    };
-
-    if (v.readyState >= 1) onMeta();
-    v.addEventListener("loadedmetadata", onMeta);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      v.removeEventListener("loadedmetadata", onMeta);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
+    const p = v.play();
+    if (p && typeof p.catch === "function") p.catch(() => {});
   }, []);
 
   return (
@@ -112,6 +49,8 @@ export function VideoBackdrop() {
     >
       <video
         ref={videoRef}
+        autoPlay
+        loop
         muted
         playsInline
         preload="auto"
@@ -124,11 +63,12 @@ export function VideoBackdrop() {
           objectFit: "cover",
         }}
       />
+      {/* Subtle grain over the whole backdrop layer */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          opacity: 0.35,
+          opacity: 0.3,
           mixBlendMode: "overlay",
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",

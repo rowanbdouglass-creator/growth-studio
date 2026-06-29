@@ -27,8 +27,9 @@ export function HeroFinal() {
       data-bg="dark"
       style={{
         position: "relative",
+        zIndex: 1,
         minHeight: "100svh",
-        background: "var(--color-night)",
+        background: "transparent",
         color: "var(--color-paper)",
         overflow: "hidden",
         display: "flex",
@@ -37,29 +38,8 @@ export function HeroFinal() {
         alignItems: "center",
       }}
     >
-      {/* Lime lightning backdrop — Kling-generated, looping silent */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        src="/video/lime-lightning.mp4"
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          opacity: 0.55,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Radial vignette over centre — darkens the area where the
-          hero text lives so it stays legible against the lime
-          lightning, while letting the bolts read at the edges */}
+      {/* Radial vignette over centre — keeps hero text legible
+          against the page-wide lime-lightning backdrop */}
       <div
         aria-hidden
         style={{
@@ -67,22 +47,7 @@ export function HeroFinal() {
           inset: 0,
           pointerEvents: "none",
           background:
-            "radial-gradient(ellipse at center, rgba(14,13,11,0.72) 0%, rgba(14,13,11,0.45) 35%, rgba(14,13,11,0.15) 70%, rgba(14,13,11,0) 100%)",
-        }}
-      />
-
-      {/* Subtle grain overlay */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.28,
-          mixBlendMode: "overlay",
-          pointerEvents: "none",
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-          backgroundSize: "240px",
+            "radial-gradient(ellipse at center, rgba(14,13,11,0.75) 0%, rgba(14,13,11,0.5) 35%, rgba(14,13,11,0.18) 70%, rgba(14,13,11,0) 100%)",
         }}
       />
 
