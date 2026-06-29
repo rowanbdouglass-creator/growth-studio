@@ -66,6 +66,47 @@ function PhraseGroup({
   );
 }
 
+/**
+ * Map raw scroll progress (0..1) to camera-Z so the camera DWELLS
+ * at each phrase plane briefly before accelerating to the next.
+ *
+ * Each phrase gets 1/N of the scroll. Within its slice:
+ *   - 60% spent approaching (fast)
+ *   - 40% spent passing through the phrase plane (slow — the
+ *     "fragments fill the screen" moment)
+ */
+function easedCameraZ(progress: number, n: number, startZ: number, endZ: number, spacing: number) {
+  const slice = 1 / n;
+  const idx = Math.min(n - 1, Math.floor(progress / slice));
+  const local = (progress - idx * slice) / slice; // 0..1 within this phrase
+
+  const phraseZ = -spacing * (idx + 1);
+  const prevZ = idx === 0 ? startZ : -spacing * idx;
+  const nextZ = idx === n - 1 ? endZ : -spacing * (idx + 2);
+
+  // Three sub-phases: approach -> close-pass -> recede
+  const APPROACH = 0.50;
+  const PASS = 0.35;
+  // RECEDE = 0.15
+
+  if (local < APPROACH) {
+    // Approach: prev pos -> phrase + 2 (just in front)
+    const t = local / APPROACH;
+    const eased = 1 - Math.pow(1 - t, 2); // ease-out
+    return prevZ + (phraseZ + 2 - prevZ) * eased;
+  } else if (local < APPROACH + PASS) {
+    // Close pass: phrase + 2 -> phrase - 1.5 (camera passes through plane slowly)
+    const t = (local - APPROACH) / PASS;
+    const eased = t * t * (3 - 2 * t); // smoothstep
+    return (phraseZ + 2) + (-3.5) * eased;
+  } else {
+    // Recede: phrase - 1.5 -> next - 2 (approaching next phrase)
+    const t = (local - APPROACH - PASS) / (1 - APPROACH - PASS);
+    const eased = t * t; // ease-in
+    return (phraseZ - 1.5) + (nextZ + 2 - (phraseZ - 1.5)) * eased;
+  }
+}
+
 function Scene({
   scrollProgress,
   mouseX,
@@ -79,21 +120,22 @@ function Scene({
   const targetOffset = useRef({ x: 0, y: 0 });
 
   useFrame(() => {
-    // Camera dollies forward through all phrase groups + a bit past the last
-    const totalDistance =
-      PHRASES.length * PHRASE_SPACING + PHRASE_SPACING * 0.8;
     const startZ = 8;
-    const endZ = startZ - totalDistance;
-    camera.position.z = startZ + (endZ - startZ) * scrollProgress;
+    const endZ = -PHRASE_SPACING * (PHRASES.length + 0.6);
+    camera.position.z = easedCameraZ(
+      scrollProgress,
+      PHRASES.length,
+      startZ,
+      endZ,
+      PHRASE_SPACING
+    );
 
-    // Mouse parallax: small camera POSITION offset (not rotation),
-    // keeps the camera looking forward but shifts viewpoint
+    // Mouse parallax — camera position offset, look forward
     targetOffset.current.x = (mouseX - 0.5) * 1.4;
     targetOffset.current.y = (0.5 - mouseY) * 0.8;
     camera.position.x += (targetOffset.current.x - camera.position.x) * 0.06;
     camera.position.y += (targetOffset.current.y - camera.position.y) * 0.06;
 
-    // Always look at the centre point ahead of the camera
     camera.lookAt(0, 0, camera.position.z - 5);
   });
 
