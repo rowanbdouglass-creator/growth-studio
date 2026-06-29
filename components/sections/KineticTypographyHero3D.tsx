@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Text3D, Center } from "@react-three/drei";
+import { Text } from "@react-three/drei";
 import {
   EffectComposer,
   DepthOfField,
@@ -13,28 +13,23 @@ import {
 import * as THREE from "three";
 
 /**
- * KineticTypographyHero3D — REAL extruded 3D letters.
+ * KineticTypographyHero3D — flat 2D text inside 3D BOX rooms.
  *
- * Letters are now actual 3D meshes with depth (height prop on
- * Text3D). When the camera passes close to a phrase, you see the
- * SIDE FACES of the letters — the black blocks the user pointed
- * out in the Spatial reference are the visible extrusion sides.
+ * Each phrase is a literal ROOM built from BoxGeometry walls
+ * (with thickness), and the text is rendered flat on the inner
+ * surfaces. Camera flies through the rooms in sequence.
  *
- * Previous version used <Text> (troika SDF) — that's 2D text on a
- * plane, no real depth. Switched to <Text3D> + TextGeometry which
- * produces actual extruded meshes.
+ * The walls have real thickness — the visible edges/corners of
+ * the boxes are what the user identified as "blocks" in the
+ * Spatial reference. The text itself stays 2D (no extrusion);
+ * it's just painted flat on the inner wall surfaces.
  *
- * Lighting added because MeshStandardMaterial needs lights to
- * render (would be black otherwise). Two directional lights +
- * ambient give shading that reveals the depth of the letters.
- *
- * Font: Helvetiker Bold (default Three.js font) for now. Bricolage
- * Grotesque needs to be converted from TTF to typeface.json format
- * (via facetype.js) — pending. The extrusion technique is the
- * headline change here; font face is the next iteration.
+ * Room dimensions are wider/taller than they are deep so when
+ * the camera passes through, you see text on left/right/top/
+ * bottom walls clearly, not just the front.
  */
 
-const FONT_JSON = "/fonts/helvetiker-bold.typeface.json";
+const BRAND_FONT = "/fonts/bricolage-bold.ttf";
 
 const PHRASES: string[][] = [
   ["Bespoke software", "for ambitious", "UK businesses."],
@@ -43,34 +38,55 @@ const PHRASES: string[][] = [
   ["Direct line.", "Two operators.", "No managers."],
 ];
 
-const PHRASE_SPACING = 50;
+const ROOM_W = 22; // room width (X)
+const ROOM_H = 14; // room height (Y)
+const ROOM_D = 18; // room depth (Z)
+const WALL_T = 0.4; // wall thickness
 
-function ExtrudedLine({ text, y }: { text: string; y: number }) {
+const ROOM_STRIDE = 28; // distance between room centres in Z
+
+// One wall — a box geometry with text painted on its inner face
+function Wall({
+  size,
+  position,
+  textRotation = [0, 0, 0],
+  textPosition,
+  lines,
+}: {
+  size: [number, number, number];
+  position: [number, number, number];
+  textRotation?: [number, number, number];
+  textPosition: [number, number, number];
+  lines: string[];
+}) {
   return (
-    <Center position={[0, y, 0]}>
-      <Text3D
-        font={FONT_JSON}
-        size={3.6}
-        height={1.4}
-        curveSegments={8}
-        bevelEnabled
-        bevelThickness={0.06}
-        bevelSize={0.05}
-        bevelOffset={0}
-        bevelSegments={2}
-      >
-        {text}
-        <meshStandardMaterial
-          color="#F3EFE6"
-          metalness={0.0}
-          roughness={0.65}
-        />
-      </Text3D>
-    </Center>
+    <group>
+      <mesh position={position}>
+        <boxGeometry args={size} />
+        <meshStandardMaterial color="#0E0D0B" roughness={0.85} />
+      </mesh>
+      <group position={textPosition} rotation={textRotation}>
+        {lines.map((line, idx) => (
+          <Text
+            key={idx}
+            font={BRAND_FONT}
+            position={[0, (lines.length / 2 - idx - 0.5) * 1.6, 0]}
+            fontSize={1.5}
+            color="#F3EFE6"
+            anchorX="center"
+            anchorY="middle"
+            letterSpacing={-0.04}
+            maxWidth={ROOM_W * 0.85}
+          >
+            {line}
+          </Text>
+        ))}
+      </group>
+    </group>
   );
 }
 
-function PhraseGroup({
+function PhraseRoom({
   lines,
   position,
 }: {
@@ -79,53 +95,48 @@ function PhraseGroup({
 }) {
   return (
     <group position={position}>
-      {lines.map((line, idx) => (
-        <ExtrudedLine
-          key={idx}
-          text={line}
-          y={(lines.length / 2 - idx - 0.5) * 4.6}
-        />
-      ))}
+      {/* Floor — box across full width × depth, thin in Y */}
+      <Wall
+        size={[ROOM_W, WALL_T, ROOM_D]}
+        position={[0, -ROOM_H / 2, 0]}
+        textRotation={[-Math.PI / 2, 0, 0]}
+        textPosition={[0, -ROOM_H / 2 + WALL_T / 2 + 0.01, 0]}
+        lines={lines}
+      />
+      {/* Ceiling */}
+      <Wall
+        size={[ROOM_W, WALL_T, ROOM_D]}
+        position={[0, ROOM_H / 2, 0]}
+        textRotation={[Math.PI / 2, 0, 0]}
+        textPosition={[0, ROOM_H / 2 - WALL_T / 2 - 0.01, 0]}
+        lines={lines}
+      />
+      {/* Left wall */}
+      <Wall
+        size={[WALL_T, ROOM_H, ROOM_D]}
+        position={[-ROOM_W / 2, 0, 0]}
+        textRotation={[0, Math.PI / 2, 0]}
+        textPosition={[-ROOM_W / 2 + WALL_T / 2 + 0.01, 0, 0]}
+        lines={lines}
+      />
+      {/* Right wall */}
+      <Wall
+        size={[WALL_T, ROOM_H, ROOM_D]}
+        position={[ROOM_W / 2, 0, 0]}
+        textRotation={[0, -Math.PI / 2, 0]}
+        textPosition={[ROOM_W / 2 - WALL_T / 2 - 0.01, 0, 0]}
+        lines={lines}
+      />
+      {/* Back wall — text faces incoming camera */}
+      <Wall
+        size={[ROOM_W, ROOM_H, WALL_T]}
+        position={[0, 0, -ROOM_D / 2]}
+        textRotation={[0, 0, 0]}
+        textPosition={[0, 0, -ROOM_D / 2 + WALL_T / 2 + 0.01]}
+        lines={lines}
+      />
     </group>
   );
-}
-
-/**
- * Eased camera Z so the camera DWELLS at each phrase before
- * accelerating to the next — gives each phrase its dramatic
- * "fragments fill the screen" climax.
- */
-function easedCameraZ(
-  progress: number,
-  n: number,
-  startZ: number,
-  endZ: number,
-  spacing: number
-) {
-  const slice = 1 / n;
-  const idx = Math.min(n - 1, Math.floor(progress / slice));
-  const local = (progress - idx * slice) / slice;
-
-  const phraseZ = -spacing * (idx + 1);
-  const prevZ = idx === 0 ? startZ : -spacing * idx;
-  const nextZ = idx === n - 1 ? endZ : -spacing * (idx + 2);
-
-  const APPROACH = 0.5;
-  const PASS = 0.35;
-
-  if (local < APPROACH) {
-    const t = local / APPROACH;
-    const eased = 1 - Math.pow(1 - t, 2);
-    return prevZ + (phraseZ + 3 - prevZ) * eased;
-  } else if (local < APPROACH + PASS) {
-    const t = (local - APPROACH) / PASS;
-    const eased = t * t * (3 - 2 * t);
-    return phraseZ + 3 + -5 * eased;
-  } else {
-    const t = (local - APPROACH - PASS) / (1 - APPROACH - PASS);
-    const eased = t * t;
-    return phraseZ - 2 + (nextZ + 3 - (phraseZ - 2)) * eased;
-  }
 }
 
 function Scene({
@@ -141,18 +152,15 @@ function Scene({
   const targetOffset = useRef({ x: 0, y: 0 });
 
   useFrame(() => {
+    // Camera path: starts in front of first room, flies all the way through
+    const totalDistance = ROOM_STRIDE * PHRASES.length + ROOM_STRIDE;
     const startZ = 10;
-    const endZ = -PHRASE_SPACING * (PHRASES.length + 0.6);
-    camera.position.z = easedCameraZ(
-      scrollProgress,
-      PHRASES.length,
-      startZ,
-      endZ,
-      PHRASE_SPACING
-    );
+    const endZ = startZ - totalDistance;
+    camera.position.z = startZ + (endZ - startZ) * scrollProgress;
 
-    targetOffset.current.x = (mouseX - 0.5) * 2.0;
-    targetOffset.current.y = (0.5 - mouseY) * 1.2;
+    // Mouse parallax — small position offset (kept inside the room)
+    targetOffset.current.x = (mouseX - 0.5) * 4;
+    targetOffset.current.y = (0.5 - mouseY) * 2.5;
     camera.position.x += (targetOffset.current.x - camera.position.x) * 0.06;
     camera.position.y += (targetOffset.current.y - camera.position.y) * 0.06;
 
@@ -161,17 +169,19 @@ function Scene({
 
   return (
     <>
-      {/* Lighting — Text3D uses MeshStandardMaterial which needs lights */}
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[8, 10, 10]} intensity={1.2} />
-      <directionalLight position={[-8, -5, 6]} intensity={0.6} />
-      <directionalLight position={[0, 0, 20]} intensity={0.5} />
+      {/* Lighting so the wall surfaces (and text on them) are visible */}
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[10, 10, 10]} intensity={0.8} />
+      <directionalLight position={[-10, 5, -5]} intensity={0.5} />
+      {/* Point light that travels with the camera so the current room
+          is always lit from inside */}
+      <pointLight position={[0, 0, 0]} intensity={1.0} distance={30} />
 
       {PHRASES.map((lines, i) => (
-        <PhraseGroup
+        <PhraseRoom
           key={i}
           lines={lines}
-          position={[0, 0, -PHRASE_SPACING * (i + 1)]}
+          position={[0, 0, -ROOM_STRIDE * (i + 1)]}
         />
       ))}
     </>
@@ -238,7 +248,7 @@ export function KineticTypographyHero3D() {
         }}
       >
         <Canvas
-          camera={{ position: [0, 0, 10], fov: 65, near: 0.1, far: 250 }}
+          camera={{ position: [0, 0, 10], fov: 70, near: 0.1, far: 250 }}
           style={{ width: "100%", height: "100%", background: "#0E0D0B" }}
           dpr={[1, 2]}
         >
@@ -250,12 +260,12 @@ export function KineticTypographyHero3D() {
           <EffectComposer>
             <DepthOfField
               focusDistance={0.0}
-              focalLength={0.04}
-              bokehScale={3}
+              focalLength={0.05}
+              bokehScale={2.5}
               height={480}
             />
             <Noise opacity={0.04} premultiply />
-            <Vignette eskil={false} offset={0.15} darkness={0.6} />
+            <Vignette eskil={false} offset={0.18} darkness={0.55} />
           </EffectComposer>
         </Canvas>
 
