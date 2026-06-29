@@ -26,22 +26,18 @@ gsap.registerPlugin(ScrollTrigger);
  * extras.
  */
 
-const ROOMS: { title: string[]; desc: string }[] = [
+const ROOMS: { title: string[] }[] = [
   {
-    title: ["BESPOKE", "SOFTWARE."],
-    desc: "Custom ops platforms — quote-to-invoice, stock-per-line, customer portals — built for ambitious UK SMEs.",
+    title: ["Bespoke software", "for ambitious", "UK businesses."],
   },
   {
-    title: ["CUSTOM", "WEBSITES."],
-    desc: "High-converting builds in WordPress and Next.js, designed to pass the credibility check in ninety seconds.",
+    title: ["Custom websites", "that pass the", "credibility check."],
   },
   {
-    title: ["PAID", "TRAFFIC."],
-    desc: "Performance acquisition on Meta and Google, run daily by the two operators who own the work.",
+    title: ["Paid traffic", "run by the", "operators themselves."],
   },
   {
-    title: ["FOR AMBITIOUS", "UK SMES."],
-    desc: "Two operators. Direct line. AI-native. No retainers. No proposal decks. No account managers in between.",
+    title: ["Direct line.", "Two operators.", "No managers."],
   },
 ];
 
