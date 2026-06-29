@@ -3,13 +3,20 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Page-wide atmospheric video backdrop. Plays continuously behind the
- * first several sections so the brand atmosphere bleeds past the hero
- * (Tony Mak / Ascend pattern — the imagery IS the through-line).
+ * Page-wide atmospheric video backdrop with SCROLL-SCRUBBED playback.
  *
- * Sections control how much video shows by their own background veil
- * opacity. Sections from #04 onward are solid night and naturally
- * cover the backdrop.
+ *   • Video time is driven by scroll position, not the wall clock.
+ *   • Scroll down → frames advance. Scroll up → frames reverse.
+ *   • The mapping ranges from scrollY = 0 (frame 0) to scrollY =
+ *     [data-video-cutoff].offsetTop (last frame). Past the cutoff,
+ *     scrolling does nothing — the video sits at its last frame
+ *     under the solid-black sections below.
+ *   • Updates are rAF-lerped toward the target time so fast scrolls
+ *     ease in instead of snapping.
+ *   • prefers-reduced-motion: pause, no scrubbing.
+ *
+ * The source mp4 is re-encoded with every-frame-keyframe for smooth
+ * seeking (see /public/video pipeline).
  */
 
 const HERO_VIDEO = "/video/hero-backdrop.mp4";
@@ -26,33 +33,68 @@ export function VideoBackdrop() {
       return;
     }
 
-    // Scroll-driven playback: video plays while the user is actively
-    // scrolling and pauses 220ms after they stop. Cheap, predictable,
-    // and matches the Tony Mak feel — the atmosphere moves with you.
     v.pause();
 
-    let pauseTimer: number | null = null;
-    let rafQueued = false;
+    let target = 0;
+    let rafId = 0;
+    let cutoff = 0;
 
-    const onScroll = () => {
-      if (!rafQueued) {
-        rafQueued = true;
-        requestAnimationFrame(() => {
-          if (v.paused) {
-            const p = v.play();
-            if (p && typeof p.catch === "function") p.catch(() => {});
-          }
-          rafQueued = false;
-        });
-      }
-      if (pauseTimer !== null) window.clearTimeout(pauseTimer);
-      pauseTimer = window.setTimeout(() => v.pause(), 220);
+    const recomputeCutoff = () => {
+      const el = document.querySelector<HTMLElement>("[data-video-cutoff]");
+      cutoff = el ? el.offsetTop : window.innerHeight * 3;
     };
 
+    const tick = () => {
+      if (!v.duration || !isFinite(v.duration)) {
+        rafId = 0;
+        return;
+      }
+      const cur = v.currentTime;
+      const diff = target - cur;
+      if (Math.abs(diff) < 0.008) {
+        try {
+          v.currentTime = target;
+        } catch {
+          /* noop */
+        }
+        rafId = 0;
+        return;
+      }
+      try {
+        v.currentTime = cur + diff * 0.22;
+      } catch {
+        /* noop */
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const updateTarget = () => {
+      if (!v.duration || !isFinite(v.duration) || cutoff <= 0) return;
+      const progress = Math.min(1, Math.max(0, window.scrollY / cutoff));
+      target = progress * v.duration;
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    };
+
+    const onScroll = () => updateTarget();
+    const onResize = () => {
+      recomputeCutoff();
+      updateTarget();
+    };
+    const onMeta = () => {
+      recomputeCutoff();
+      updateTarget();
+    };
+
+    if (v.readyState >= 1) onMeta();
+    v.addEventListener("loadedmetadata", onMeta);
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+
     return () => {
+      v.removeEventListener("loadedmetadata", onMeta);
       window.removeEventListener("scroll", onScroll);
-      if (pauseTimer !== null) window.clearTimeout(pauseTimer);
+      window.removeEventListener("resize", onResize);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -70,7 +112,6 @@ export function VideoBackdrop() {
     >
       <video
         ref={videoRef}
-        loop
         muted
         playsInline
         preload="auto"

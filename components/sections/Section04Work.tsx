@@ -69,6 +69,7 @@ export function Section04Work() {
     <section
       data-bg="dark"
       data-surface="dark"
+      data-video-cutoff
       style={{
         position: "relative",
         zIndex: 1,
