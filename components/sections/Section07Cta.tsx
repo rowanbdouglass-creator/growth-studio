@@ -22,7 +22,6 @@ export function Section07Cta() {
         padding: "clamp(180px, 22vw, 280px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",
-        borderTop: "1px solid var(--color-hairline)",
         overflow: "hidden",
       }}
     >

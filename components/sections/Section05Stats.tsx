@@ -38,7 +38,6 @@ export function Section05Stats() {
         padding: "clamp(140px, 18vw, 240px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",
-        borderTop: "1px solid var(--color-hairline)",
       }}
     >
       <div

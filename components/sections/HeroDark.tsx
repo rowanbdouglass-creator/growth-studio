@@ -59,7 +59,7 @@ export function HeroDark() {
           zIndex: 2,
           pointerEvents: "none",
           background:
-            "linear-gradient(180deg, rgba(14,13,11,0.55) 0%, rgba(14,13,11,0.20) 28%, rgba(14,13,11,0.35) 65%, rgba(14,13,11,0.65) 100%)",
+            "linear-gradient(180deg, rgba(14,13,11,0.55) 0%, rgba(14,13,11,0.18) 30%, rgba(14,13,11,0.30) 70%, rgba(14,13,11,0.45) 100%)",
         }}
       />
 

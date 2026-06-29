@@ -23,11 +23,37 @@ export function VideoBackdrop() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       v.pause();
-      v.removeAttribute("autoplay");
       return;
     }
-    const play = v.play();
-    if (play && typeof play.catch === "function") play.catch(() => {});
+
+    // Scroll-driven playback: video plays while the user is actively
+    // scrolling and pauses 220ms after they stop. Cheap, predictable,
+    // and matches the Tony Mak feel — the atmosphere moves with you.
+    v.pause();
+
+    let pauseTimer: number | null = null;
+    let rafQueued = false;
+
+    const onScroll = () => {
+      if (!rafQueued) {
+        rafQueued = true;
+        requestAnimationFrame(() => {
+          if (v.paused) {
+            const p = v.play();
+            if (p && typeof p.catch === "function") p.catch(() => {});
+          }
+          rafQueued = false;
+        });
+      }
+      if (pauseTimer !== null) window.clearTimeout(pauseTimer);
+      pauseTimer = window.setTimeout(() => v.pause(), 220);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (pauseTimer !== null) window.clearTimeout(pauseTimer);
+    };
   }, []);
 
   return (
@@ -44,7 +70,6 @@ export function VideoBackdrop() {
     >
       <video
         ref={videoRef}
-        autoPlay
         loop
         muted
         playsInline

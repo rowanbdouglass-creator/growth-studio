@@ -30,8 +30,6 @@ export function Section06Clients() {
         padding: "clamp(96px, 12vw, 160px) 0",
         background: "var(--color-night-soft)",
         color: "var(--color-paper)",
-        borderTop: "1px solid var(--color-hairline)",
-        borderBottom: "1px solid var(--color-hairline)",
         overflow: "hidden",
       }}
     >

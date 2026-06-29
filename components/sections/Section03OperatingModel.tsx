@@ -45,11 +45,9 @@ export function Section03OperatingModel() {
         position: "relative",
         zIndex: 1,
         padding: "clamp(140px, 18vw, 240px) 0",
-        background: "rgba(14,13,11,0.90)",
-        backdropFilter: "blur(3px)",
-        WebkitBackdropFilter: "blur(3px)",
+        background:
+          "linear-gradient(180deg, rgba(14,13,11,0.88) 0%, rgba(14,13,11,0.96) 55%, rgba(14,13,11,1) 100%)",
         color: "var(--color-paper)",
-        borderTop: "1px solid var(--color-hairline)",
       }}
     >
       <div
