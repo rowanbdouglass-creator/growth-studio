@@ -79,7 +79,7 @@ export function KineticTypographyHero() {
 
     const ctx = gsap.context(() => {
       gsap.set(".kt-cube", { scale: 0.5 });
-      gsap.set(".kt-room", { opacity: 0 });
+      gsap.set(".kt-room", { opacity: 0, "--kt-perspective": "350vmin" });
       gsap.set(".kt-final", { opacity: 0, y: 40 });
 
       const tl = gsap.timeline({
@@ -96,7 +96,6 @@ export function KineticTypographyHero() {
       ROOMS.forEach((_, i) => {
         const start = i * ROOM_STRIDE;
 
-        // Room emerges
         tl.fromTo(
           `.kt-room-${i}`,
           { opacity: 0 },
@@ -104,15 +103,24 @@ export function KineticTypographyHero() {
           start
         );
 
-        // Cube scales up — camera dives through the room
+        // Modest scale animation
         tl.fromTo(
           `.kt-room-${i} .kt-cube`,
           { scale: 0.5 },
-          { scale: 4, duration: 0.55, ease: "power2.in" },
+          { scale: 1.3, duration: 0.55, ease: "power2.in" },
           start
         );
 
-        // Room fades as the camera passes through it
+        // THIS IS THE KEY: perspective shrinks dramatically. 350vmin -> 60vmin
+        // = fish-eye intensifies, side walls bend toward the camera, letters
+        // appear to extrude in 3D. This is what was missing.
+        tl.fromTo(
+          `.kt-room-${i} .kt-cube`,
+          { perspective: "350vmin" },
+          { perspective: "60vmin", duration: 0.55, ease: "power2.in" },
+          start
+        );
+
         tl.to(
           `.kt-room-${i}`,
           { opacity: 0, duration: 0.18, ease: "power2.in" },
@@ -329,7 +337,7 @@ export function KineticTypographyHero() {
           transform-origin: 50% 44.8vmin;
         }
 
-        /* Content sized to fit inside the 46vmin window */
+        /* Content sized to roughly fill the cube interior at scale 1 */
         .kt-room-content {
           display: flex;
           flex-direction: column;
@@ -337,17 +345,17 @@ export function KineticTypographyHero() {
           justify-content: center;
           gap: 1vmin;
           text-align: center;
-          padding: 3vmin;
+          padding: 2vmin;
           color: var(--color-paper);
-          max-width: 42vmin;
+          max-width: 44vmin;
         }
 
         .kt-room-line {
           font-family: var(--font-syne);
           font-weight: 800;
-          font-size: 6vmin;
-          letter-spacing: -0.04em;
-          line-height: 0.95;
+          font-size: 12vmin;
+          letter-spacing: -0.05em;
+          line-height: 0.88;
         }
       `}</style>
     </section>
