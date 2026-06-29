@@ -25,7 +25,7 @@ const HERO_VIDEO =
 const HERO_POSTER =
   "https://images.pexels.com/videos/3163534/free-video-3163534.jpg?auto=compress&cs=tinysrgb&w=1920";
 
-export function HeroDark() {
+export function HeroDarkV5() {
   const headRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
