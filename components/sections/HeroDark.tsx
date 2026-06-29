@@ -5,25 +5,11 @@ import Link from "next/link";
 import gsap from "gsap";
 
 /**
- * Hero v6 — video background + glass aesthetic, modelled on the
- * Creative Marketing Agency reference.
- *
- * Composition:
- *  - Full-bleed atmospheric stock video (Pexels CDN, loops, muted),
- *    fades to night at the bottom for a clean handoff to the next
- *    section.
- *  - Top glass nav rail floats over the video (backdrop-blur, subtle
- *    border, dark-tinted glass).
- *  - Left-aligned hero headline: 'you look booked.' as the entire
- *    statement — brand promise IS the hero, not the wordmark.
- *  - Below: short subhead + two CTAs (lime primary + glass secondary).
- *  - Scroll cue bottom-right.
+ * Hero v7 — transparent section that sits over the shared
+ * <VideoBackdrop>. The backdrop persists across sections 01-03,
+ * so this hero no longer renders its own video. Keeps the glass
+ * nav + content + gradient veil for legibility.
  */
-
-const HERO_VIDEO =
-  "https://videos.pexels.com/video-files/3163534/3163534-uhd_2560_1440_30fps.mp4";
-const HERO_POSTER =
-  "https://images.pexels.com/videos/3163534/free-video-3163534.jpg?auto=compress&cs=tinysrgb&w=1920";
 
 export function HeroDark() {
   const headRef = useRef<HTMLHeadingElement>(null);
@@ -55,51 +41,16 @@ export function HeroDark() {
       data-surface="dark"
       style={{
         position: "relative",
+        zIndex: 1,
         minHeight: "100svh",
-        background: "var(--color-night)",
+        background: "transparent",
         color: "var(--color-paper)",
         overflow: "hidden",
-        isolation: "isolate",
       }}
     >
-      {/* Background video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        poster={HERO_POSTER}
-        src={HERO_VIDEO}
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Subtle noise grain overlay */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 1,
-          opacity: 0.5,
-          mixBlendMode: "overlay",
-          pointerEvents: "none",
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-          backgroundSize: "240px",
-        }}
-      />
-
-      {/* Gradient — dim top for header legibility, full black at bottom
-          for the fade-into-next-section handoff */}
+      {/* Gradient — dim top for header legibility, gentle deepen at the
+          bottom so it leads cleanly into section 02 WITHOUT killing the
+          shared video backdrop (no full-black floor any more). */}
       <div
         aria-hidden
         style={{
@@ -108,7 +59,7 @@ export function HeroDark() {
           zIndex: 2,
           pointerEvents: "none",
           background:
-            "linear-gradient(180deg, rgba(14,13,11,0.55) 0%, rgba(14,13,11,0.25) 25%, rgba(14,13,11,0.4) 55%, rgba(14,13,11,1) 100%)",
+            "linear-gradient(180deg, rgba(14,13,11,0.55) 0%, rgba(14,13,11,0.20) 28%, rgba(14,13,11,0.35) 65%, rgba(14,13,11,0.65) 100%)",
         }}
       />
 

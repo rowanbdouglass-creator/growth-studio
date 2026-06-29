@@ -18,6 +18,7 @@ export function Section07Cta() {
       data-surface="dark"
       style={{
         position: "relative",
+        zIndex: 1,
         padding: "clamp(180px, 22vw, 280px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",

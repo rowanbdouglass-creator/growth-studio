@@ -34,6 +34,7 @@ export function Section05Stats() {
       data-surface="dark"
       style={{
         position: "relative",
+        zIndex: 1,
         padding: "clamp(140px, 18vw, 240px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",

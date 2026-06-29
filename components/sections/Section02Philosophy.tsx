@@ -17,8 +17,11 @@ export function Section02Philosophy() {
       data-surface="dark"
       style={{
         position: "relative",
+        zIndex: 1,
         padding: "clamp(140px, 18vw, 240px) 0",
-        background: "var(--color-night)",
+        background: "rgba(14,13,11,0.78)",
+        backdropFilter: "blur(2px)",
+        WebkitBackdropFilter: "blur(2px)",
         color: "var(--color-paper)",
         borderTop: "1px solid var(--color-hairline)",
         overflow: "hidden",

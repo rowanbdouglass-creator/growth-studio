@@ -1,3 +1,4 @@
+import { VideoBackdrop } from "@/components/sections/VideoBackdrop";
 import { HeroDark } from "@/components/sections/HeroDark";
 import { Section02Philosophy } from "@/components/sections/Section02Philosophy";
 import { Section03OperatingModel } from "@/components/sections/Section03OperatingModel";
@@ -7,22 +8,27 @@ import { Section06Clients } from "@/components/sections/Section06Clients";
 import { Section07Cta } from "@/components/sections/Section07Cta";
 
 /**
- * Home — CLONE BUILD complete (portfolio-agency references).
+ * Home — CLONE BUILD with persistent video backdrop.
  *
- *   01 Hero               video bg + glass nav + service statement
- *   02 Philosophy         "Most agencies sell decks. We sell calendars
- *                          that fill." + supporting body + anti-list
- *   03 Operating model    Systems / Sites / Traffic — 3 columns
- *   04 Selected work      4 case study cards in 2x2 grid
- *   05 Stats              4 proof figures (£128k / £42,180 / 96 mo / 11→1)
- *   06 Clients            Horizontal marquee of client names
- *   07 The brief          "The right brief finds the right studio." + CTA
+ *   00 VideoBackdrop      fixed, full-viewport, behind everything
+ *   01 Hero               transparent — video shows fully
+ *   02 Philosophy         dark veil (~78%) — video bleeds through
+ *   03 Operating model    dark veil (~88%) — video almost gone
+ *   04 Selected work      solid night — fully landed
+ *   05 Stats              solid
+ *   06 Clients            solid
+ *   07 The brief          solid
  *
  * Previous home preserved at /v5.
  */
 export default function Home() {
   return (
-    <main data-bg="dark" data-hide-site-header>
+    <main
+      data-bg="dark"
+      data-hide-site-header
+      style={{ position: "relative", zIndex: 0 }}
+    >
+      <VideoBackdrop />
       <HeroDark />
       <Section02Philosophy />
       <Section03OperatingModel />

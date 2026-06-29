@@ -26,6 +26,7 @@ export function Section06Clients() {
       data-surface="dark"
       style={{
         position: "relative",
+        zIndex: 1,
         padding: "clamp(96px, 12vw, 160px) 0",
         background: "var(--color-night-soft)",
         color: "var(--color-paper)",
