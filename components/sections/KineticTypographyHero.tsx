@@ -55,13 +55,7 @@ const ROOM_ROTATIONS = [
   { rotationX: 0, rotationY: 0 },
 ];
 
-function RoomContent({
-  title,
-  desc,
-}: {
-  title: string[];
-  desc: string;
-}) {
+function RoomContent({ title }: { title: string[] }) {
   return (
     <div className="kt-room-content">
       <div className="kt-room-title">
@@ -71,27 +65,18 @@ function RoomContent({
           </div>
         ))}
       </div>
-      <p className="kt-room-desc">{desc}</p>
     </div>
   );
 }
 
-function Room({
-  title,
-  desc,
-  index,
-}: {
-  title: string[];
-  desc: string;
-  index: number;
-}) {
+function Room({ title, index }: { title: string[]; index: number }) {
   return (
     <div className={`kt-room kt-room-${index}`}>
       <div className="kt-cube">
         {[1, 2, 3, 4, 5].map((n) => (
           <div key={n} className={`kt-wall kt-w-${n}`}>
             <div className="kt-internal">
-              <RoomContent title={title} desc={desc} />
+              <RoomContent title={title} />
             </div>
           </div>
         ))}
@@ -238,7 +223,7 @@ export function KineticTypographyHero() {
       }}
     >
       {ROOMS.map((room, i) => (
-        <Room key={i} title={room.title} desc={room.desc} index={i} />
+        <Room key={i} title={room.title} index={i} />
       ))}
 
       <div
