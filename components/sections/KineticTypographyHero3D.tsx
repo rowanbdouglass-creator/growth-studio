@@ -36,6 +36,8 @@ const PHRASES: string[][] = [
 
 const PHRASE_SPACING = 25; // units between phrase groups in Z
 
+const BRAND_FONT = "/fonts/bricolage-bold.ttf";
+
 function PhraseGroup({
   lines,
   position,
@@ -48,13 +50,14 @@ function PhraseGroup({
       {lines.map((line, idx) => (
         <Text
           key={idx}
-          position={[0, (lines.length / 2 - idx - 0.5) * 2.2, 0]}
-          fontSize={1.8}
+          font={BRAND_FONT}
+          position={[0, (lines.length / 2 - idx - 0.5) * 2.4, 0]}
+          fontSize={2.4}
           color="#F3EFE6"
           anchorX="center"
           anchorY="middle"
-          letterSpacing={-0.05}
-          maxWidth={20}
+          letterSpacing={-0.055}
+          maxWidth={26}
         >
           {line}
         </Text>
@@ -73,19 +76,25 @@ function Scene({
   mouseY: number;
 }) {
   const { camera } = useThree();
-  const targetRotation = useRef({ x: 0, y: 0 });
+  const targetOffset = useRef({ x: 0, y: 0 });
 
   useFrame(() => {
+    // Camera dollies forward through all phrase groups + a bit past the last
     const totalDistance =
-      PHRASES.length * PHRASE_SPACING + PHRASE_SPACING * 0.5;
-    const startZ = 10;
+      PHRASES.length * PHRASE_SPACING + PHRASE_SPACING * 0.8;
+    const startZ = 8;
     const endZ = startZ - totalDistance;
     camera.position.z = startZ + (endZ - startZ) * scrollProgress;
 
-    targetRotation.current.y = (mouseX - 0.5) * 0.15;
-    targetRotation.current.x = (mouseY - 0.5) * -0.1;
-    camera.rotation.x += (targetRotation.current.x - camera.rotation.x) * 0.08;
-    camera.rotation.y += (targetRotation.current.y - camera.rotation.y) * 0.08;
+    // Mouse parallax: small camera POSITION offset (not rotation),
+    // keeps the camera looking forward but shifts viewpoint
+    targetOffset.current.x = (mouseX - 0.5) * 1.4;
+    targetOffset.current.y = (0.5 - mouseY) * 0.8;
+    camera.position.x += (targetOffset.current.x - camera.position.x) * 0.06;
+    camera.position.y += (targetOffset.current.y - camera.position.y) * 0.06;
+
+    // Always look at the centre point ahead of the camera
+    camera.lookAt(0, 0, camera.position.z - 5);
   });
 
   return (
