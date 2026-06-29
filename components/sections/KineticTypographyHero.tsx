@@ -49,14 +49,14 @@ const ROOMS: { title: string[]; desc: string }[] = [
 // Higher = more uncontested scroll per room.
 const ROOM_STRIDE = 0.55;
 
-// Per-cube base rotation so the side walls are visible from the start
-// (this is what creates the "letters in front of letters" ghost look
-// even at scale 0.5 with cursor centred).
+// Subtle per-cube rotation. Was too aggressive before — making text
+// look skewed/broken instead of 3D. Keep it minimal — the 3D feel
+// comes from the wall rotations + perspective shrink + mouse parallax.
 const ROOM_ROTATIONS = [
-  { rotationX: 4, rotationY: 1 },
-  { rotationX: -5, rotationY: 1 },
-  { rotationX: 3, rotationY: -1 },
-  { rotationX: -6, rotationY: 1 },
+  { rotationX: 0, rotationY: 0 },
+  { rotationX: 0, rotationY: 0 },
+  { rotationX: 0, rotationY: 0 },
+  { rotationX: 0, rotationY: 0 },
 ];
 
 function RoomContent({
@@ -193,18 +193,19 @@ export function KineticTypographyHero() {
           start
         );
 
-        // Scale: modest grow
+        // Scale: dramatic dive (0.5 -> 3.0). Letters will overflow
+        // the viewport as fragments at the climax, matching Spatial.
         tl.to(
           `.kt-room-${i} .kt-cube`,
-          { scale: 1.3, duration: zoomDuration, ease: "power2.in" },
+          { scale: 3.0, duration: zoomDuration, ease: "power2.in" },
           start
         );
 
-        // Perspective: shrinks dramatically (this is the 3D fish-eye)
+        // Perspective: aggressive fish-eye for the 3D dive
         tl.fromTo(
           `.kt-room-${i} .kt-cube`,
           { perspective: "350vmin" },
-          { perspective: "90vmin", duration: zoomDuration, ease: "power2.in" },
+          { perspective: "60vmin", duration: zoomDuration, ease: "power2.in" },
           start
         );
 
@@ -434,11 +435,11 @@ export function KineticTypographyHero() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 2vmin;
+          gap: 3vmin;
           text-align: center;
           padding: 2vmin;
           color: var(--color-paper);
-          max-width: 44vmin;
+          max-width: 60vmin;
         }
 
         .kt-room-title {
@@ -446,23 +447,25 @@ export function KineticTypographyHero() {
           flex-direction: column;
         }
 
+        /* Big enough that scale=1 it fills most of the viewport, and
+           at scale=2.2 the letters overflow into fragments. */
         .kt-room-line {
           font-family: var(--font-syne);
           font-weight: 800;
-          font-size: 9vmin;
-          letter-spacing: -0.05em;
-          line-height: 0.88;
+          font-size: 17vmin;
+          letter-spacing: -0.055em;
+          line-height: 0.86;
         }
 
         .kt-room-desc {
           font-family: var(--font-sans);
           font-weight: 400;
-          font-size: 2vmin;
+          font-size: 2.4vmin;
           letter-spacing: -0.005em;
           line-height: 1.35;
           color: rgba(243, 239, 230, 0.78);
           margin: 0;
-          max-width: 30vmin;
+          max-width: 38vmin;
         }
       `}</style>
     </section>
