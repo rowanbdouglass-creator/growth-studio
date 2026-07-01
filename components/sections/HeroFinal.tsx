@@ -36,8 +36,30 @@ export function HeroFinal() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        // Push the vertically-centred content down so it never sits
+        // right up against the transition seam
+        paddingTop: "clamp(80px, 12vh, 160px)",
       }}
     >
+      {/* Top-fade — seamlessly bleeds the black intro video into the
+          lime-lightning backdrop. Solid black at the very top (matches
+          intro), fades to transparent over ~35vh so lightning reveals
+          gradually with no hard seam. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "40vh",
+          pointerEvents: "none",
+          zIndex: 2,
+          background:
+            "linear-gradient(180deg, rgba(14,13,11,1) 0%, rgba(14,13,11,0.95) 25%, rgba(14,13,11,0.65) 55%, rgba(14,13,11,0.25) 80%, rgba(14,13,11,0) 100%)",
+        }}
+      />
+
       {/* Radial vignette over centre — keeps hero text legible
           against the page-wide lime-lightning backdrop */}
       <div
