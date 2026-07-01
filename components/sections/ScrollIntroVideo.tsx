@@ -102,7 +102,7 @@ export function ScrollIntroVideo() {
         // 500vh gives ~4 viewport-heights of scroll for a 17s clip —
         // each scroll unit advances the video less = smoother playback
         height: "500vh",
-        background: "#0E0D0B",
+        background: "#000000",
         zIndex: 2,
       }}
     >
@@ -113,7 +113,7 @@ export function ScrollIntroVideo() {
           height: "100vh",
           width: "100%",
           overflow: "hidden",
-          background: "#0E0D0B",
+          background: "#000000",
         }}
       >
         <video

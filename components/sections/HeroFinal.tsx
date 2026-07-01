@@ -41,10 +41,10 @@ export function HeroFinal() {
         paddingTop: "clamp(80px, 12vh, 160px)",
       }}
     >
-      {/* Top-fade — seamlessly bleeds the black intro video into the
-          lime-lightning backdrop. Solid black at the very top (matches
-          intro), fades to transparent over ~35vh so lightning reveals
-          gradually with no hard seam. */}
+      {/* Top-fade — seamlessly bleeds the pure-black intro video into
+          the lime-lightning backdrop. Uses #000000 (matches the video's
+          last-frame pixel colour exactly) so there's no visible seam.
+          Fades to transparent over ~40vh. */}
       <div
         aria-hidden
         style={{
@@ -56,7 +56,7 @@ export function HeroFinal() {
           pointerEvents: "none",
           zIndex: 2,
           background:
-            "linear-gradient(180deg, rgba(14,13,11,1) 0%, rgba(14,13,11,0.95) 25%, rgba(14,13,11,0.65) 55%, rgba(14,13,11,0.25) 80%, rgba(14,13,11,0) 100%)",
+            "linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 25%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.25) 80%, rgba(0,0,0,0) 100%)",
         }}
       />
 
