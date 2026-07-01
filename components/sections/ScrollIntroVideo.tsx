@@ -93,6 +93,7 @@ export function ScrollIntroVideo() {
     <section
       ref={sectionRef}
       data-bg="dark"
+      data-hide-site-header
       style={{
         position: "relative",
         height: "250vh", // gives the user 1.5 viewport-heights of scroll to play through

@@ -19,15 +19,19 @@ export function Header() {
     if (typeof window === "undefined") return;
     let ticking = false;
 
-    // Pages can opt the global header out by setting data-hide-site-header
-    // on their <main> element. Used by the home page (PrismaHero has its
-    // own top-centre pill nav).
+    // Any element (or main) can opt the global header out by setting
+    // data-hide-site-header on itself. The header is hidden while ANY
+    // part of that element is still visible in the viewport, and
+    // shown once the user has scrolled fully past it. Works for any
+    // element height (100vh hero, 250vh scroll intro, etc.).
     const refreshHidden = () => {
-      const home = document.querySelector("[data-hide-site-header]");
-      const heroBottom = home
-        ? home.getBoundingClientRect().top + window.innerHeight * 0.92
-        : 0;
-      setHidden(!!home && window.scrollY < heroBottom);
+      const anchor = document.querySelector("[data-hide-site-header]");
+      if (!anchor) {
+        setHidden(false);
+        return;
+      }
+      const rect = anchor.getBoundingClientRect();
+      setHidden(rect.bottom > 0);
     };
 
     const onScroll = () => {
