@@ -51,13 +51,16 @@ export function ScrollIntroVideo() {
       }
       const cur = v.currentTime;
       const diff = target - cur;
-      if (Math.abs(diff) < 0.008) {
+      // Gentler lerp (0.14) — smoother visual interpolation. Slightly
+      // higher settle threshold (0.02) so we don't burn rAF cycles
+      // trying to hit exact frames.
+      if (Math.abs(diff) < 0.02) {
         try { v.currentTime = target; } catch {}
         rafId = 0;
         return;
       }
       try {
-        v.currentTime = cur + diff * 0.22;
+        v.currentTime = cur + diff * 0.14;
       } catch {}
       rafId = requestAnimationFrame(tick);
     };
@@ -96,7 +99,9 @@ export function ScrollIntroVideo() {
       data-hide-site-header
       style={{
         position: "relative",
-        height: "250vh", // gives the user 1.5 viewport-heights of scroll to play through
+        // 500vh gives ~4 viewport-heights of scroll for a 17s clip —
+        // each scroll unit advances the video less = smoother playback
+        height: "500vh",
         background: "#0E0D0B",
         zIndex: 2,
       }}
