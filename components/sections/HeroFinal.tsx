@@ -29,49 +29,15 @@ export function HeroFinal() {
         position: "relative",
         zIndex: 1,
         minHeight: "100svh",
-        background: "transparent",
-        color: "var(--color-paper)",
+        background: "var(--color-surface-0)",
+        color: "var(--color-text-1)",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        // Push the vertically-centred content down so it never sits
-        // right up against the transition seam
-        paddingTop: "clamp(80px, 12vh, 160px)",
       }}
     >
-      {/* Top-fade — seamlessly bleeds the pure-black intro video into
-          the lime-lightning backdrop. Uses #000000 (matches the video's
-          last-frame pixel colour exactly) so there's no visible seam.
-          Fades to transparent over ~40vh. */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "40vh",
-          pointerEvents: "none",
-          zIndex: 2,
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 25%, rgba(0,0,0,0.65) 55%, rgba(0,0,0,0.25) 80%, rgba(0,0,0,0) 100%)",
-        }}
-      />
-
-      {/* Radial vignette over centre — keeps hero text legible
-          against the page-wide lime-lightning backdrop */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          background:
-            "radial-gradient(ellipse at center, rgba(14,13,11,0.75) 0%, rgba(14,13,11,0.5) 35%, rgba(14,13,11,0.18) 70%, rgba(14,13,11,0) 100%)",
-        }}
-      />
 
       {/* Status pill top-right */}
       <div
@@ -103,8 +69,8 @@ export function HeroFinal() {
             width: 6,
             height: 6,
             borderRadius: "50%",
-            background: "var(--color-red)",
-            boxShadow: "0 0 10px rgba(180,232,19,0.55)",
+            background: "var(--color-accent)",
+            boxShadow: "0 0 10px var(--color-accent-glow)",
             animation: "hf-pulse 2.4s ease-in-out infinite",
           }}
         />

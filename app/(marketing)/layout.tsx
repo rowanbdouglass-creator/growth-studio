@@ -1,28 +1,38 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, IBM_Plex_Sans, IBM_Plex_Mono, Newsreader } from "next/font/google";
+import { IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { brand } from "@/config/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/jsonLd";
 import { LenisProvider } from "@/components/fx/LenisProvider";
-import { CustomCursor } from "@/components/fx/CustomCursor";
 import { Loader } from "@/components/fx/Loader";
 import "../globals.css";
 
-// Display: Bricolage Grotesque — variable, more distinctive than Syne (less AI-default).
-// Variable name kept as --font-syne so components don't need rewiring.
-const syne = Bricolage_Grotesque({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-syne",
+// Display: Cabinet Grotesk (ITF via Fontshare, self-hosted variable).
+// Heavy weights carry the headlines; no serif emphasis anywhere.
+const display = localFont({
+  src: "../../public/fonts/CabinetGrotesk-Variable.woff2",
+  weight: "100 900",
+  variable: "--font-display",
   display: "swap",
 });
 
-const plexSans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+// Body: General Sans (ITF via Fontshare, self-hosted variable + italic).
+const sans = localFont({
+  src: [
+    {
+      path: "../../public/fonts/GeneralSans-Variable.woff2",
+      weight: "200 700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/GeneralSans-VariableItalic.woff2",
+      weight: "200 700",
+      style: "italic",
+    },
+  ],
   variable: "--font-sans",
   display: "swap",
 });
@@ -31,16 +41,6 @@ const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-mono",
-  display: "swap",
-});
-
-// Italic emphasis: Newsreader (editorial serif, much less AI-default than
-// Instrument Serif). Variable, italic-only weight 400.
-const instrumentSerif = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
   display: "swap",
 });
 
@@ -83,12 +83,11 @@ export default function MarketingLayout({
   return (
     <html
       lang="en-GB"
-      className={`${syne.variable} ${plexSans.variable} ${plexMono.variable} ${instrumentSerif.variable}`}
+      className={`${display.variable} ${sans.variable} ${plexMono.variable}`}
     >
       <body className="min-h-screen flex flex-col">
         <LenisProvider>
           <Loader />
-          <CustomCursor />
           <a
             href="#main"
             className="
