@@ -164,7 +164,7 @@ export function Header() {
                 e.currentTarget.style.color = "var(--color-night)";
               }}
             >
-              Find a slot
+              Book a slot
               <span style={{ fontSize: 14 }}>↗</span>
             </Link>
           </nav>

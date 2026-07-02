@@ -1,4 +1,4 @@
-import { HeroFinal } from "@/components/sections/HeroFinal";
+import { HeroLedger } from "@/components/sections/HeroLedger";
 import { Section02Philosophy } from "@/components/sections/Section02Philosophy";
 import { Section03OperatingModel } from "@/components/sections/Section03OperatingModel";
 import { Section04Work } from "@/components/sections/Section04Work";
@@ -16,7 +16,7 @@ import { Section07Cta } from "@/components/sections/Section07Cta";
 export default function Home() {
   return (
     <main data-bg="dark" style={{ position: "relative", zIndex: 0 }}>
-      <HeroFinal />
+      <HeroLedger />
       <Section02Philosophy />
       <Section03OperatingModel />
       <Section04Work />

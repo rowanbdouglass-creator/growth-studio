@@ -19,7 +19,7 @@ export function Section07Cta() {
       style={{
         position: "relative",
         zIndex: 1,
-        padding: "clamp(180px, 22vw, 280px) 0",
+        padding: "clamp(110px, 12vw, 170px) 0",
         background: "var(--color-night)",
         color: "var(--color-paper)",
         overflow: "hidden",
@@ -35,7 +35,7 @@ export function Section07Cta() {
           width: "60%",
           height: "80%",
           background:
-            "radial-gradient(circle, rgba(180,232,19,0.08) 0%, transparent 60%)",
+            "radial-gradient(circle, var(--color-accent-soft) 0%, transparent 60%)",
           pointerEvents: "none",
           zIndex: 0,
         }}

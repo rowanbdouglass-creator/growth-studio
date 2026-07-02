@@ -44,7 +44,7 @@ export function Section03OperatingModel() {
       style={{
         position: "relative",
         zIndex: 1,
-        padding: "clamp(140px, 18vw, 240px) 0",
+        padding: "clamp(96px, 10vw, 150px) 0",
         background:
           "linear-gradient(180deg, rgba(14,13,11,0.88) 0%, rgba(14,13,11,0.96) 55%, rgba(14,13,11,1) 100%)",
         color: "var(--color-paper)",

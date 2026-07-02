@@ -73,7 +73,7 @@ export function Section04Work() {
       style={{
         position: "relative",
         zIndex: 1,
-        padding: "clamp(140px, 18vw, 240px) 0",
+        padding: "clamp(96px, 10vw, 150px) 0",
         background: "#000000",
         color: "var(--color-paper)",
       }}
