@@ -173,7 +173,13 @@ export default async function CaseStudyPage({
           <div style={{ marginBottom: 32 }}>
             <BracketLabel number="NOTE">appointment notes</BracketLabel>
           </div>
-          <div className="cs-title-block">
+          {/* Shared-element morph target: pairs with the home gallery's
+              media wrapper (viewTransitionName work-{slug}). This page
+              has no hero media, so the title block carries the name. */}
+          <div
+            className="cs-title-block"
+            style={{ ["viewTransitionName" as string]: `work-${slug}` }}
+          >
             <div className="cs-date">
               <span className="dow">{a.dayOfWeek}</span>
               <span className="num">{a.day}</span>

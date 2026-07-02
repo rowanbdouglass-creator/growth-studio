@@ -1,8 +1,10 @@
 import { CountUp } from "./CountUp";
+import { Inview } from "@/components/fx/Inview";
 
 /**
  * ProofStrip — four tracked outcomes in a bordered strip.
- * Carries the single allowed eyebrow on the page.
+ * Carries the single allowed eyebrow on the page. Figures Z-punch
+ * (land from above the page plane) on first view, then count up.
  * Replaces Section05Stats.
  */
 
@@ -22,12 +24,14 @@ export function ProofStrip() {
         </div>
         <div className="grid grid-cols-2 divide-x divide-hairline border-y border-hairline-strong lg:grid-cols-4">
           {STATS.map(([figure, label]) => (
-            <div key={label} className="p-8">
-              <CountUp value={figure} />
+            <Inview key={label} className="p-8" threshold={0.4}>
+              <span className="z-punch inline-block">
+                <CountUp value={figure} />
+              </span>
               <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-text-3">
                 {label}
               </div>
-            </div>
+            </Inview>
           ))}
         </div>
       </div>

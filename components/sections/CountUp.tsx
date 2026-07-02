@@ -26,7 +26,13 @@ function parseValue(value: string) {
   };
 }
 
-export function CountUp({ value }: { value: string }) {
+export function CountUp({
+  value,
+  className = "font-display text-5xl font-bold tabular-nums",
+}: {
+  value: string;
+  className?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -64,7 +70,7 @@ export function CountUp({ value }: { value: string }) {
   }, [value]);
 
   return (
-    <span ref={ref} className="font-display text-5xl font-bold tabular-nums">
+    <span ref={ref} className={className}>
       {value}
     </span>
   );

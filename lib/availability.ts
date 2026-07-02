@@ -26,3 +26,21 @@ export const WEEK_AVAILABILITY: DayStatus[] = [
 
 export const openSlotCount = () =>
   WEEK_AVAILABILITY.filter((s) => s === "open").length;
+
+/** ISO-8601 week number for a date (client-side date maths, no deps). */
+export function isoWeekNumber(date: Date): number {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+}
+
+/** Monday (00:00 local) of the week containing `now`. */
+export function mondayOfCurrentWeek(now: Date): Date {
+  const d = new Date(now);
+  const day = (d.getDay() + 6) % 7; // Mon=0 ... Sun=6
+  d.setDate(d.getDate() - day);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}

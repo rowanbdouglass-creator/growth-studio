@@ -1,4 +1,5 @@
 import { SceneStack } from "@/components/fx/SceneStack";
+import { MarginRule } from "@/components/fx/MarginRule";
 import { HeroLedger } from "@/components/sections/HeroLedger";
 import { ThePractice } from "@/components/sections/ThePractice";
 import { LedgerWork } from "@/components/sections/LedgerWork";
@@ -20,6 +21,7 @@ import { CloseCta } from "@/components/sections/CloseCta";
 export default function Home() {
   return (
     <main data-bg="dark" style={{ position: "relative", zIndex: 0 }}>
+      <MarginRule />
       <SceneStack>
         <HeroLedger />
         <ThePractice />

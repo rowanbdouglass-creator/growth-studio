@@ -231,10 +231,13 @@ textarea:focus-visible,
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Stamp thud: rotation is owned here (start -9deg, settle -5deg) with
+   a brief accent flash at the impact frame. Stamp elements must NOT
+   carry a static rotate class. */
 @keyframes stamp-in {
-  0%   { opacity: 0; transform: scale(1.35); }
-  62%  { opacity: 1; transform: scale(0.96); }
-  100% { opacity: 1; transform: scale(1); }
+  0%   { opacity: 0; transform: rotate(-9deg) scale(1.35); box-shadow: 0 0 0 0 transparent; }
+  62%  { opacity: 1; transform: rotate(-4deg) scale(0.96); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+  100% { opacity: 1; transform: rotate(-5deg) scale(1); box-shadow: 0 0 0 0 transparent; }
 }
 
 /* Load-in stagger for hero children */
@@ -267,6 +270,95 @@ textarea:focus-visible,
 }
 .stamp.is-inview {
   animation: stamp-in 480ms var(--ease-stamp) both;
+}
+
+/* ------------------------------------------------------------------
+   Directional grammar — X = written (horizontal), Z = committed
+   (stamped into the page plane). Reduced motion: the global override
+   below collapses every animation/transition to its end state; the
+   opacity fallbacks in that block cover JS-gated classes.
+   ------------------------------------------------------------------ */
+
+/* Hero headline: horizontal wipe, like a line being ruled in */
+@keyframes wipe-x {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+.wipe-line {
+  animation: wipe-x 700ms var(--ease-out-quint) both;
+}
+
+/* Hero week spread: booked ink bars draw left-to-right on load */
+@keyframes bar-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.bar-in {
+  transform-origin: left;
+  animation: bar-x 500ms var(--ease-out-quint) both;
+}
+
+/* Hairline that draws itself when its row enters view (Inview adds
+   .is-inview to the wrapper) */
+.draw-x {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out-quint);
+}
+.is-inview .draw-x,
+.draw-x.is-inview {
+  transform: scaleX(1);
+}
+
+/* Z-punch: figures land from above the page plane on first view */
+.z-punch { opacity: 0; }
+@keyframes z-punch-in {
+  from { opacity: 0; transform: scale(1.18); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+.is-inview .z-punch,
+.z-punch.is-inview {
+  animation: z-punch-in 600ms var(--ease-out-quint) both;
+}
+
+/* Hero open cell: slow breathe, motion-allowed only */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes cell-breathe {
+    from { transform: scale(1); }
+    to   { transform: scale(1.015); }
+  }
+  .cell-breathe {
+    animation: cell-breathe 3.2s ease-in-out infinite alternate;
+  }
+}
+
+/* ------------------------------------------------------------------
+   LedgerPin horizontal track — layout only exists on desktop with
+   motion allowed; everywhere else the same markup is a plain stacked
+   column (Tailwind classes on the elements) and GSAP never runs.
+   ------------------------------------------------------------------ */
+.pin-ticks { display: none; }
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .pin-section { height: var(--stack-h); }
+  .pin-sticky {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100dvh;
+    align-items: center;
+  }
+  .pin-stage { overflow: hidden; }
+  .pin-track {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    width: calc(var(--pin-n) * 100%);
+  }
+  .pin-track > .entry-slide {
+    flex: 0 0 auto;
+    width: calc(100% / var(--pin-n));
+  }
+  .pin-ticks { display: flex; }
 }
 
 .terminal-caret { animation: caret-blink 1s steps(1) infinite; }
