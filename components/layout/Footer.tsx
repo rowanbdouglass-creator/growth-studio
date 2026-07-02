@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { brand } from "@/config/brand";
+import { FooterAvailability } from "./FooterAvailability";
 
 /**
  * v4 dark footer — Monolog-style nav panel. Big navigation list left,
@@ -108,7 +109,7 @@ export function Footer() {
                 marginBottom: 36,
               }}
             >
-              ( STUDIO DETAILS )
+              STUDIO DETAILS
             </div>
 
             <div style={{ marginBottom: 36 }}>
@@ -153,7 +154,7 @@ export function Footer() {
                 marginBottom: 18,
               }}
             >
-              ( ON THE RECORD )
+              ON THE RECORD
             </div>
             <ul
               style={{
@@ -219,18 +220,7 @@ export function Footer() {
             © 2026 {brand.legalName} · Companies House{" "}
             {brand.companiesHouseNumber}
           </span>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "var(--color-red)",
-                animation: "ylb-pulse 2.4s ease-in-out infinite",
-              }}
-            />
-            AVAILABLE · WEEK 28
-          </span>
+          <FooterAvailability />
         </div>
       </div>
     </footer>
